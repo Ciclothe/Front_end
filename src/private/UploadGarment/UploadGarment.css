@@ -1,0 +1,23 @@
+.upload-garment-content .card {
+    grid-column: span 3;
+    background-color: #F7F5F6;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 3px solid #F7F5F6;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .upload-garment-content .card:hover,
+  .upload-garment-content .card.active {
+    background-color: rgba(13, 188, 115, 0.10);
+    border: 3px solid #0DBC73;
+    color: #0DBC73;
+  }
+  
