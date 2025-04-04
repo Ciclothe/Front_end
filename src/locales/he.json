@@ -4,6 +4,28 @@
       "subtitle": "תן חיים שניים לבגדים שאתה כבר לא לובש וגלה את המראה הבא שלך. מצא השראה וסגנון על ידי נתינת חיים חדשים לפריט בגדים מיד שנייה.",
       "sign_in": "התחבר",
       "create_account": "צור חשבון"
+    },
+    "mainLayout": {
+      "search_for": "חפש ”לולולמון לבן“",
+      "all": "הכל",
+      "swaps": "החלפות",
+      "events": "אירועים",
+      "communities": "קהילות",
+      "theme_mode": "מצב עיצוב",
+      "settings": "הגדרות",
+      "log_out": "התנתק",
+      "next_events": "האירועים הקרובים אליך",
+      "person": "אדם",
+      "people": "אנשים",
+      "will_go_singular": "ילך",
+      "will_go_plural": "ילכו",
+      "feed": "דף הבית",
+      "swipes": "לגלות",
+      "explore": "חיפוש",
+      "chats": "הודעות",
+      "create_post": "צור פוסט",
+      "create_swap": "צור החלפה",
+      "create_event": "צור אירוע"
     }
   }
   

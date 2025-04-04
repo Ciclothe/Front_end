@@ -4,6 +4,28 @@
       "subtitle": "Donnez une seconde vie à ces vêtements que vous ne portez plus et découvrez votre prochain look. Trouvez de l'inspiration et du style en donnant une nouvelle vie à un vêtement de seconde main.",
       "sign_in": "Se connecter",
       "create_account": "Créer un compte"
+    },
+    "mainLayout": {
+      "search_for": "Rechercher “Lululemon blanc”",
+      "all": "Tous",
+      "swaps": "Swaps",
+      "events": "Événements",
+      "communities": "Communautés",
+      "theme_mode": "Mode Thème",
+      "settings": "Paramètres",
+      "log_out": "Se déconnecter",
+      "next_events": "Prochains événements près de chez vous",
+      "person": "personne",
+      "people": "personnes",
+      "will_go_singular": "ira",
+      "will_go_plural": "iront",
+      "feed": "Feed",
+      "swipes": "Swipes",
+      "explore": "Explorer",
+      "chats": "Messages",
+      "create_post": "Créer une Publication",
+      "create_swap": "Créer un Échange",
+      "create_event": "Créer un Événement"
     }
   }
   

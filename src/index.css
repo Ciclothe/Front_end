@@ -1,14 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 
 :root {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #FFFFFF;
-  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -31,6 +28,24 @@ body {
   max-width: 100%;
 }
 
+body.bodyNightMode {
+  background-color: #121212;
+  color: white;
+}
+
+body.bodyDayMode {
+  background-color: #F7F7F7;
+  color: black;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 h1 {
   font-size: 1.4rem;
   font-weight: bold;
@@ -41,13 +56,7 @@ h2 {
   font-size: 1.2rem;
 }
 
-p {
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-
-header{
+header {
   padding: 2rem 0rem;
   width: 100%;
   display: flex;
@@ -58,17 +67,15 @@ header{
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
   font-size: 1em;
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
-/* Estilos para el modo claro (light mode) */
 @media (prefers-color-scheme: light) {
-  :root {
-    background-color: #ffffff;
+  body {
+    background-color: #F7F7F7;
   }
   a:hover {
     color: #747bff;
@@ -76,8 +83,9 @@ button {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  body {
     background-color: #121212;
+    color: white;
   }
   a {
     color: #9e9e9e;
@@ -86,4 +94,3 @@ button {
     color: #bb86fc;
   }
 }
-
