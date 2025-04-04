@@ -4,6 +4,28 @@
         "subtitle": "Give A Second Life To Those Clothes You No Longer Wear And Discover Your Next Look. Find Inspiration And Style By Breathing New Life Into A Second-Hand Garment.",
         "sign_in": "Sign in",
         "create_account": "Create an Account"
+    },
+    "mainLayout": {
+        "search_for": "Search for “White lululemon”",
+        "all": "All",
+        "swaps": "Swaps",
+        "events": "Events",
+        "communities": "Communities",
+        "theme_mode": "Theme Mode",
+        "settings": "Settings",
+        "log_out": "Log Out",
+        "next_events": "Next events close to you",
+        "person": "person",
+        "people": "people",
+        "will_go_singular": "will go",
+        "will_go_plural": "will go",
+        "feed": "Feed",
+        "swipes": "Swipes",
+        "explore": "Explore",
+        "chats": "Chats",
+        "create_post": "Create Post",
+        "create_swap": "Create Swap",
+        "create_event": "Create Event"
     }
 }
   

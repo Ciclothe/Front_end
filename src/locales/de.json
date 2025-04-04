@@ -4,6 +4,28 @@
       "subtitle": "Geben Sie den Kleidern, die Sie nicht mehr tragen, ein zweites Leben und entdecken Sie Ihren nächsten Look. Finden Sie Inspiration und Stil, indem Sie einem Second-Hand-Kleidungsstück neues Leben einhauchen.",
       "sign_in": "Anmelden",
       "create_account": "Konto erstellen"
+    },
+    "mainLayout": {
+      "search_for": "Suche nach “Weißes Lululemon”",
+      "all": "Alle",
+      "swaps": "Swaps",
+      "events": "Veranstaltungen",
+      "communities": "Gemeinschaften",
+      "theme_mode": "Designmodus",
+      "settings": "Einstellungen",
+      "log_out": "Abmelden",
+      "next_events": "Nächste Veranstaltungen in deiner Nähe",
+      "person": "Person",
+      "people": "Menschen",
+      "will_go_singular": "wird gehen",
+      "will_go_plural": "werden gehen",
+      "feed": "Feed",
+      "swipes": "Swipes",
+      "explore": "Erkunden",
+      "chats": "Nachrichten",
+      "create_post": "Beitrag Erstellen",
+      "create_swap": "Tausch Erstellen",
+      "create_event": "Ereignis Erstellen"
     }
   }
   
