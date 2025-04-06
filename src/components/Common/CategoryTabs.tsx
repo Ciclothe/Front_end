@@ -40,7 +40,7 @@ export const CategoryTabs = () => {
   ];
 
   return (
-    <div className="flex gap-4 w-full overflow-x-auto scrollbar-none">
+    <div className="flex gap-4 w-full overflow-x-auto scrollbar-none px-2 md:px-0">
       {CategoryTabs.map((tab) => (
         <div
           key={tab.name}

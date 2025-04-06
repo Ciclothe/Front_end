@@ -57,7 +57,7 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
     <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <div>
         <div
-          className="md:hidden bg-black/40 fixed top-0 left-0 w-full h-full p-5 z-[100] items-end flex"
+          className="md:hidden backdrop-blur-sm bg-black/40 fixed top-0 left-0 w-full h-full pb-5 px-2 z-[100] items-end flex"
           onClick={() => setIsOpen(false)}
         >
           <div onClick={(e) => e.stopPropagation()} className="w-full">

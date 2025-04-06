@@ -1,6 +1,6 @@
 import Icon from "@mdi/react";
 import { mdiUpdate, mdiCircleSmall, mdiMapMarker } from "@mdi/js";
-import { AssistantsAvatars } from "./AssistantsAvatars";
+import { AssistantsAvatars } from "@/components/Common/AssistantsAvatars";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 
@@ -30,6 +30,13 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
   const currentLanguage = i18n.language;
 
+  const peopleText =
+    event.totalAssistents === 1 ? "mainLayout.person" : "mainLayout.people";
+  const willGoText =
+    event.totalAssistents === 1
+      ? "mainLayout.will_go_singular"
+      : "mainLayout.will_go_plural";
+
   return (
     <div
       className={`${
@@ -41,12 +48,14 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <AssistantsAvatars
         firstAssistents={event.firstAssistents}
         total={event.totalAssistents}
+        peopleLabel={peopleText}
+        actionText={willGoText}
       />
 
       <div className="flex flex-col gap-2 font-semibold">
         <div>
           <p className="opacity-50">{event.eventCategory}</p>
-          <p className="truncate w-full text-[1.1em]">{event.eventName}</p>
+          <p className="truncate w-full text-[1.2em]">{event.eventName}</p>
         </div>
         <div className="flex items-center gap-1">
           <Icon path={mdiUpdate} size={1} />
