@@ -1,0 +1,55 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    z-index: 20;
+    align-items: center;
+  }
+  
+  @media (min-width: 1280px) {
+    .container {
+      display: none;
+    }
+  }
+  
+  .light {
+    color: black;
+    background-color: #f7f7f7;
+  }
+  
+  .dark {
+    color: white;
+    background-color: #121212;
+  }
+  
+  .profileSection {
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+  }
+  
+  .logoCenter {
+    display: none;
+  }
+  
+  @media (min-width: 768px) {
+    .logoCenter {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  
+  .locationInfo {
+    display: block;
+  }
+  
+  @media (min-width: 768px) {
+    .locationInfo {
+      display: none;
+    }
+  }
+  
+  .iconGroup {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }

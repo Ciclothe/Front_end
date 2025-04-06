@@ -4,24 +4,25 @@ import { useTranslation } from "react-i18next";
 
 interface Assistant {
   id: number;
-  name: string;
+  name?: string;
   avatar: string;
 }
 
 interface AssistantsAvatarsProps {
   firstAssistents: Assistant[];
   total: number;
+  peopleLabel?: string;
+  actionText?: string;
 }
 
 export const AssistantsAvatars: React.FC<AssistantsAvatarsProps> = ({
   firstAssistents,
   total,
+  peopleLabel = "people",
+  actionText = "",
 }) => {
   const { themeMode } = useTheme();
   const { t } = useTranslation();
-
-  const peopleText = total === 1 ? "person" : "people";
-  const willGoText = total === 1 ? "will_go_singular" : "will_go_plural";
 
   return (
     <div className="w-full flex items-center">
@@ -52,11 +53,11 @@ export const AssistantsAvatars: React.FC<AssistantsAvatarsProps> = ({
         ))}
       </div>
 
-      <p className="ml-2">
+      <p className="ml-2 truncate">
         <span className="font-bold">
-          {total} {t(`mainLayout.${peopleText}`)}
+          {total} {t(peopleLabel)}
         </span>{" "}
-        <span className="opacity-50">{t(`mainLayout.${willGoText}`)}</span>
+        <span className="opacity-50">{t(actionText)}</span>
       </p>
     </div>
   );
