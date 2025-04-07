@@ -5,10 +5,10 @@ import { useTheme } from "@/context/ThemeContext";
 
 export const PostActions = ({
   liked = false,
-  offerSended = false,
+  offerSent = false,
 }: {
   liked?: boolean;
-  offerSended?: boolean;
+  offerSent?: boolean;
 }) => {
   const [hover, setHover] = useState(false);
   const { themeMode } = useTheme();
@@ -17,7 +17,7 @@ export const PostActions = ({
     <div className="flex items-center gap-2">
       <div
         className={`px-5 rounded-full flex items-center gap-2 font-bold hover:bg-[#0DBC73] cursor-pointer ${
-          offerSended
+          offerSent
             ? "bg-[#0DBC73] text-white"
             : themeMode === "light"
             ? "bg-white md:bg-[#F7F7F7] text-black hover:text-white"

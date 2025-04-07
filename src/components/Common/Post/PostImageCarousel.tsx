@@ -2,41 +2,45 @@ import { useTheme } from "@/context/ThemeContext";
 import { mdiChevronLeft, mdiChevronRight } from "@mdi/js";
 import Icon from "@mdi/react";
 import { useEffect, useRef, useState, useCallback } from "react";
-
-type Image = {
-  id: number;
-  url: string;
-};
-
+import { PostInfoOverlay } from "@/components/Common/Post/PostInfoOverlay";
+import { Post } from "@/types";
+interface UserHeaderProps {
+  post: Post;
+}
 const getAspectRatio = (orientation: string) => {
   if (orientation === "vertical") return "aspect-[4/5]";
   if (orientation === "horizontal") return "aspect-[6/5]";
   return "aspect-[1/1]";
 };
 
-export const PostImageCarousel = ({
-  images,
-  orientation,
-}: {
-  images: Image[];
-  orientation: string;
-}) => {
+export const PostImageCarousel: React.FC<UserHeaderProps> = ({ post }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const { themeMode } = useTheme();
+  const [length, setLength] = useState(0);
+
+  useEffect(() => {
+    if (post?.postType === "swap") {
+      setLength(post?.postData?.images?.length || 0);
+    } else {
+      setLength(post?.newPostsData?.length || 0);
+    }
+  }, [post]);
 
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  }, [images.length]);
+    if (length === 0) return;
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % length);
+  }, [length]);
 
   const prevSlide = useCallback(() => {
+    if (length === 0) return;
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      prevIndex === 0 ? length - 1 : prevIndex - 1
     );
-  }, [images.length]);
+  }, [length]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -75,11 +79,18 @@ export const PostImageCarousel = ({
 
   const getTranslateX = () => {
     if (!containerRef.current) return 0;
+
     const containerWidth = containerRef.current.offsetWidth;
-    const imageWidth =
-      windowWidth <= 768
-        ? containerWidth * 0.9 + 15
-        : containerWidth * 0.7 + 15;
+
+    let baseWidthPercentage;
+    if (windowWidth <= 768) {
+      baseWidthPercentage = post?.postType === "swap" ? 0.9 : 0.6;
+    } else {
+      baseWidthPercentage = post?.postType === "swap" ? 0.7 : 0.4;
+    }
+
+    const imageWidth = containerWidth * baseWidthPercentage + 15;
+
     return -(currentIndex * imageWidth);
   };
 
@@ -88,22 +99,41 @@ export const PostImageCarousel = ({
       <div
         className="flex transition-transform duration-500 ease-in-out gap-4"
         style={{
-          transform: `translateX(${getTranslateX()}px)`, // Use exact pixel value
+          transform: `translateX(${getTranslateX()}px)`,
         }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {images.map((image, index) => (
-          <img
-            key={index}
-            src={image.url}
-            alt={`Post Image ${index + 1}`}
-            className={`w-[90%] md:w-[70%] shrink-0 object-cover rounded-xl ${getAspectRatio(
-              orientation
-            )}`}
-          />
-        ))}
+        {post?.postType === "swap" && post?.postData?.images?.length
+          ? post.postData.images.map((image, index) => (
+              <img
+                key={index}
+                src={image.url}
+                alt={`Post Image ${index + 1}`}
+                className={`w-[90%] md:w-[70%] shrink-0 object-cover rounded-xl ${getAspectRatio(
+                  post?.postData?.imagesOrientation ?? ""
+                )}`}
+              />
+            ))
+          : post?.newPostsData?.map((newPost, index) => (
+              <div key={index} className="w-[60%] md:w-[40%] shrink-0 relative">
+                <img
+                  src={newPost?.mainImages?.url}
+                  alt={`Post Image ${index + 1}`}
+                  className={`w-full h-full object-cover rounded-xl ${getAspectRatio(
+                    newPost?.imagesOrientation ?? ""
+                  )}`}
+                />
+                <PostInfoOverlay
+                  condition={newPost?.condition}
+                  title={newPost?.title}
+                  color={newPost?.color}
+                  size={newPost?.size}
+                  brand={newPost?.brand}
+                />
+              </div>
+            ))}
       </div>
 
       {/* Arrows */}

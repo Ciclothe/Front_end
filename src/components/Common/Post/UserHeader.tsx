@@ -1,40 +1,42 @@
 import Avatar from "@mui/material/Avatar";
 import Icon from "@mdi/react";
-import { mdiAllInclusive } from "@mdi/js";
+import { mdiAllInclusive, mdiHandshake } from "@mdi/js";
 import { getRelativeTime } from "@/components/Utils/getRelativeTime";
 import { useTheme } from "@/context/ThemeContext";
 
 interface UserHeaderProps {
+  postType: string;
   userData: {
-    profilePicture?: string;
-    username?: string;
+    username: string;
+    profilePicture: string;
   };
-  posData: {
+  postData: {
+    createdAt: string | Date;
     distance?: string;
-    createdAt?: string | Date;
   };
-  isMobile: boolean;
+  eventTitle?: string;
 }
 
 export const UserHeader: React.FC<UserHeaderProps> = ({
+  postData,
+  postType,
   userData,
-  posData,
-  isMobile,
+  eventTitle,
 }) => {
   const { themeMode } = useTheme();
 
   const createdAtString =
-    posData?.createdAt instanceof Date
-      ? posData.createdAt.toISOString()
-      : posData?.createdAt;
+    postData?.createdAt instanceof Date
+      ? postData?.createdAt.toISOString()
+      : postData?.createdAt;
 
   return (
     <div
       className={`${
-        themeMode === "light" ? "text-black md:text-white" : "text-white"
-      } ${isMobile ? "md:hidden" : "hidden md:flex"} mb-4 md:p-3 ${
-        !isMobile ? "absolute top-2 left-2 bg-black/80" : ""
-      } rounded-xl items-center gap-2 pr-10 flex`}
+        postType === "swap"
+          ? "md:absolute md:top-2 md:left-2 md:bg-black/80 md:text-white md:p-3 md:rounded-xl md:pr-10 "
+          : ""
+      } flex items-center gap-2 z-5`}
     >
       <Avatar
         variant="rounded"
@@ -43,19 +45,38 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
       />
       <div>
         <div className="flex gap-2 items-center">
-          <p className="font-bold">@{userData?.username}</p>
+          <p className="font-bold">
+            {postType === "swap" ? `@${userData?.username}` : `${eventTitle}`}
+          </p>
+
           <div
-            className={`aspect-square p-1 bg-[#0DBC73] rounded-full flex items-center justify-center ${
-              themeMode === "light" && isMobile ? "text-white" : "text-black"
+            className={`${
+              postType === "swap" ? "bg-[#0DBC73] " : "bg-[#8846F2] "
+            } aspect-square p-1 rounded-full flex items-center justify-center ${
+              themeMode === "light" ? "text-white" : "text-black"
             }`}
           >
-            <Icon path={mdiAllInclusive} size={0.7} />
+            <Icon
+              path={postType === "swap" ? mdiAllInclusive : mdiHandshake}
+              size={0.7}
+            />
           </div>
         </div>
-        <div className="flex gap-2 opacity-80 font-semibold text-sm">
+        <div className="flex gap-2 font-semibold text-sm">
           <p>
-            {posData?.distance} ·{" "}
-            {createdAtString ? getRelativeTime(createdAtString) : ""}
+            {postType === "swap" ? (
+              <span className="opacity-50">{postData?.distance} away</span>
+            ) : (
+              <>
+                <span className="opacity-50">Created by </span>
+                <span className="font-bold opacity-100">
+                  @{userData?.username}
+                </span>
+              </>
+            )}{" "}
+            <span className="opacity-50">
+              · {createdAtString ? getRelativeTime(createdAtString) : ""}
+            </span>
           </p>
         </div>
       </div>

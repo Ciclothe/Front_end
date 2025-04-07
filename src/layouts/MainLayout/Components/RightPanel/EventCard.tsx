@@ -16,8 +16,8 @@ interface Event {
   eventTime: string;
   eventDate: string;
   eventLocation: string;
-  firstAssistents: Assistant[];
-  totalAssistents: number;
+  firstAssistants: Assistant[];
+  totalAssistants: number;
 }
 
 interface EventCardProps {
@@ -31,9 +31,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const currentLanguage = i18n.language;
 
   const peopleText =
-    event.totalAssistents === 1 ? "mainLayout.person" : "mainLayout.people";
+    event.totalAssistants === 1 ? "mainLayout.person" : "mainLayout.people";
   const willGoText =
-    event.totalAssistents === 1
+    event.totalAssistants === 1
       ? "mainLayout.will_go_singular"
       : "mainLayout.will_go_plural";
 
@@ -46,8 +46,8 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
       } flex flex-col gap-2 rounded-2xl p-4 cursor-pointer`}
     >
       <AssistantsAvatars
-        firstAssistents={event.firstAssistents}
-        total={event.totalAssistents}
+        firstAssistants={event.firstAssistants}
+        total={event.totalAssistants}
         peopleLabel={peopleText}
         actionText={willGoText}
       />

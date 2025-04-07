@@ -13,8 +13,8 @@ export const PostOffers = ({
   offers,
   totalOffers,
 }: {
-  offers: Offer[];
-  totalOffers: number;
+  offers?: Offer[];
+  totalOffers?: number;
 }) => {
   const { t } = useTranslation();
 
@@ -25,11 +25,13 @@ export const PostOffers = ({
 
   return (
     <AssistantsAvatars
-      firstAssistents={offers?.map((offer) => ({
-        id: offer.userData.id,
-        avatar: offer.userData.avatar,
-      }))}
-      total={totalOffers}
+      firstAssistants={
+        offers?.map((offer) => ({
+          id: offer.userData.id,
+          avatar: offer.userData.avatar,
+        })) ?? []
+      }
+      total={totalOffers ?? 0}
       peopleLabel={t(peopleText)}
       actionText={t(willGoText)}
     />
