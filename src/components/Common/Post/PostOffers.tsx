@@ -25,7 +25,7 @@ export const PostOffers = ({
 
   return (
     <AssistantsAvatars
-      firstAssistents={
+      firstAssistants={
         offers?.map((offer) => ({
           id: offer.userData.id,
           avatar: offer.userData.avatar,

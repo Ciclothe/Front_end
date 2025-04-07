@@ -16,7 +16,7 @@ interface Event {
   eventTime: string;
   eventDate: string;
   eventLocation: string;
-  firstAssistents: Assistant[];
+  firstAssistants: Assistant[];
   totalAssistents: number;
 }
 
@@ -46,7 +46,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
       } flex flex-col gap-2 rounded-2xl p-4 cursor-pointer`}
     >
       <AssistantsAvatars
-        firstAssistents={event.firstAssistents}
+        firstAssistants={event.firstAssistants}
         total={event.totalAssistents}
         peopleLabel={peopleText}
         actionText={willGoText}

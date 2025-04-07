@@ -9,14 +9,14 @@ interface Assistant {
 }
 
 interface AssistantsAvatarsProps {
-  firstAssistents: Assistant[];
+  firstAssistants: Assistant[];
   total: number;
   peopleLabel?: string;
   actionText?: string;
 }
 
 export const AssistantsAvatars: React.FC<AssistantsAvatarsProps> = ({
-  firstAssistents,
+  firstAssistants,
   total,
   peopleLabel = "people",
   actionText = "",
@@ -27,7 +27,7 @@ export const AssistantsAvatars: React.FC<AssistantsAvatarsProps> = ({
   return (
     <div className="w-full flex items-center">
       <div className="flex justify-center">
-        {firstAssistents.map((assistent, index) => (
+        {firstAssistants.map((assistent, index) => (
           <div
             key={assistent.id}
             className="overflow-hidden"

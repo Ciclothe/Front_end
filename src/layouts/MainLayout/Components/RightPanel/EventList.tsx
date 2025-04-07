@@ -11,7 +11,7 @@ const events = [
     eventLocation: "Carrer de miquel parera, 08021 Barcelona",
     eventCategory: "Vintage",
     totalAssistents: 4,
-    firstAssistents: [
+    firstAssistants: [
       {
         id: 1,
         name: "Name 1",
