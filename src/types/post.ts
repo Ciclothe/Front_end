@@ -25,7 +25,7 @@ export interface Post {
   imagesOrientation?: string;
   totalOffers?: number;
   liked?: boolean;
-  offerSended?: boolean;
+  offerSent?: boolean;
   offers?: {
     id: number;
     userData: {
