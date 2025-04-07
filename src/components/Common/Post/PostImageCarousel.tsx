@@ -31,10 +31,12 @@ export const PostImageCarousel: React.FC<UserHeaderProps> = ({ post }) => {
   }, [post]);
 
   const nextSlide = useCallback(() => {
+    if (length === 0) return;
     setCurrentIndex((prevIndex) => (prevIndex + 1) % length);
   }, [length]);
 
   const prevSlide = useCallback(() => {
+    if (length === 0) return;
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? length - 1 : prevIndex - 1
     );
