@@ -39,7 +39,7 @@ const postsFeedData = [
     },
     totalOffers: 4,
     liked: true,
-    offerSended: false,
+    offerSent: false,
     offers: [
       {
         id: 1,
@@ -185,7 +185,7 @@ const postsFeedData = [
     },
     totalOffers: 0,
     liked: false,
-    offerSended: false,
+    offerSent: false,
     offers: [],
   },
 ];
@@ -235,10 +235,7 @@ export const HomePage = () => {
                     totalOffers={post?.totalOffers}
                   />
                 </div>
-                <PostActions
-                  liked={post.liked}
-                  offerSended={post.offerSended}
-                />
+                <PostActions liked={post.liked} offerSent={post.offerSent} />
               </div>
             )}
           </div>
