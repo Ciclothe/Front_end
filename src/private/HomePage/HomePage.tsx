@@ -16,7 +16,7 @@ const postsFeedData = [
         "https://i.pinimg.com/736x/15/4c/c1/154cc1b2916a59a0a2e2f2c7983329b8.jpg",
       username: "grifoMmm",
     },
-    posData: {
+    postData: {
       id: 1,
       distance: "2 km",
       createdAt: "2025-04-05T13:00:00Z",
@@ -61,6 +61,88 @@ const postsFeedData = [
   },
   {
     id: 2,
+    postType: "event",
+    eventTitle: "Retro Revival Night: Fashion & Music",
+    userData: {
+      id: 1,
+      profilePicture:
+        "https://i.pinimg.com/736x/a3/c0/40/a3c040ee9e0cb3a06684a603c1a06a9c.jpg",
+      username: "grifoMmm",
+    },
+    postData: {
+      id: 1,
+      createdAt: "2025-04-05T13:00:00Z",
+    },
+    imagesOrientation: "square",
+    newPostsData: [
+      {
+        id: 1,
+        postedBy: "jaimemarzzoo",
+        profilePicture:
+          "https://i.pinimg.com/736x/74/9a/f8/749af809fe85c36f23297ac9829f83e1.jpg",
+        condition: "Used",
+        title: "Boxy fit hoodie",
+        color: "Gray",
+        size: "M",
+        brand: "Gap",
+        imagesOrientation: "vertical",
+        mainImages: {
+          id: 1,
+          url: "https://images1.vinted.net/t/04_020f9_3c1rcHdCEbxjXb2HZGFEVH4L/f800/1743196825.jpeg?s=2d64ab3223dd941c7e68dc114b4cd4ae6f2adc4a",
+        },
+      },
+      {
+        id: 2,
+        postedBy: "chauhan",
+        profilePicture:
+          "https://i.pinimg.com/736x/58/1e/99/581e999a1c1ab0119de6285577325015.jpg",
+        condition: "Used",
+        title: "Leather Jacket",
+        color: "Brown",
+        size: "L",
+        brand: "Vintage Dressing",
+        imagesOrientation: "horizontal",
+        mainImages: {
+          id: 1,
+          url: "https://images1.vinted.net/t/03_0032d_HcXDedusssDNhGWWVyBdfQrb/f800/1743975491.jpeg?s=b1a079a023a1cc779d92179f3c251e99964714de",
+        },
+      },
+      {
+        id: 3,
+        postedBy: "dougie94",
+        profilePicture:
+          "https://i.pinimg.com/736x/f9/3f/c8/f93fc8fc32053c7f0f7454acf309bc6d.jpg",
+        condition: "Used",
+        title: "White Ralph Lauren Polo neck sweatshirt",
+        color: "White",
+        size: "M",
+        brand: "Ralph Lauren",
+        imagesOrientation: "vertical",
+        mainImages: {
+          id: 1,
+          url: "https://images1.vinted.net/t/04_00b88_LVvL1m3zhPnsuF7i1AYv3An9/f800/1743789841.jpeg?s=c666acb294d89370908b3561aa0e87c5d85358d6",
+        },
+      },
+      {
+        id: 4,
+        postedBy: "djmo1980",
+        profilePicture:
+          "https://i.pinimg.com/736x/cb/0e/31/cb0e31261af7c6fd3e3a9076489c46de.jpg",
+        condition: "Used",
+        title: "Zapatillas El Ganso",
+        color: "Brown",
+        size: "44",
+        brand: "EL GANSO",
+        imagesOrientation: "horizontal",
+        mainImages: {
+          id: 1,
+          url: "https://images1.vinted.net/t/04_0233b_9375uGyQCqm7mmz3PoR9Eosj/f800/1743261831.jpeg?s=1ea0774f1501dd074b2129a6b32eccb780913ea6",
+        },
+      },
+    ],
+  },
+  {
+    id: 2,
     postType: "swap",
     userData: {
       id: 1,
@@ -68,11 +150,11 @@ const postsFeedData = [
         "https://i.pinimg.com/736x/15/4c/c1/154cc1b2916a59a0a2e2f2c7983329b8.jpg",
       username: "grifoMmm",
     },
-    posData: {
+    postData: {
       id: 2,
       distance: "2 km",
       createdAt: "2025-04-05T13:00:00Z",
-      condition: "Used",
+      condition: "New",
       title: "Chaqueta piel vintage",
       color: "Brown",
       size: "M",
@@ -101,27 +183,10 @@ const postsFeedData = [
         },
       ],
     },
-    totalOffers: 4,
+    totalOffers: 0,
     liked: false,
     offerSended: false,
-    offers: [
-      {
-        id: 1,
-        userData: {
-          id: 2,
-          avatar:
-            "https://i.pinimg.com/736x/08/2b/3b/082b3bb51cbf0722329080827f8e4a48.jpg",
-        },
-      },
-      {
-        id: 2,
-        userData: {
-          id: 45,
-          avatar:
-            "https://i.pinimg.com/736x/55/fa/1f/55fa1f9583becaa51044fa7e0d768fe4.jpg",
-        },
-      },
-    ],
+    offers: [],
   },
 ];
 
@@ -129,41 +194,56 @@ export const HomePage = () => {
   const { themeMode } = useTheme();
 
   return (
-    <div className="md:px-4 lg:px-10 py-5 md:pt-0">
-      {postsFeedData.map((post) => (
-        <div
-          key={post.id}
-          className={`${
-            themeMode === "light"
-              ? "md:bg-white text-black"
-              : "md:bg-[#222423] text-white"
-          } pb-10 sm:p-5 md:mb-5 rounded-2xl`}
-        >
-          <UserHeader
-            userData={post.userData}
-            posData={post.posData}
-            isMobile
-          />
-          <div className="relative">
-            <PostImageCarousel
-              images={post.posData.images}
-              orientation={post.posData.imagesOrientation}
-            />
-            <UserHeader
-              userData={post.userData}
-              posData={post.posData}
-              isMobile={false}
-            />
-            <PostInfoOverlay {...post.posData} />
-          </div>
-          <div className="mt-4 flex items-center w-full justify-between gap-2">
-            <div className="truncate">
-              <PostOffers offers={post.offers} totalOffers={post.totalOffers} />
+    <div className="md:px-4 lg:px-10">
+      {postsFeedData.map((post) => {
+        const cardClassName = `${
+          themeMode === "light"
+            ? "md:bg-white md:hover:bg-[#EDEDED] text-black"
+            : "md:bg-[#222423] text-white md:hover:bg-[#323232]"
+        } py-5 border-b border-black/5 md:border-none sm:p-5 md:mb-5 md:rounded-2xl cursor-pointer`;
+
+        return (
+          <div key={post.id} className={cardClassName}>
+            <div className="relative flex flex-col gap-2 ">
+              {post?.postData && (
+                <UserHeader
+                  postData={{
+                    createdAt: post.postData.createdAt,
+                    distance: post.postData.distance,
+                  }}
+                  userData={post?.userData}
+                  postType={post?.postType}
+                  eventTitle={post?.eventTitle}
+                />
+              )}
+              <PostImageCarousel post={post} />
+              {post?.postType === "swap" && (
+                <PostInfoOverlay
+                  condition={post?.postData?.condition}
+                  title={post?.postData?.title}
+                  color={post?.postData?.color}
+                  size={post?.postData?.size}
+                  brand={post?.postData?.brand}
+                />
+              )}
             </div>
-            <PostActions liked={post.liked} offerSended={post.offerSended} />
+            {post?.postType === "swap" && (
+              <div className="mt-4 flex items-center w-full justify-between gap-2">
+                <div className="truncate">
+                  <PostOffers
+                    offers={post?.offers}
+                    totalOffers={post?.totalOffers}
+                  />
+                </div>
+                <PostActions
+                  liked={post.liked}
+                  offerSended={post.offerSended}
+                />
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
