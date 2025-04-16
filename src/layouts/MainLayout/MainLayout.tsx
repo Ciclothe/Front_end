@@ -31,7 +31,9 @@ export const MainLayout = () => {
         </div>
       </main>
       {/** RIGHT SECTION */}
-      <RightPanel />
+      <div className="z-10 col-span-3">
+        <RightPanel />
+      </div>
     </div>
   );
 };

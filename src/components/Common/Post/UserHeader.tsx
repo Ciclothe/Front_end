@@ -1,8 +1,9 @@
 import Avatar from "@mui/material/Avatar";
 import Icon from "@mdi/react";
 import { mdiAllInclusive, mdiHandshake } from "@mdi/js";
-import { getRelativeTime } from "@/components/Utils/getRelativeTime";
+import { getRelativeTime } from "@/components/Utils/format";
 import { useTheme } from "@/context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 interface UserHeaderProps {
   postType: string;
@@ -11,19 +12,21 @@ interface UserHeaderProps {
     profilePicture: string;
   };
   postData: {
-    createdAt: string | Date;
+    createdAt?: string | Date;
     distance?: string;
+    eventTitle?: string;
   };
-  eventTitle?: string;
+  isAbsolute?: boolean;
 }
 
 export const UserHeader: React.FC<UserHeaderProps> = ({
   postData,
   postType,
   userData,
-  eventTitle,
+  isAbsolute = true,
 }) => {
   const { themeMode } = useTheme();
+  const { i18n } = useTranslation();
 
   const createdAtString =
     postData?.createdAt instanceof Date
@@ -33,10 +36,11 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
   return (
     <div
       className={`${
-        postType === "swap"
-          ? "md:absolute md:top-2 md:left-2 md:bg-black/80 md:text-white md:p-3 md:rounded-xl md:pr-10 "
+        postType === "swap" && isAbsolute
+          ? "md:absolute md:top-2 md:left-2 md:bg-black/80 md:text-white md:p-3 md:rounded-xl md:pr-10"
           : ""
-      } flex items-center gap-2 z-5`}
+      }
+       flex items-center gap-2 z-5`}
     >
       <Avatar
         variant="rounded"
@@ -46,7 +50,9 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
       <div>
         <div className="flex gap-2 items-center">
           <p className="font-bold">
-            {postType === "swap" ? `@${userData?.username}` : `${eventTitle}`}
+            {postType === "swap"
+              ? `@${userData?.username}`
+              : `${postData?.eventTitle}`}
           </p>
 
           <div
@@ -75,7 +81,10 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
               </>
             )}{" "}
             <span className="opacity-50">
-              · {createdAtString ? getRelativeTime(createdAtString) : ""}
+              ·{" "}
+              {createdAtString
+                ? getRelativeTime(createdAtString, i18n.language)
+                : ""}
             </span>
           </p>
         </div>

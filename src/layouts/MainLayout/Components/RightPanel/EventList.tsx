@@ -1,14 +1,16 @@
 import { EventCard } from "./EventCard";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/context/ThemeContext";
+import { EventDetails } from "@/components/Event/EventDetails";
+import { useModal } from "@/context/ModalContext";
 
 const events = [
   {
-    id: 1,
+    id: 2,
     eventName: "Retro Revival Night: Fashion & Music",
     eventDate: "2025-04-27",
-    eventTime: "10:00",
-    eventLocation: "Carrer de miquel parera, 08021 Barcelona",
+    eventTime: "10:00:00",
+    eventLocation: { lat: 39.46765698570767, lng: -0.4039782285690308 },
     eventCategory: "Vintage",
     totalAssistants: 4,
     firstAssistants: [
@@ -31,17 +33,28 @@ const events = [
 export const EventList = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
+  const { openModal } = useModal();
 
   return (
-    <div
-      className={`${
-        themeMode === "light" ? "text-black" : "text-white"
-      } flex flex-col gap-4`}
-    >
-      <h3 className="font-bold text-[1.2em]">{t("mainLayout.next_events")}</h3>
-      {events.map((event) => (
-        <EventCard key={event.id} event={event} />
-      ))}
-    </div>
+    <>
+      <div
+        className={`${
+          themeMode === "light" ? "text-black" : "text-white"
+        } flex flex-col gap-4`}
+      >
+        <h3 className="font-bold text-[1.2em]">
+          {t("mainLayout.next_events")}
+        </h3>
+        {events.map((event) => (
+          <div
+            onClick={() => {
+              openModal(<EventDetails postId={event.id} />);
+            }}
+          >
+            <EventCard key={event.id} event={event} />
+          </div>
+        ))}
+      </div>
+    </>
   );
 };

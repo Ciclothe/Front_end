@@ -28,7 +28,7 @@ export const PostCreationModule = () => {
         onClick={() => setIsOpen((prev) => !prev)}
         className={`${
           themeMode === "light" ? "text-white" : "text-black"
-        } aspect-square bg-[#0DBC73] w-fit p-[0.8em] rounded-full relative z-10 transition-transform duration-200`}
+        } aspect-square bg-[#0DBC73] w-fit p-[0.8em] rounded-xl relative z-10 transition-transform duration-200`}
       >
         <Icon path={mdiPlus} size={1.2} />
       </button>

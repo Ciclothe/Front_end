@@ -5,6 +5,9 @@ import { PostImageCarousel } from "@/components/Common/Post/PostImageCarousel";
 import { PostInfoOverlay } from "@/components/Common/Post/PostInfoOverlay";
 import { PostOffers } from "@/components/Common/Post/PostOffers";
 import { PostActions } from "@/components/Common/Post/PostActions";
+import { EventDetails } from "@/components/Event/EventDetails";
+import { SwapDetails } from "@/components/Swap/SwapDetails";
+import { useModal } from "@/context/ModalContext";
 
 const postsFeedData = [
   {
@@ -142,7 +145,7 @@ const postsFeedData = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     postType: "swap",
     userData: {
       id: 1,
@@ -192,6 +195,15 @@ const postsFeedData = [
 
 export const HomePage = () => {
   const { themeMode } = useTheme();
+  const { openModal } = useModal();
+
+  const handleOpenDetails = (post: { postType: string; postId: number }) => {
+    if (post.postType === "swap") {
+      openModal(<SwapDetails postId={post.postId} />);
+    } else {
+      openModal(<EventDetails postId={post.postId} />);
+    }
+  };
 
   return (
     <div className="md:px-4 lg:px-10">
@@ -203,17 +215,23 @@ export const HomePage = () => {
         } py-5 border-b border-black/5 md:border-none sm:p-5 md:mb-5 md:rounded-2xl cursor-pointer`;
 
         return (
-          <div key={post.id} className={cardClassName}>
-            <div className="relative flex flex-col gap-2 ">
+          <div
+            key={post.id}
+            className={cardClassName}
+            onClick={() =>
+              handleOpenDetails({ postId: post.id, postType: post.postType })
+            }
+          >
+            <div className="relative flex flex-col gap-2">
               {post?.postData && (
                 <UserHeader
                   postData={{
-                    createdAt: post.postData.createdAt,
-                    distance: post.postData.distance,
+                    createdAt: post?.postData?.createdAt,
+                    distance: post?.postData?.distance,
+                    eventTitle: post?.eventTitle,
                   }}
                   userData={post?.userData}
                   postType={post?.postType}
-                  eventTitle={post?.eventTitle}
                 />
               )}
               <PostImageCarousel post={post} />
@@ -235,7 +253,11 @@ export const HomePage = () => {
                     totalOffers={post?.totalOffers}
                   />
                 </div>
-                <PostActions liked={post.liked} offerSent={post.offerSent} />
+                <PostActions
+                  id={post?.id}
+                  liked={post.liked}
+                  offerSent={post.offerSent}
+                />
               </div>
             )}
           </div>

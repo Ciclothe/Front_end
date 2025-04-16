@@ -6,6 +6,7 @@ import { PostInfoOverlay } from "@/components/Common/Post/PostInfoOverlay";
 import { Post } from "@/types";
 interface UserHeaderProps {
   post: Post;
+  widthPercentage?: string;
 }
 const getAspectRatio = (orientation: string) => {
   if (orientation === "vertical") return "aspect-[4/5]";
@@ -13,7 +14,10 @@ const getAspectRatio = (orientation: string) => {
   return "aspect-[1/1]";
 };
 
-export const PostImageCarousel: React.FC<UserHeaderProps> = ({ post }) => {
+export const PostImageCarousel: React.FC<UserHeaderProps> = ({
+  post,
+  widthPercentage,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const touchStartX = useRef(0);
@@ -82,11 +86,18 @@ export const PostImageCarousel: React.FC<UserHeaderProps> = ({ post }) => {
 
     const containerWidth = containerRef.current.offsetWidth;
 
+    let decimal;
+    if (widthPercentage) {
+      decimal = parseFloat(widthPercentage.replace("%", "")) / 100;
+    }
+
     let baseWidthPercentage;
     if (windowWidth <= 768) {
-      baseWidthPercentage = post?.postType === "swap" ? 0.9 : 0.6;
+      baseWidthPercentage =
+        decimal !== undefined ? decimal : post?.postType === "swap" ? 0.9 : 0.6;
     } else {
-      baseWidthPercentage = post?.postType === "swap" ? 0.7 : 0.4;
+      baseWidthPercentage =
+        decimal !== undefined ? decimal : post?.postType === "swap" ? 0.7 : 0.4;
     }
 
     const imageWidth = containerWidth * baseWidthPercentage + 15;
@@ -111,7 +122,9 @@ export const PostImageCarousel: React.FC<UserHeaderProps> = ({ post }) => {
                 key={index}
                 src={image.url}
                 alt={`Post Image ${index + 1}`}
-                className={`w-[90%] md:w-[70%] shrink-0 object-cover rounded-xl ${getAspectRatio(
+                className={`${
+                  widthPercentage ? widthPercentage : "w-[90%] md:w-[70%]"
+                } shrink-0 object-cover rounded-xl ${getAspectRatio(
                   post?.postData?.imagesOrientation ?? ""
                 )}`}
               />
@@ -138,7 +151,10 @@ export const PostImageCarousel: React.FC<UserHeaderProps> = ({ post }) => {
 
       {/* Arrows */}
       <div
-        onClick={prevSlide}
+        onClick={(e) => {
+          e.stopPropagation();
+          prevSlide();
+        }}
         className={`${
           themeMode === "light"
             ? "bg-white/20 hover:bg-[#F7F7F7]"
@@ -148,7 +164,10 @@ export const PostImageCarousel: React.FC<UserHeaderProps> = ({ post }) => {
         <Icon path={mdiChevronLeft} size={1} />
       </div>
       <div
-        onClick={nextSlide}
+        onClick={(e) => {
+          e.stopPropagation();
+          nextSlide();
+        }}
         className={`${
           themeMode === "light"
             ? "bg-white/20 hover:bg-[#F7F7F7]"

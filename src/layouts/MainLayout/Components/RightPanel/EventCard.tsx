@@ -3,6 +3,12 @@ import { mdiUpdate, mdiCircleSmall, mdiMapMarker } from "@mdi/js";
 import { AssistantsAvatars } from "@/components/Common/AssistantsAvatars";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
+import {
+  formatDate,
+  formatTime,
+  getFullAddress,
+} from "@/components/Utils/format";
+import { useState, useEffect } from "react";
 
 interface Assistant {
   id: number;
@@ -15,7 +21,7 @@ interface Event {
   eventCategory: string;
   eventTime: string;
   eventDate: string;
-  eventLocation: string;
+  eventLocation: { lat: number; lng: number };
   firstAssistants: Assistant[];
   totalAssistants: number;
 }
@@ -28,7 +34,20 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const { themeMode } = useTheme();
   const { i18n } = useTranslation();
 
-  const currentLanguage = i18n.language;
+  const [address, setAddress] = useState<string>("");
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      const fullAddress = await getFullAddress(
+        event.eventLocation.lat,
+        event.eventLocation.lng,
+        i18n.language
+      );
+      setAddress(fullAddress);
+    };
+
+    fetchAddress();
+  }, [event.eventLocation.lat, event.eventLocation.lng, i18n.language]);
 
   const peopleText =
     event.totalAssistants === 1 ? "mainLayout.person" : "mainLayout.people";
@@ -59,14 +78,10 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
         </div>
         <div className="flex items-center gap-1">
           <Icon path={mdiUpdate} size={1} />
-          <p>{event.eventTime}</p>
+          <p className="whitespace-nowrap">{formatTime(event.eventTime)}</p>
           <Icon path={mdiCircleSmall} size={1} />
           <p className="truncate w-full">
-            {new Date(event.eventDate).toLocaleDateString(currentLanguage, {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
+            {formatDate(event.eventDate, i18n.language)}
           </p>
         </div>
         <div
@@ -75,7 +90,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
           } w-[80%] opacity-50 rounded-lg p-2 flex items-center gap-2`}
         >
           <Icon path={mdiMapMarker} size={1} />
-          <p className="truncate w-full">{event.eventLocation}</p>
+          <p className="truncate w-full">
+            {address || "Cargando dirección..."}
+          </p>
         </div>
       </div>
     </div>
