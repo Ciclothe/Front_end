@@ -1,4 +1,5 @@
 import { useTheme } from "@/context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 interface PrimaryActionButtonProps {
   label: string;
@@ -16,6 +17,7 @@ const PrimaryActionButton: React.FC<PrimaryActionButtonProps> = ({
   disabled = false,
 }) => {
   const { themeMode } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <div className={` py-2 pt-2`}>
@@ -35,7 +37,7 @@ const PrimaryActionButton: React.FC<PrimaryActionButtonProps> = ({
         onClick={!disabled ? onClick : undefined}
       >
         {icon && <span className="text-lg">{icon}</span>}
-        <p>{label}</p>
+        <p>{t(`mainLayout.${label}`)}</p>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { mdiCheckBold, mdiSwapHorizontalHidden } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Garment = {
   id: number;
@@ -24,7 +25,7 @@ const originalData = {
     {
       id: 1,
       name: "Hoodie Laine",
-      condition: "As new",
+      condition: "as_new",
       color: "black",
       size: "M",
       brand: "Essentials",
@@ -35,7 +36,7 @@ const originalData = {
     {
       id: 2,
       name: "Leather Bomber Jacket Made in Italy🇮🇹",
-      condition: "Used",
+      condition: "used",
       color: "Brown",
       size: "M",
       brand: "Levi's",
@@ -48,7 +49,7 @@ const originalData = {
     {
       id: 1,
       name: "Essentials fear of God",
-      condition: "As new",
+      condition: "new",
       color: "Caqui",
       size: "L",
       brand: "Essentials",
@@ -59,7 +60,7 @@ const originalData = {
     {
       id: 2,
       name: "Essentials 1977 hoodie",
-      condition: "New",
+      condition: "new",
       color: "Grey",
       size: "M",
       brand: "Essentials",
@@ -70,7 +71,7 @@ const originalData = {
     {
       id: 3,
       name: "Chaqueta acolchada GAP",
-      condition: "As new",
+      condition: "as_new",
       color: "black",
       size: "XL",
       brand: "GAP",
@@ -81,7 +82,7 @@ const originalData = {
     {
       id: 4,
       name: "Nike x Corteiz",
-      condition: "Used",
+      condition: "very_used",
       color: "Grey",
       size: "M",
       brand: "Nike",
@@ -92,7 +93,7 @@ const originalData = {
     {
       id: 5,
       name: "Nike x Corteiz",
-      condition: "Used",
+      condition: "used",
       color: "Grey",
       size: "M",
       brand: "Nike",
@@ -107,6 +108,7 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
   const { themeMode } = useTheme();
   const [receiverGarments, setReceiverGarments] = useState<Garment[]>([]);
   const [senderGarments, setSenderGarments] = useState<Garment[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setOferArray({ receiver: [], sender: [] });
@@ -176,8 +178,15 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
         } border rounded-lg p-4 overflow-y-auto md:flex-[1_1_50%] min-h-0`}
       >
         <div className="flex w-full justify-between items-center">
-          <p className="font-bold text-[1.2em]">You will receive</p>
-          <p className="opacity-50 text-sm">{selectedCountReceiver} Garments</p>
+          <p className="font-bold text-[1.2em]">
+            {t("mainLayout.you_will_receive")}
+          </p>
+          <p className="opacity-50 text-sm">
+            {selectedCountReceiver}{" "}
+            {selectedCountReceiver === 1
+              ? t("mainLayout.garment")
+              : t("mainLayout.garment_plural")}
+          </p>
         </div>
         <div className="flex flex-col gap-2 mt-4">
           {receiverGarments.map((garment, index) => (
@@ -203,7 +212,7 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
                 />
                 <div className="flex flex-col justify-center">
                   <p className="font-bold text-[#E5D04B]">
-                    {garment.condition}
+                    {t(`mainLayout.${garment.condition}`)}
                   </p>
                   <div className="mt-2">
                     <p className="font-bold truncate">{garment.name}</p>
@@ -251,10 +260,13 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
       >
         <div className="flex w-full justify-between items-center gap-4">
           <p className="font-bold text-[1.2em] truncate">
-            Select Garments From Your Closet
+            {t("mainLayout.select_garments_from_your_closet")}
           </p>
-          <p className="opacity-50 text-sm whitespace-nowrap">
-            {selectedCountSender} Garments
+          <p className="opacity-50 text-sm">
+            {selectedCountSender}{" "}
+            {selectedCountSender === 1
+              ? t("mainLayout.garment")
+              : t("mainLayout.garment_plural")}
           </p>
         </div>
         <div className="flex flex-col gap-2 mt-4">
@@ -274,7 +286,7 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
                 />
                 <div className="flex flex-col justify-center w-full">
                   <p className="font-bold text-[#E5D04B]">
-                    {garment.condition}
+                    {t(`mainLayout.${garment.condition}`)}
                   </p>
                   <div className="mt-2">
                     <p className="font-bold truncate">{garment.name}</p>

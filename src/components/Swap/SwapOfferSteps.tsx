@@ -5,7 +5,8 @@ import Icon from "@mdi/react";
 import { StepOne } from "./Steps/StepOne";
 import { StepTwo } from "./Steps/StepTwo";
 import PrimaryActionButton from "@/components/Common/PrimaryActionButton";
-import OfferSubmitButton from "./Components/OfferSubmitButton"; // Importa el componente aquí
+import OfferSubmitButton from "./Components/OfferSubmitButton";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   postId: number;
@@ -28,6 +29,7 @@ export const SwapOfferSteps = ({ postId }: Props) => {
   const { themeMode } = useTheme();
   const [currentStep, setCurrentStep] = useState(0);
   const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
+  const { t } = useTranslation();
 
   const [offer, setOffer] = useState<{
     receiver: Garment[];
@@ -40,6 +42,7 @@ export const SwapOfferSteps = ({ postId }: Props) => {
     );
   }, [offer]);
 
+  // TODO: change this to a real API call
   const postData = async () => {
     console.log("Enviando datos de la oferta:", offer);
     try {
@@ -118,7 +121,7 @@ export const SwapOfferSteps = ({ postId }: Props) => {
       {/* BOTÓN DE AVANZAR A PASO 2 */}
       {currentStep === 0 ? (
         <PrimaryActionButton
-          label="Next"
+          label="next"
           onClick={() => setCurrentStep(currentStep + 1)}
           disabled={!isNextButtonEnabled}
         />
@@ -126,22 +129,25 @@ export const SwapOfferSteps = ({ postId }: Props) => {
         <>
           <OfferSubmitButton postData={postData} />
           <div>
-            <p
-              className={`${
-                themeMode === "light" ? "text-gray-500" : "text-gray-200"
-              } text-sm`}
-            >
-              Al enviar esta oferta, aceptas nuestros{" "}
+            <p className="text-sm">
+              <span
+                className={`${
+                  themeMode === "light" ? "text-gray-500" : "text-gray-200"
+                }`}
+              >
+                {t("mainLayout.by_sending_offer")}{" "}
+              </span>
               <a
                 href="/terminos-y-condiciones"
-                className="text-blue-800 underline"
+                className={`underline ${
+                  themeMode === "light" ? "text-blue-800" : "text-blue-400"
+                }`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Términos y Condiciones
+                {t("mainLayout.terms_and_conditions")}
               </a>{" "}
-              y reconoces que este acto tiene validez como firma digital
-              simbólica.
+              {t("mainLayout.digital_signature_notice")}
             </p>
           </div>
         </>

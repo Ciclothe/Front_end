@@ -2,6 +2,7 @@ import { useState } from "react";
 import { mdiBikeFast, mdiHeartBroken, mdiAllInclusive } from "@mdi/js";
 import Icon from "@mdi/react";
 import { useTheme } from "@/context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 type OfferBtnProps = {
   offerSent: boolean;
@@ -11,6 +12,7 @@ type OfferBtnProps = {
 export const OfferBtn = ({ offerSent, onClick }: OfferBtnProps) => {
   const [isHovering, setIsHovering] = useState(false);
   const { themeMode } = useTheme();
+  const { t } = useTranslation();
 
   const handleClick = () => {
     onClick();
@@ -53,9 +55,9 @@ export const OfferBtn = ({ offerSent, onClick }: OfferBtnProps) => {
       <p className="py-2 cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">
         {offerSent
           ? isHovering
-            ? "Cancel Offer"
-            : "Offer Sent"
-          : "Offer Swap"}
+            ? t("mainLayout.cancel_offer")
+            : t("mainLayout.offer_sent")
+          : t("mainLayout.offer_swap")}
       </p>
     </div>
   );

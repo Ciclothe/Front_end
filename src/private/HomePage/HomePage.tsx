@@ -23,7 +23,7 @@ const postsFeedData = [
       id: 1,
       distance: "2 km",
       createdAt: "2025-04-05T13:00:00Z",
-      condition: "Used",
+      condition: "used",
       title: "Chaqueta piel vintage",
       color: "Brown",
       size: "M",
@@ -83,7 +83,7 @@ const postsFeedData = [
         postedBy: "jaimemarzzoo",
         profilePicture:
           "https://i.pinimg.com/736x/74/9a/f8/749af809fe85c36f23297ac9829f83e1.jpg",
-        condition: "Used",
+        condition: "used",
         title: "Boxy fit hoodie",
         color: "Gray",
         size: "M",
@@ -99,7 +99,7 @@ const postsFeedData = [
         postedBy: "chauhan",
         profilePicture:
           "https://i.pinimg.com/736x/58/1e/99/581e999a1c1ab0119de6285577325015.jpg",
-        condition: "Used",
+        condition: "used",
         title: "Leather Jacket",
         color: "Brown",
         size: "L",
@@ -115,7 +115,7 @@ const postsFeedData = [
         postedBy: "dougie94",
         profilePicture:
           "https://i.pinimg.com/736x/f9/3f/c8/f93fc8fc32053c7f0f7454acf309bc6d.jpg",
-        condition: "Used",
+        condition: "used",
         title: "White Ralph Lauren Polo neck sweatshirt",
         color: "White",
         size: "M",
@@ -131,7 +131,7 @@ const postsFeedData = [
         postedBy: "djmo1980",
         profilePicture:
           "https://i.pinimg.com/736x/cb/0e/31/cb0e31261af7c6fd3e3a9076489c46de.jpg",
-        condition: "Used",
+        condition: "used",
         title: "Zapatillas El Ganso",
         color: "Brown",
         size: "44",
@@ -157,7 +157,7 @@ const postsFeedData = [
       id: 2,
       distance: "2 km",
       createdAt: "2025-04-05T13:00:00Z",
-      condition: "New",
+      condition: "new",
       title: "Chaqueta piel vintage",
       color: "Brown",
       size: "M",

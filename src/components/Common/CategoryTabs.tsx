@@ -44,11 +44,11 @@ export const CategoryTabs = () => {
       {CategoryTabs.map((tab) => (
         <div
           key={tab.name}
-          className={`px-5 rounded-full flex items-center gap-2 font-bold hover:bg-[#0dbc732f] hover:border-[#0DBC73] hover:border-2 hover:text-[#0DBC73] ${
+          className={`px-5 rounded-full flex items-center gap-2 font-bold cursor-pointer hover:bg-[rgba(13,188,115,0.1)] hover:text-[#0DBC73] ${
             tab.selected
               ? themeMode === "light"
-                ? "bg-[#0dbc732f] border-[#0DBC73] border-2 text-[#0DBC73]"
-                : "bg-[#0dbc732f] border-[#0DBC73] border-2 text-[#0DBC73]"
+                ? "bg-[rgba(13,188,115,0.1)] text-[#0DBC73]"
+                : "bg-[rgba(13,188,115,0.1)] text-[#0DBC73]"
               : themeMode === "light"
               ? "bg-white border-2 border-white text-black"
               : "bg-[#222423] border-2 border-[#222423] text-white"

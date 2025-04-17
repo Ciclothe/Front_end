@@ -11,6 +11,9 @@ import { OfferBtn } from "@/components/Common/OfferBtn";
 import { SwapOfferSteps } from "./SwapOfferSteps";
 import { LikeBtn } from "@/components/Common/LikeBtn";
 import { useTheme } from "@/context/ThemeContext";
+import { getCityAndCountry } from "@/components/Utils/format";
+import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 
 type SwapDetailsProps = {
   postId: number;
@@ -34,7 +37,7 @@ const swapPostTestData = [
       distance: "2 km",
       location: { lat: 39.4676153, lng: -0.4039672 },
       createdAt: "2025-04-05T13:00:00Z",
-      condition: "Used",
+      condition: "used",
       title: "Leather Bomber Jacket Made in Italy🇮🇹",
       color: "Brown",
       colorCode: "#A48C47",
@@ -80,8 +83,25 @@ const swapPostTestData = [
 export const SwapDetails = ({ postId }: SwapDetailsProps) => {
   const { closeModal, openModal } = useModal();
   const { themeMode } = useTheme();
+  const { i18n, t } = useTranslation();
+  const [location, setLocation] = useState<string>("");
 
   const data = swapPostTestData.find((e) => e.id === postId);
+
+  useEffect(() => {
+    if (data) {
+      const fetchLocation = async () => {
+        const cityAndCountry = await getCityAndCountry(
+          data.postData.location.lat,
+          data.postData.location.lng,
+          i18n.language
+        );
+        setLocation(cityAndCountry);
+      };
+
+      fetchLocation();
+    }
+  }, [data, i18n.language]);
 
   if (!data) {
     return <Navigate to="/404" />;
@@ -143,7 +163,8 @@ export const SwapDetails = ({ postId }: SwapDetailsProps) => {
                   } w-[20%] aspect-[1/1] flex items-center justify-center rounded-lg text-center`}
                 >
                   <p className="text-sm font-bold">
-                    +{data?.postData?.images.length - 2} <br /> more
+                    +{data?.postData?.images.length - 2} <br />{" "}
+                    {t("mainLayout.more")}
                   </p>
                 </div>
               )}
@@ -176,19 +197,19 @@ export const SwapDetails = ({ postId }: SwapDetailsProps) => {
               <p>{data?.postData?.description}</p>
               <div className="flex flex-col gap-2">
                 <div className="flex w-full justify-between">
-                  <p className="opacity-50">Size</p>
+                  <p className="opacity-50">{t("mainLayout.size")}</p>
                   <p className="font-semibold">{data?.postData?.size}</p>
                 </div>
                 <div className="flex w-full justify-between">
-                  <p className="opacity-50">Condition</p>
+                  <p className="opacity-50">{t("mainLayout.condition")}</p>
                   <p className="font-semibold">{data?.postData?.condition}</p>
                 </div>
                 <div className="flex w-full justify-between">
-                  <p className="opacity-50">Brand</p>
+                  <p className="opacity-50">{t("mainLayout.brand")}</p>
                   <p className="font-semibold">{data?.postData?.brand}</p>
                 </div>
                 <div className="flex w-full justify-between">
-                  <p className="opacity-50">Color</p>
+                  <p className="opacity-50">{t("mainLayout.color")}</p>
                   <div className="flex items-center gap-2">
                     <div
                       className="w-2 h-2 rounded-full"
@@ -200,7 +221,7 @@ export const SwapDetails = ({ postId }: SwapDetailsProps) => {
                   </div>
                 </div>
                 <div className="flex w-full justify-between">
-                  <p className="opacity-50">Fabric</p>
+                  <p className="opacity-50">{t("mainLayout.fabric")}</p>
                   <p className="font-semibold">{data?.postData?.fabric}</p>
                 </div>
               </div>
@@ -258,13 +279,13 @@ export const SwapDetails = ({ postId }: SwapDetailsProps) => {
               {/* User Location and Offers */}
               <div className="p-4 flex flex-col gap-2">
                 <div className="flex w-full justify-between">
-                  <p className="opacity-50">Location</p>
-                  <p className="font-semibold">
-                    {data?.postData?.location?.lat}
-                  </p>
+                  <div className="flex w-full justify-between">
+                    <p className="opacity-50">{t("mainLayout.location")}</p>
+                    <p className="font-semibold">{location || "Cargando..."}</p>
+                  </div>
                 </div>
                 <div className="flex w-full justify-between">
-                  <p className="opacity-50">Offers</p>
+                  <p className="opacity-50">{t("mainLayout.offers")}</p>
                   <p className="font-semibold">{data?.totalOffers}</p>
                 </div>
               </div>
