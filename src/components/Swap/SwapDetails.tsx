@@ -291,7 +291,11 @@ export const SwapDetails = ({ postId }: SwapDetailsProps) => {
               </div>
             </div>
             {/** Swap Actions */}
-            <div className="col-span-12 flex items-center gap-2 sticky -bottom-2 md:bottom-auto md:relative px-2 py-4 md:py-0 md:px-0 md:bg-none">
+            <div
+              className={`${
+                themeMode === "light" ? "bg-white" : "bg-[#222423]"
+              } md:bg-transparent col-span-12 flex items-center gap-2 sticky -bottom-2 md:bottom-auto md:relative px-2 py-4 md:py-0 md:px-0 md:bg-none`}
+            >
               {/** Swap Button */}
               <OfferBtn
                 offerSent={data?.offerSent}

@@ -368,7 +368,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
                   : t("mainLayout.submit_request")}
               </div>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="mt-4 md:mt-0 flex gap-2 items-center">
               <p className={`${textColor} font-bold`}>
                 {t(`mainLayout.${status}`)}
               </p>

@@ -4,10 +4,16 @@ import { UserAvatarMenu } from "./UserAvatarMenu";
 import { LocationDisplay } from "./LocationDisplay";
 import { HeaderIcons } from "./HeaderIcons";
 import { AnimatedCategoryTabs } from "./AnimatedCategoryTabs";
+import { Isotipo } from "../../../../../../public/Logos/Isotipo";
+import { useNavigate } from "react-router-dom";
 
 export const HeaderMobile = () => {
   const { themeMode } = useTheme();
+  const navigate = useNavigate();
 
+  const handleClick = () => {
+    navigate("/feed", { replace: true });
+  };
   return (
     <div
       className={`${styles.container} ${
@@ -16,7 +22,15 @@ export const HeaderMobile = () => {
     >
       <div className="col-span-12 grid grid-cols-12 items-center px-2 py-5 md:px-10">
         <UserAvatarMenu />
-        <div className={`col-span-8 ${styles.logoCenter}`}>LOGO</div>
+        <div
+          className={`col-span-8 cursor-pointer ${styles.logoCenter}`}
+          onClick={handleClick}
+        >
+          <Isotipo
+            color={themeMode === "light" ? "black" : "white"}
+            height="2.5em"
+          />
+        </div>
         <LocationDisplay />
         <HeaderIcons />
       </div>

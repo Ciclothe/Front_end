@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { mdiBikeFast, mdiHeartBroken, mdiAllInclusive } from "@mdi/js";
+import { mdiBikeFast, mdiHeartBroken } from "@mdi/js";
 import Icon from "@mdi/react";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { PiSwapFill } from "react-icons/pi";
 
 type OfferBtnProps = {
   offerSent: boolean;
@@ -32,6 +33,16 @@ export const OfferBtn = ({ offerSent, onClick }: OfferBtnProps) => {
     }
   };
 
+  const renderIcon = () => {
+    if (offerSent) {
+      return (
+        <Icon path={isHovering ? mdiHeartBroken : mdiBikeFast} size={0.8} />
+      );
+    } else {
+      return <PiSwapFill size={18} />;
+    }
+  };
+
   return (
     <div
       className={`px-5 w-full rounded-full flex items-center justify-center gap-2 font-bold cursor-pointer ${getClasses()}`}
@@ -42,16 +53,7 @@ export const OfferBtn = ({ offerSent, onClick }: OfferBtnProps) => {
         handleClick();
       }}
     >
-      <Icon
-        path={
-          offerSent
-            ? isHovering
-              ? mdiHeartBroken
-              : mdiBikeFast
-            : mdiAllInclusive
-        }
-        size={0.8}
-      />
+      {renderIcon()}
       <p className="py-2 cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">
         {offerSent
           ? isHovering

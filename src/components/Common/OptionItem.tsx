@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 interface OptionItemProps {
   label: string;
-  icon: string;
+  icon: string | JSX.Element;
   onClick?: () => void;
 }
 
@@ -16,14 +16,21 @@ export const OptionItem: React.FC<OptionItemProps> = ({
   const { themeMode } = useTheme();
   const { t } = useTranslation();
 
+  const renderIcon = () => {
+    if (typeof icon === "string") {
+      return <Icon path={icon} size={1} />;
+    }
+    return icon;
+  };
+
   return (
     <div
       className={`${
         themeMode === "light" ? "hover:bg-[#F7F7F7]" : "hover:bg-[#313131]"
       } flex items-center gap-4 p-4 cursor-pointer transition`}
-      onClick={() => onClick}
+      onClick={onClick}
     >
-      <Icon path={icon} size={1} />
+      {renderIcon()}
       <p className="font-semibold whitespace-nowrap">
         {t(`mainLayout.${label}`)}
       </p>
