@@ -1,10 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 
+/* Tamaño de fuente base */
+html {
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 :root {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-size: 14px;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -30,6 +40,7 @@ body.bodyDayMode {
   color: black;
 }
 
+/* Ocultar scrollbars */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
@@ -38,6 +49,7 @@ body.bodyDayMode {
   scrollbar-width: none;
 }
 
+/* Tipografías para encabezados */
 h1 {
   font-size: 1.4rem;
   font-weight: bold;
@@ -48,6 +60,7 @@ h2 {
   font-size: 1.2rem;
 }
 
+/* Header estilo */
 header {
   padding: 2rem 0rem;
   width: 100%;
@@ -56,6 +69,7 @@ header {
   justify-content: start;
 }
 
+/* Botones */
 button {
   border: 1px solid transparent;
   font-size: 1em;
@@ -64,6 +78,7 @@ button {
   transition: border-color 0.25s;
 }
 
+/* Modo claro/oscuro automático */
 @media (prefers-color-scheme: light) {
   body {
     background-color: #F7F7F7;

@@ -2,6 +2,7 @@ import { SearchBar } from "@/components/Common/SearchBar";
 import { LeftSectionComponent } from "./Components";
 import { RightPanel } from "./Components";
 import { HeaderMobile } from "./Components";
+import { NavBarMobile } from "./Components";
 import { Outlet } from "react-router-dom";
 import { CategoryTabs } from "@/components/Common/CategoryTabs";
 import { useTheme } from "@/context/ThemeContext";
@@ -34,6 +35,7 @@ export const MainLayout = () => {
       <div className="z-10 col-span-3">
         <RightPanel />
       </div>
+      <NavBarMobile />
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { EventDetails } from "@/components/Event/EventDetails";
 import { SwapDetails } from "@/components/Swap/SwapDetails";
 import { useModal } from "@/context/ModalContext";
 
+// TODO: Remove this mock data and fetch it from the API
 const postsFeedData = [
   {
     id: 1,
@@ -211,7 +212,7 @@ export const HomePage = () => {
         const cardClassName = `${
           themeMode === "light"
             ? "md:bg-white md:hover:bg-[#EDEDED] text-black"
-            : "md:bg-[#222423] text-white md:hover:bg-[#323232]"
+            : "md:bg-[#222423] text-white md:hover:bg-[#323332]"
         } py-5 border-b border-black/5 md:border-none sm:p-5 md:mb-5 md:rounded-2xl cursor-pointer`;
 
         return (

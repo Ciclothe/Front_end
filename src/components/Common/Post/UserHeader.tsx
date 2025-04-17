@@ -1,9 +1,10 @@
 import Avatar from "@mui/material/Avatar";
 import Icon from "@mdi/react";
-import { mdiAllInclusive, mdiHandshake } from "@mdi/js";
+import { mdiHandshake } from "@mdi/js";
 import { getRelativeTime } from "@/components/Utils/format";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { PiSwapFill } from "react-icons/pi";
 
 interface UserHeaderProps {
   postType: string;
@@ -33,6 +34,14 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
       ? postData?.createdAt.toISOString()
       : postData?.createdAt;
 
+  const renderIcon = () => {
+    if (postType === "swap") {
+      return <PiSwapFill size={16} />;
+    } else {
+      return <Icon path={mdiHandshake} size={0.7} />;
+    }
+  };
+
   return (
     <div
       className={`${
@@ -57,15 +66,12 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
 
           <div
             className={`${
-              postType === "swap" ? "bg-[#0DBC73] " : "bg-[#8846F2] "
+              postType === "swap" ? "bg-[#0DBC73]" : "bg-[#8846F2]"
             } aspect-square p-1 rounded-full flex items-center justify-center ${
               themeMode === "light" ? "text-white" : "text-black"
             }`}
           >
-            <Icon
-              path={postType === "swap" ? mdiAllInclusive : mdiHandshake}
-              size={0.7}
-            />
+            {renderIcon()}
           </div>
         </div>
         <div className="flex gap-2 font-semibold text-sm">

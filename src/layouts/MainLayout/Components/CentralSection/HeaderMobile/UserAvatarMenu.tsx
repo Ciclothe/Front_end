@@ -35,7 +35,7 @@ export const UserAvatarMenu = () => {
             header={<UserProfile />}
             actions={<ThemeToggle />}
             position="bottom"
-            align="right"
+            align="left"
           />
         )}
       </div>

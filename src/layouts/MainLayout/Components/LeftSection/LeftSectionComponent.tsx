@@ -2,16 +2,53 @@ import { LogoHeader } from "./LogoHeader";
 import { NavigationPanel } from "./NavigationPanel";
 import { PostCreationModule } from "./PostCreation";
 import { useTheme } from "@/context/ThemeContext";
+import {
+  MdHandshake,
+  MdOutlineHandshake,
+  MdOutlineExplore,
+  MdExplore,
+} from "react-icons/md";
+import { GoHomeFill, GoHome } from "react-icons/go";
+import { BiCarousel, BiSolidCarousel } from "react-icons/bi";
+import {
+  IoChatbubbleEllipsesSharp,
+  IoChatbubbleEllipsesOutline,
+} from "react-icons/io5";
 
 export const LeftSectionComponent = () => {
   const { themeMode } = useTheme();
 
   const menuItems = [
-    { label: "feed", route: "/feed" },
-    { label: "swipes", route: "/swipes" },
-    { label: "explore", route: "/explore" },
-    { label: "events", route: "/events" },
-    { label: "chats", route: "/chats" },
+    {
+      label: "feed",
+      route: "/feed",
+      iconFill: GoHomeFill,
+      iconOutline: GoHome,
+    },
+    {
+      label: "swipes",
+      route: "/swipes",
+      iconFill: BiSolidCarousel,
+      iconOutline: BiCarousel,
+    },
+    {
+      label: "explore",
+      route: "/explore",
+      iconFill: MdExplore,
+      iconOutline: MdOutlineExplore,
+    },
+    {
+      label: "events",
+      route: "/events",
+      iconFill: MdHandshake,
+      iconOutline: MdOutlineHandshake,
+    },
+    {
+      label: "chats",
+      route: "/chats",
+      iconFill: IoChatbubbleEllipsesSharp,
+      iconOutline: IoChatbubbleEllipsesOutline,
+    },
   ];
 
   return (

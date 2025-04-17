@@ -24,7 +24,7 @@ export const AppRouter = () => {
           path="/"
           element={
             token ? (
-              <Navigate to="/home" replace />
+              <Navigate to="/feed" replace />
             ) : (
               <Navigate to="/login" replace />
             )
@@ -32,7 +32,7 @@ export const AppRouter = () => {
         />
         <Route
           path="/login"
-          element={token ? <Navigate to="/home" replace /> : <Login />}
+          element={token ? <Navigate to="/feed" replace /> : <Login />}
         />
         <Route element={<PrivateGuard />}>
           <Route path="/*" element={<PrivateRouter />} />
