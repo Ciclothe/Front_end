@@ -33,7 +33,6 @@ const eventTestData = [
   {
     id: 2,
     postType: "event",
-    isJoined: false,
     userData: {
       id: 1,
       profilePicture:
@@ -42,7 +41,9 @@ const eventTestData = [
     },
     postData: {
       id: 1,
+      isJoined: false,
       createdAt: "2025-04-05T13:00:00Z",
+      privacity: "private",
       eventTitle: "Retro Revival Night: Fashion & Music",
       description:
         "Join a unique event where streetwear and sneakers enthusiasts come together to trade second-hand fashion. Bring your best pre-loved pieces, discover new treasures, and connect with a community that values creativity and style. Give your wardrobe a fresh look while making meaningful connections!",
@@ -138,7 +139,7 @@ const eventTestData = [
         postedBy: "jaimemarzzoo",
         profilePicture:
           "https://i.pinimg.com/736x/74/9a/f8/749af809fe85c36f23297ac9829f83e1.jpg",
-        condition: "Used",
+        condition: "used",
         title: "Boxy fit hoodie",
         color: "Gray",
         size: "M",
@@ -154,7 +155,7 @@ const eventTestData = [
         postedBy: "chauhan",
         profilePicture:
           "https://i.pinimg.com/736x/58/1e/99/581e999a1c1ab0119de6285577325015.jpg",
-        condition: "Used",
+        condition: "used",
         title: "Leather Jacket",
         color: "Brown",
         size: "L",
@@ -170,7 +171,7 @@ const eventTestData = [
         postedBy: "dougie94",
         profilePicture:
           "https://i.pinimg.com/736x/f9/3f/c8/f93fc8fc32053c7f0f7454acf309bc6d.jpg",
-        condition: "Used",
+        condition: "used",
         title: "White Ralph Lauren Polo neck sweatshirt",
         color: "White",
         size: "M",
@@ -186,7 +187,7 @@ const eventTestData = [
         postedBy: "djmo1980",
         profilePicture:
           "https://i.pinimg.com/736x/cb/0e/31/cb0e31261af7c6fd3e3a9076489c46de.jpg",
-        condition: "Used",
+        condition: "used",
         title: "Zapatillas El Ganso",
         color: "Brown",
         size: "44",
@@ -205,14 +206,10 @@ const THEME_STYLES = {
   light: {
     bg: "bg-[#F7F7F7]",
     border: "border-[rgba(0,0,0,0.1)]",
-    hoverText: "hover:text-white",
-    hoverBg: "hover:bg-[#65E9FB]",
   },
   dark: {
     bg: "bg-[#2A2B2A]",
     border: "border-[rgba(255,255,255,0.1)]",
-    hoverText: "hover:text-black",
-    hoverBg: "hover:bg-[#65E9FB]",
   },
 };
 
@@ -257,29 +254,29 @@ const getDateStatus = (dateString: string) => {
 
   if (isPast) {
     return {
-      status: "Realizado",
-      bgColor: "bg-[#FF453F]",
+      status: "realized",
+      textColor: "text-[#606062]",
     };
   } else if (sameWeek) {
     return {
-      status: "This week",
-      bgColor: "bg-[#18D5D7]",
+      status: "this_week",
+      textColor: "text-[#bc0d0d]",
     };
   } else if (sameMonth) {
     return {
-      status: "Upcoming",
-      bgColor: "bg-[#FFCF03]",
+      status: "upcoming",
+      textColor: "text-[#F4803B]",
     };
   } else {
     return {
-      status: "Soon",
-      bgColor: "bg-[#CB6BFC]",
+      status: "soon",
+      textColor: "text-[#FFCF03]",
     };
   }
 };
 
 export const EventDetails = ({ postId }: EventDetailsProps) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { themeMode } = useTheme();
   const { closeModal } = useModal();
   const [cityAndCountry, setCityAndCountry] = useState("Cargando...");
@@ -311,7 +308,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
   if (!data) return <Navigate to="/404" />;
 
   const { postData, userData, postType, participants, eventPosts } = data;
-  const { status, bgColor } = getDateStatus(postData.date);
+  const { status, textColor } = getDateStatus(postData.date);
 
   return (
     <div className="md:max-h-[80vh] flex flex-col gap-4">
@@ -339,7 +336,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
         {/* Event Map */}
         <div className="col-span-12">
           <div className="w-full h-[20em]">
-            <MapLocation eventLocation={postData.location} zoom={16} />
+            <MapLocation location={postData.location} zoom={16} />
           </div>
         </div>
 
@@ -352,22 +349,32 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
                 {postData.eventTitle}
               </p>
               <div
-                className={`${styles.hoverText} ${styles.hoverBg} py-2 px-4 rounded-full bg-[rgba(101,233,251,0.1)] text-[#65E9FB] font-bold text-center cursor-pointer`}
+                className={`${
+                  themeMode === "light"
+                    ? "hover:text-white"
+                    : "hover:text-black"
+                } ${
+                  postData.isJoined
+                    ? "bg-[rgba(188,13,13,0.1)] text-[#bc0d0d] hover:bg-[#bc0d0d]"
+                    : postData.privacity === "public"
+                    ? "bg-[rgba(13,188,115,0.1)] text-[#0DBC73] hover:bg-[#0DBC73]"
+                    : "bg-[rgba(136,70,242,0.1)] text-[#8846F2] hover:bg-[#8846F2]"
+                }  py-2 px-4 rounded-full font-bold text-center cursor-pointer`}
               >
-                Join
+                {postData.isJoined
+                  ? t("mainLayout.leave_event")
+                  : postData.privacity === "public"
+                  ? t("mainLayout.join_event")
+                  : t("mainLayout.submit_request")}
               </div>
             </div>
-            <div className="mt-4 flex gap-2 items-center">
-              <div
-                className={`${
-                  themeMode === "light" ? "text-white" : "text-black"
-                } py-2 px-4 rounded-full ${bgColor} font-bold`}
-              >
-                {status}
-              </div>
-              <p className="opacity-50">{`${formatTime(
-                postData.time
-              )} · ${cityAndCountry}`}</p>
+            <div className="flex gap-2 items-center">
+              <p className={`${textColor} font-bold`}>
+                {t(`mainLayout.${status}`)}
+              </p>
+              <p className="opacity-50">
+                | {`${formatTime(postData.time)} · ${cityAndCountry}`}
+              </p>
             </div>
           </div>
 
@@ -378,7 +385,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
             <InfoItem
               themeMode={themeMode}
               icon={mdiStar}
-              label="Category"
+              label={t("mainLayout.category")}
               value={postData.category}
             />
             <div className="flex gap-4 items-center">
@@ -388,7 +395,9 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
                 <Icon path={mdiCalendarBlank} size={1} />
               </div>
               <div>
-                <p className="text-sm opacity-50">Event Date</p>
+                <p className="text-sm opacity-50">
+                  {t("mainLayout.event_date")}
+                </p>
                 <p className="font-bold">
                   {formatDate(postData.date, i18n.language)}
                 </p>
@@ -397,7 +406,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
             <InfoItem
               themeMode={themeMode}
               icon={mdiMapMarker}
-              label="Event Location"
+              label={t("mainLayout.event_location")}
               value={address}
             />
           </div>
@@ -407,7 +416,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
             className={`${styles.bg} col-span-12 md:col-span-6 rounded-lg p-4 flex flex-col gap-4`}
           >
             <div>
-              <p className="font-bold">Event details</p>
+              <p className="font-bold">{t("mainLayout.event_details")}</p>
               <p className="opacity-50">{postData.description}</p>
             </div>
             <div className="flex gap-2">
@@ -415,7 +424,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
                 <InfoItem
                   themeMode={themeMode}
                   icon={mdiAccountGroup}
-                  label="Participant limits"
+                  label={t("mainLayout.participant_limits")}
                   value={postData.eventRules.participantLimit}
                 />
               </div>
@@ -423,7 +432,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
                 <InfoItem
                   themeMode={themeMode}
                   icon={mdiHanger}
-                  label="Garment limit"
+                  label={t("mainLayout.garment_limit")}
                   value={postData.eventRules.garmentLimitPerPerson}
                 />
               </div>
@@ -433,7 +442,10 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
 
         {/* Participants */}
         <div className="col-span-12 flex flex-col gap-4">
-          <SectionHeader title="Participants" count={participants.length} />
+          <SectionHeader
+            title={t("mainLayout.participants")}
+            count={participants.length}
+          />
           <div className="flex gap-2 flex-wrap">
             {participants.map((participant) => (
               <img
@@ -448,7 +460,10 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
 
         {/* Event Closet */}
         <div className="col-span-12 flex flex-col gap-4">
-          <SectionHeader title="Event closet" count={eventPosts.length} />
+          <SectionHeader
+            title={t("mainLayout.event_closet")}
+            count={eventPosts.length}
+          />
           <Masonry columns={{ xs: 1, sm: 2, lg: 3 }} spacing={2} sequential>
             {eventPosts.map((post) => (
               <div key={post.id} className="relative">

@@ -33,7 +33,7 @@ export const SearchBar = () => {
           themeMode === "light" ? "text-black" : "text-white"
         }`}
       />
-      <div className="bg-[#0dbc7327] px-4 top-0 h-full rounded-full flex items-center justify-center border-2 border-[#0DBC73] gap-6 text-[#0DBC73]">
+      <div className="bg-[rgba(13,188,115,0.1)] px-4 top-0 h-full rounded-full flex items-center justify-center border-2 border-[#0DBC73] gap-6 text-[#0DBC73]">
         <div className="flex flex-col items-start">
           <p className="font-bold">Valencia,Spain</p>
           <p className="text-sm">2 Km</p>

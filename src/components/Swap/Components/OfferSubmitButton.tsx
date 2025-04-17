@@ -3,6 +3,7 @@ import { useModal } from "@/context/ModalContext";
 import { useAlert } from "@/context/AlertContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@/context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 type OfferSubmitButtonProps = {
   postData: () => Promise<boolean>;
@@ -18,6 +19,7 @@ const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
   const { themeMode } = useTheme();
+  const { t } = useTranslation();
 
   const duration = 3000;
   const stepsbtn = 100;
@@ -82,13 +84,13 @@ const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
       const success = await postData();
       if (success) {
         closeModal();
-        showAlert("Datos enviados exitosamente", "success");
+        showAlert(t("mainLayout.offer_sent_successfully"), "success");
       } else {
-        showAlert("Hubo un error al enviar los datos", "error");
+        showAlert(t("mainLayout.error_sending_offer"), "error");
       }
     } catch (error) {
       console.error(error);
-      showAlert("Error en la conexión, inténtalo de nuevo", "error");
+      showAlert(t("mainLayout.connection_error"), "error");
     } finally {
       setIsLoading(false);
       setIsPosting(false);
@@ -97,8 +99,8 @@ const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
 
   const displayText = () => {
     if (isLoading) return "";
-    if (countdown !== null) return `Presionar ${countdown}...`;
-    return "Presiona para enviar oferta";
+    if (countdown !== null) return `${t("mainLayout.press")} ${countdown}...`;
+    return `${t("mainLayout.press_to_send_offer")}`;
   };
 
   return (

@@ -3,16 +3,16 @@ import React, { useEffect } from "react";
 import Map, { Marker, useMap } from "react-map-gl/mapbox";
 
 const MapLocation = ({
-  eventLocation,
+  location,
   zoom,
 }: {
-  eventLocation: { lat: number; lng: number };
+  location: { lat: number; lng: number };
   zoom: number;
 }) => {
   const { themeMode } = useTheme();
   const [viewState] = React.useState({
-    longitude: eventLocation.lng,
-    latitude: eventLocation.lat,
+    longitude: location.lng,
+    latitude: location.lat,
     zoom: zoom,
   });
 
@@ -43,8 +43,8 @@ const MapLocation = ({
       >
         <MapEventHandler />
         <Marker
-          longitude={eventLocation.lng}
-          latitude={eventLocation.lat}
+          longitude={location.lng}
+          latitude={location.lat}
           anchor="bottom"
         >
           <div

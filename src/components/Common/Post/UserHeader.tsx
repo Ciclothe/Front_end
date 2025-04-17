@@ -26,7 +26,7 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
   isAbsolute = true,
 }) => {
   const { themeMode } = useTheme();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const createdAtString =
     postData?.createdAt instanceof Date
@@ -71,10 +71,14 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
         <div className="flex gap-2 font-semibold text-sm">
           <p>
             {postType === "swap" ? (
-              <span className="opacity-50">{postData?.distance} away</span>
+              <span className="opacity-50">
+                {postData?.distance} {t("mainLayout.away")}
+              </span>
             ) : (
               <>
-                <span className="opacity-50">Created by </span>
+                <span className="opacity-50">
+                  {t("mainLayout.created_by")}{" "}
+                </span>
                 <span className="font-bold opacity-100">
                   @{userData?.username}
                 </span>

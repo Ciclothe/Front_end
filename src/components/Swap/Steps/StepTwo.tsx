@@ -1,18 +1,35 @@
 import MapLocation from "@/components/Common/MapLocation";
-
+import { useTranslation } from "react-i18next";
 import Icon from "@mdi/react";
 import { mdiAlertCircle, mdiMapMarker, mdiWalk } from "@mdi/js";
 import { useTheme } from "@/context/ThemeContext";
+import { getCityAndCountry } from "@/components/Utils/format";
+import { useEffect, useState } from "react";
 
 //TODO: fetch data from API
 const exchangeData = {
-  exchangePlace: "Valencia, Spain",
-  exchangeType: "In person",
+  exchangePlace: { lat: 39.4699, lng: -0.3763 },
+  exchangeType: "in_person",
 };
 
 export const StepTwo = () => {
-  const eventLocation = { lat: 39.4699, lng: -0.3763 };
   const { themeMode } = useTheme();
+  const { t, i18n } = useTranslation();
+
+  const [locationText, setLocationText] = useState("");
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      const result = await getCityAndCountry(
+        exchangeData?.exchangePlace.lat,
+        exchangeData?.exchangePlace.lng,
+        i18n.language
+      );
+      setLocationText(result);
+    };
+
+    fetchLocation();
+  }, [i18n.language]);
 
   return (
     <div className={`flex flex-col gap-6 h-full`}>
@@ -21,16 +38,13 @@ export const StepTwo = () => {
         <div>
           <Icon path={mdiAlertCircle} size={1} />
         </div>
-        <p>
-          Al continuar, estás aceptando formalmente realizar este intercambio
-          bajo las condiciones establecidas. Te comprometes a enviar la prenda
-          exacta que ofreciste, en el estado descrito, y a recibir la prenda del
-          otro usuario en iguales condiciones.
-        </p>
+        <p>{t("mainLayout.swap_commitment")}</p>
       </div>
+
       <div className="w-full h-[20em] flex-grow bg-[#F7F7F7] rounded-2xl">
-        <MapLocation eventLocation={eventLocation} zoom={11} />
+        <MapLocation location={exchangeData.exchangePlace} zoom={11} />
       </div>
+
       {/* Swap Information */}
       <div className="flex flex-col md:flex-row gap-4">
         <div
@@ -50,10 +64,11 @@ export const StepTwo = () => {
             <Icon path={mdiMapMarker} size={1} />
           </div>
           <div>
-            <p className="font-semibold">Exchange place</p>
-            <p className="opacity-50">{exchangeData?.exchangePlace}</p>
+            <p className="font-semibold">{t("mainLayout.exchange_place")}</p>
+            <p className="opacity-50">{locationText}</p>
           </div>
         </div>
+
         <div
           className={`${
             themeMode === "light"
@@ -71,8 +86,10 @@ export const StepTwo = () => {
             <Icon path={mdiWalk} size={1} />
           </div>
           <div>
-            <p className="font-semibold">Exchange type</p>
-            <p className="opacity-50">{exchangeData?.exchangeType}</p>
+            <p className="font-semibold">{t("mainLayout.exchange_type")}</p>
+            <p className="opacity-50">
+              {t(`mainLayout.${exchangeData?.exchangeType}`)}
+            </p>
           </div>
         </div>
       </div>
