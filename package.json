@@ -34,7 +34,7 @@
     "react-icons": "^5.5.0",
     "react-map-gl": "^8.0.2",
     "react-native-dotenv": "^3.4.11",
-    "react-router-dom": "^7.1.5",
+    "react-router-dom": "^7.5.2",
     "tailwindcss": "^4.0.3",
     "vite-plugin-env-compatible": "^2.0.1"
   },
