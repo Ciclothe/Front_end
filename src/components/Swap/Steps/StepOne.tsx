@@ -1,3 +1,4 @@
+import { useModal } from "@/context/ModalContext";
 import { useTheme } from "@/context/ThemeContext";
 import { mdiCheckBold, mdiSwapHorizontalHidden } from "@mdi/js";
 import { Icon } from "@mdi/react";
@@ -13,10 +14,11 @@ type Garment = {
   brand: string;
   selected: boolean;
   mainImage: string;
+  token: string;
 };
 
 type Props = {
-  postId: number;
+  token: string;
   setOferArray: (garments: { receiver: Garment[]; sender: Garment[] }) => void;
 };
 
@@ -24,6 +26,7 @@ const originalData = {
   offerReceiverCloset: [
     {
       id: 1,
+      token: "cG9zdC0xMjM=",
       name: "Hoodie Laine",
       condition: "as_new",
       color: "black",
@@ -35,19 +38,21 @@ const originalData = {
     },
     {
       id: 2,
-      name: "Leather Bomber Jacket Made in Italy🇮🇹",
-      condition: "used",
-      color: "Brown",
+      token: "c3ViamVctLTAwMDQ=",
+      name: "Hoodie Laine",
+      condition: "as_new",
+      color: "black",
       size: "M",
-      brand: "Levi's",
-      selected: false,
+      brand: "Essentials",
+      selected: true,
       mainImage:
-        "https://images1.vinted.net/t/04_01373_LdPC5VvcV6xdk9AVWpHim9vR/f800/1742928811.jpeg?s=58f3763f00ade9932b262aaf9d458ac4ae331119",
+        "https://images1.vinted.net/t/01_024d8_rJxsGHRmhRbPNiAeo1u5P9uV/f800/1737119064.jpeg?s=ef165b5a936035c351468701c2258462f645e076",
     },
   ],
   offerSenderCloset: [
     {
       id: 1,
+      token: "cG9zdC0xMjM=",
       name: "Essentials fear of God",
       condition: "new",
       color: "Caqui",
@@ -59,6 +64,7 @@ const originalData = {
     },
     {
       id: 2,
+      token: "c3ViamV0LTAwMDQ=",
       name: "Essentials 1977 hoodie",
       condition: "new",
       color: "Grey",
@@ -70,6 +76,7 @@ const originalData = {
     },
     {
       id: 3,
+      token: "c3ViamV0LTAwMDQ=",
       name: "Chaqueta acolchada GAP",
       condition: "as_new",
       color: "black",
@@ -81,6 +88,7 @@ const originalData = {
     },
     {
       id: 4,
+      token: "c3ViamV0LTAwMDQ=",
       name: "Nike x Corteiz",
       condition: "very_used",
       color: "Grey",
@@ -92,6 +100,7 @@ const originalData = {
     },
     {
       id: 5,
+      token: "c3ViamV0LTAwMDQ=",
       name: "Nike x Corteiz",
       condition: "used",
       color: "Grey",
@@ -104,21 +113,24 @@ const originalData = {
   ],
 };
 
-export const StepOne = ({ postId, setOferArray }: Props) => {
+export const StepOne = ({ token, setOferArray }: Props) => {
   const { themeMode } = useTheme();
   const [receiverGarments, setReceiverGarments] = useState<Garment[]>([]);
   const [senderGarments, setSenderGarments] = useState<Garment[]>([]);
   const { t } = useTranslation();
+  const { openModal } = useModal();
 
   useEffect(() => {
     setOferArray({ receiver: [], sender: [] });
   }, [setOferArray]);
 
   useEffect(() => {
-    const { receiver, sender } = getInitialData(postId);
+    console.log("Token:", token);
+    if (!token) return;
+    const { receiver, sender } = getInitialData(token);
     setReceiverGarments(receiver);
     setSenderGarments(sender);
-  }, [postId]);
+  }, [token]);
 
   useEffect(() => {
     const selectedReceiver = receiverGarments.filter((g) => g.selected);
@@ -129,18 +141,22 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
     });
   }, [receiverGarments, senderGarments, setOferArray]);
 
-  const getInitialData = (postId: number) => {
-    const receiver = originalData.offerReceiverCloset.map((item) => ({
-      ...item,
-      selected: item.id === postId,
-    }));
+  const getInitialData = (token: string) => {
+    const receiver = originalData.offerReceiverCloset.map((item) => {
+      return {
+        ...item,
+        selected: item.token === token,
+      };
+    });
 
     const sender = originalData.offerSenderCloset.map((item) => ({
       ...item,
       selected: false,
     }));
 
-    receiver.sort((a, b) => (a.id === postId ? -1 : b.id === postId ? 1 : 0));
+    receiver.sort((a, b) =>
+      a.token === token ? -1 : b.token === token ? 1 : 0
+    );
 
     return { receiver, sender };
   };
@@ -153,7 +169,7 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
       const updated = [...receiverGarments];
       const garment = updated[index];
 
-      if (garment.id === postId) return;
+      if (garment.token === token) return;
 
       garment.selected = !garment.selected;
       setReceiverGarments(updated);
@@ -170,15 +186,17 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
   const selectedCountSender = senderGarments.filter((g) => g.selected).length;
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-y-auto">
       {/* Receive */}
       <div
         className={`${
-          themeMode === "light" ? "border-black/10" : "border-white/10"
-        } border rounded-lg p-4 overflow-y-auto md:flex-[1_1_50%] min-h-0`}
+          themeMode === "light"
+            ? "bg-[#F7F7F7] border-black/5"
+            : "bg-[#222423] border-white/5"
+        } rounded-2xl p-4 border overflow-y-auto max-h-[50%]`}
       >
         <div className="flex w-full justify-between items-center">
-          <p className="font-bold text-[1.2em]">
+          <p className="font-semibold text-[1.1em]">
             {t("mainLayout.you_will_receive")}
           </p>
           <p className="opacity-50 text-sm">
@@ -193,16 +211,16 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
             <div
               key={garment.id}
               className={`${
-                themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#2A2B2A]"
-              } flex justify-between w-full items-center p-4 rounded-lg gap-4 truncate ${
-                garment.id === postId
-                  ? "cursor-default opacity-80"
-                  : "cursor-pointer"
-              }`}
-              onClick={() =>
-                garment.id !== postId &&
-                toggleGarmentSelection("receiver", index)
-              }
+                garment.selected
+                  ? "bg-[rgba(13,188,115,0.1)] text-[#0DBC73] border-[#0DBC73]"
+                  : themeMode === "light"
+                  ? "bg-white border-transparent"
+                  : "bg-[#121212] border-transparent"
+              } flex justify-between border-2 w-full items-center p-4 rounded-lg gap-4 truncate cursor-pointer`}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleGarmentSelection("receiver", index);
+              }}
             >
               <div className="flex gap-4 h-full max-w-full truncate">
                 <img
@@ -222,7 +240,16 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
                   </div>
                 </div>
               </div>
-              <div className="flex">
+              <div className="flex items-center">
+                <p
+                  className="p-4 font-semibold text-[#0DBC73] cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModal(garment.token, "details");
+                  }}
+                >
+                  {t("mainLayout.details")}
+                </p>
                 <div
                   className={`${
                     garment.selected
@@ -230,7 +257,7 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
                         ? "bg-[#0DBC73] text-white"
                         : "bg-[#0DBC73] text-black"
                       : themeMode === "light"
-                      ? "bg-white"
+                      ? "bg-[#F7F7F7]"
                       : "bg-[#222423]"
                   } h-5 w-5 rounded-md flex items-center justify-center flex-shrink-0`}
                 >
@@ -245,7 +272,7 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
       <div className="w-full justify-center flex items-center -mt-2 -mb-2 z-20">
         <div
           className={`${
-            themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#2A2B2A]"
+            themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
           } p-2 aspect-square flex items-center justify-center rounded-full`}
           style={{ boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}
         >
@@ -255,14 +282,16 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
       {/* Send */}
       <div
         className={`${
-          themeMode === "light" ? "border-black/10" : "border-white/10"
-        } border rounded-lg p-4 overflow-y-auto md:flex-[1_1_50%] min-h-0`}
+          themeMode === "light"
+            ? "bg-[#F7F7F7] border-black/5"
+            : "bg-[#222423] border-white/5"
+        } border rounded-2xl p-4 overflow-y-auto h-full`}
       >
         <div className="flex w-full justify-between items-center gap-4">
-          <p className="font-bold text-[1.2em] truncate">
+          <p className="font-semibold text-[1.1em] truncate">
             {t("mainLayout.select_garments_from_your_closet")}
           </p>
-          <p className="opacity-50 text-sm">
+          <p className="opacity-50 text-sm whitespace-nowrap">
             {selectedCountSender}{" "}
             {selectedCountSender === 1
               ? t("mainLayout.garment")
@@ -274,9 +303,16 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
             <div
               key={garment.id}
               className={`${
-                themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#2A2B2A]"
-              } flex justify-between w-full items-center p-4 rounded-lg gap-4 cursor-pointer`}
-              onClick={() => toggleGarmentSelection("sender", index)}
+                garment.selected
+                  ? "bg-[rgba(13,188,115,0.1)] text-[#0DBC73] border-[#0DBC73]"
+                  : themeMode === "light"
+                  ? "bg-white border-transparent"
+                  : "bg-[#121212] border-transparent"
+              } flex justify-between border-2 w-full items-center p-4 rounded-lg gap-4 truncate cursor-pointer`}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleGarmentSelection("sender", index);
+              }}
             >
               <div className="flex gap-4 h-full truncate">
                 <img
@@ -296,7 +332,16 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
                   </div>
                 </div>
               </div>
-              <div className="flex">
+              <div className="flex items-center">
+                <p
+                  className="p-4 font-semibold text-[#0DBC73] cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModal(garment.token, "details");
+                  }}
+                >
+                  {t("mainLayout.details")}
+                </p>
                 <div
                   className={`${
                     garment.selected
@@ -304,7 +349,7 @@ export const StepOne = ({ postId, setOferArray }: Props) => {
                         ? "bg-[#0DBC73] text-white"
                         : "bg-[#0DBC73] text-black"
                       : themeMode === "light"
-                      ? "bg-white"
+                      ? "bg-[#F7F7F7]"
                       : "bg-[#222423]"
                   } h-5 aspect-square rounded-md flex items-center justify-center flex-shrink-0`}
                 >

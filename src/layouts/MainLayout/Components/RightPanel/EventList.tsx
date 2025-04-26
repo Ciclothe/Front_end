@@ -1,13 +1,13 @@
 import { EventCard } from "./EventCard";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/context/ThemeContext";
-import { EventDetails } from "@/components/Event/EventDetails";
 import { useModal } from "@/context/ModalContext";
 
 const events = [
   {
     id: 2,
     eventName: "Retro Revival Night: Fashion & Music",
+    token: "c3dhcC0yMzQ=",
     eventDate: "2025-04-27",
     eventTime: "10:00:00",
     eventLocation: { lat: 39.46765698570767, lng: -0.4039782285690308 },
@@ -47,8 +47,9 @@ export const EventList = () => {
         </h3>
         {events.map((event) => (
           <div
+            key={event.id}
             onClick={() => {
-              openModal(<EventDetails postId={event.id} />);
+              openModal(event.token, "event");
             }}
           >
             <EventCard key={event.id} event={event} />

@@ -1,19 +1,21 @@
 import { useTheme } from "@/context/ThemeContext";
-
+import { useCategoryTabs } from "@/context/CategoryTabsContext";
 import { UserHeader } from "@/components/Common/Post/UserHeader";
 import { PostImageCarousel } from "@/components/Common/Post/PostImageCarousel";
 import { PostInfoOverlay } from "@/components/Common/Post/PostInfoOverlay";
 import { PostOffers } from "@/components/Common/Post/PostOffers";
 import { PostActions } from "@/components/Common/Post/PostActions";
-import { EventDetails } from "@/components/Event/EventDetails";
-import { SwapDetails } from "@/components/Swap/SwapDetails";
 import { useModal } from "@/context/ModalContext";
+import { useEffect } from "react";
+import { mdiCards, mdiHandshake } from "@mdi/js";
+import { PiSwapFill } from "react-icons/pi";
 
 // TODO: Remove this mock data and fetch it from the API
 const postsFeedData = [
   {
     id: 1,
     postType: "swap",
+    token: "cG9zdC0xMjM=",
     userData: {
       id: 1,
       profilePicture:
@@ -66,6 +68,7 @@ const postsFeedData = [
   {
     id: 2,
     postType: "event",
+    token: "c3dhcC0yMzQ=",
     eventTitle: "Retro Revival Night: Fashion & Music",
     userData: {
       id: 1,
@@ -148,6 +151,7 @@ const postsFeedData = [
   {
     id: 3,
     postType: "swap",
+    token: "ZXZlbnQtNDU2",
     userData: {
       id: 1,
       profilePicture:
@@ -194,21 +198,88 @@ const postsFeedData = [
   },
 ];
 
+type TabType =
+  | {
+      icon: string;
+      name: string;
+      type: string;
+      href: string;
+      selected: boolean;
+      isComponent?: false;
+    }
+  | {
+      icon: JSX.Element;
+      name: string;
+      type: string;
+      href: string;
+      selected: boolean;
+      isComponent: true;
+    };
+
+const categoryTabs: TabType[] = [
+  {
+    icon: mdiCards,
+    name: "all",
+    type: "all",
+    href: "/",
+    selected: true,
+  },
+  {
+    icon: <PiSwapFill size={18} />,
+    name: "swaps",
+    type: "swap",
+    href: "/swaps",
+    selected: false,
+    isComponent: true,
+  },
+  {
+    icon: mdiHandshake,
+    name: "events",
+    type: "event",
+    href: "/events",
+    selected: false,
+  },
+  // {
+  //   icon: mdiAccountSupervisor,
+  //   name: "communities",
+  //   href: "/communities",
+  //   selected: false,
+  // },
+];
+
 export const HomePage = () => {
   const { themeMode } = useTheme();
   const { openModal } = useModal();
+  const { setShowTabs, setTabs } = useCategoryTabs();
+  const { tabs } = useCategoryTabs();
+  const selectedTab = tabs.find((tab) => tab.selected);
+  const selectedType = selectedTab?.type;
 
-  const handleOpenDetails = (post: { postType: string; postId: number }) => {
+  const filteredPosts =
+    selectedType === "all"
+      ? postsFeedData
+      : postsFeedData.filter((post) => post.postType === selectedType);
+
+  useEffect(() => {
+    setShowTabs(true);
+    setTabs(categoryTabs);
+  }, [setShowTabs, setTabs]);
+
+  const handleOpenDetails = (post: {
+    postType: string;
+    postId: number;
+    token: string;
+  }) => {
     if (post.postType === "swap") {
-      openModal(<SwapDetails postId={post.postId} />);
+      openModal(post.token, post.postType, "details");
     } else {
-      openModal(<EventDetails postId={post.postId} />);
+      openModal(post.token, post.postType, "details");
     }
   };
 
   return (
     <div className="md:px-4 lg:px-10">
-      {postsFeedData.map((post) => {
+      {filteredPosts.map((post) => {
         const cardClassName = `${
           themeMode === "light"
             ? "md:bg-white md:hover:bg-[#EDEDED] text-black"
@@ -220,7 +291,11 @@ export const HomePage = () => {
             key={post.id}
             className={cardClassName}
             onClick={() =>
-              handleOpenDetails({ postId: post.id, postType: post.postType })
+              handleOpenDetails({
+                postId: post.id,
+                postType: post.postType,
+                token: post.token,
+              })
             }
           >
             <div className="relative flex flex-col gap-2">
@@ -255,8 +330,9 @@ export const HomePage = () => {
                   />
                 </div>
                 <PostActions
-                  id={post?.id}
                   liked={post.liked}
+                  postType={post.postType}
+                  token={post.token}
                   offerSent={post.offerSent}
                 />
               </div>

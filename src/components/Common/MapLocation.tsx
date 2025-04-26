@@ -29,7 +29,7 @@ const MapLocation = ({
   };
 
   return (
-    <div className="w-full h-full rounded-2xl overflow-hidden">
+    <div className="flex flex-col gap-6 h-full overflow-hidden">
       <Map
         {...viewState}
         style={{ width: "100%", height: "100%" }}

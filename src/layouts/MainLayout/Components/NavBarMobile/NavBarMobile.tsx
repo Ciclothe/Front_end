@@ -15,12 +15,14 @@ import {
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
+import { useCategoryTabs } from "@/context/CategoryTabsContext";
 
 export const NavBarMobile: React.FC = () => {
   const { themeMode } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const { setShowTabs, setTabs } = useCategoryTabs();
 
   const menuItems = [
     {
@@ -59,7 +61,7 @@ export const NavBarMobile: React.FC = () => {
     <nav
       className={`${
         themeMode === "light" ? "bg-white" : "bg-[#1d1d1d]"
-      } fixed bottom-0 left-0 w-full rounded-t-2xl px-2 py-3 flex justify-between items-center z-10 md:hidden`}
+      } col-span-12 sticky bottom-0 left-0 w-full rounded-t-2xl px-2 py-3 flex justify-between items-center z-10 md:hidden`}
       style={{ boxShadow: "0px -10px 10px rgba(0,0,0,0.05)" }}
     >
       {menuItems.map((item) => {
@@ -69,7 +71,11 @@ export const NavBarMobile: React.FC = () => {
         return (
           <button
             key={item.label}
-            onClick={() => navigate(item.route)}
+            onClick={() => {
+              setShowTabs(false);
+              setTabs([]);
+              navigate(item.route);
+            }}
             className={`flex items-center justify-center gap-2 py-2 px-3 rounded-full transition-all duration-300 ${
               isActive ? "flex-[1.5]" : "flex-1"
             } ${

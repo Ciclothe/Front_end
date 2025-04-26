@@ -1,5 +1,4 @@
 import { AssistantsAvatars } from "@/components/Common/AssistantsAvatars";
-import { useTranslation } from "react-i18next";
 
 interface Offer {
   id: number;
@@ -16,8 +15,6 @@ export const PostOffers = ({
   offers?: Offer[];
   totalOffers?: number;
 }) => {
-  const { t } = useTranslation();
-
   const peopleText =
     offers?.length === 1 ? "mainLayout.person" : "mainLayout.people";
   const willGoText =
@@ -34,8 +31,8 @@ export const PostOffers = ({
         })) ?? []
       }
       total={totalOffers ?? 0}
-      peopleLabel={t(peopleText)}
-      actionText={t(willGoText)}
+      peopleLabel={peopleText}
+      actionText={willGoText}
     />
   );
 };

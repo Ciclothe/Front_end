@@ -49,33 +49,33 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
           ? "md:absolute md:top-2 md:left-2 md:bg-black/80 md:text-white md:p-3 md:rounded-xl md:pr-10"
           : ""
       }
-       flex items-center gap-2 z-5`}
+       flex items-center gap-2 z-5 max-w-full`}
     >
       <Avatar
         variant="rounded"
         src={userData?.profilePicture}
         className="h-full aspect-square"
       />
-      <div>
-        <div className="flex gap-2 items-center">
-          <p className="font-bold">
+      <div className="w-full truncate">
+        <div className="flex items-center gap-2 max-w-full">
+          <p className="font-bold truncate">
             {postType === "swap"
               ? `@${userData?.username}`
               : `${postData?.eventTitle}`}
           </p>
-
           <div
-            className={`${
+            className={`flex-shrink-0 ${
               postType === "swap" ? "bg-[#0DBC73]" : "bg-[#8846F2]"
-            } aspect-square p-1 rounded-full flex items-center justify-center ${
+            } p-1 rounded-full flex items-center justify-center ${
               themeMode === "light" ? "text-white" : "text-black"
             }`}
           >
             {renderIcon()}
           </div>
         </div>
+
         <div className="flex gap-2 font-semibold text-sm">
-          <p>
+          <p className="truncate">
             {postType === "swap" ? (
               <span className="opacity-50">
                 {postData?.distance} {t("mainLayout.away")}
@@ -90,7 +90,7 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
                 </span>
               </>
             )}{" "}
-            <span className="opacity-50">
+            <span className="opacity-50 truncate">
               ·{" "}
               {createdAtString
                 ? getRelativeTime(createdAtString, i18n.language)

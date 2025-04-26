@@ -1,27 +1,38 @@
 import { useState, useRef, useEffect } from "react";
-import { useModal } from "@/context/ModalContext";
-import { useAlert } from "@/context/AlertContext";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
+import CircularProgress from "@mui/material/CircularProgress";
 
-type OfferSubmitButtonProps = {
-  postData: () => Promise<boolean>;
+type PressAndHoldButtonProps = {
+  buttonText: string;
+  duration: number;
+  onCompleteHold: () => void;
+  bgLightMode?: string;
+  bgDarkMode?: string;
+  bgGeneralColor?: string;
+  textColor?: string;
+  textColorOnHold?: string;
+  progressBgColor?: string;
 };
 
-const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
+const PressAndHoldButton = ({
+  buttonText,
+  duration,
+  onCompleteHold,
+  bgLightMode = "#F5F5F5",
+  bgGeneralColor = "",
+  bgDarkMode = "#323332",
+  textColorOnHold = "#0DBC73",
+  textColor = "black",
+  progressBgColor = "rgba(13, 188, 115, 0.1)",
+}: PressAndHoldButtonProps) => {
   const [progress, setProgress] = useState(0);
-  const [isPosting, setIsPosting] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isHolding = useRef(false);
-  const { closeModal } = useModal();
-  const { showAlert } = useAlert();
-  const [isLoading, setIsLoading] = useState(false);
-  const [countdown, setCountdown] = useState<number | null>(null);
   const { themeMode } = useTheme();
   const { t } = useTranslation();
-
-  const duration = 3000;
   const stepsbtn = 100;
 
   useEffect(() => {
@@ -33,14 +44,14 @@ const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
   }, []);
 
   const startHold = () => {
-    if (isPosting) return;
+    if (isHolding.current || isLoading) return;
 
     isHolding.current = true;
     let current = 0;
     const intervalTime = duration / stepsbtn;
 
     const start = Date.now();
-    let lastSecond = 3;
+    let lastSecond = Math.ceil(duration / 1000);
     setCountdown(lastSecond);
 
     intervalRef.current = setInterval(() => {
@@ -60,7 +71,8 @@ const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
         isHolding.current = false;
         setProgress(0);
         setCountdown(null);
-        handlePost();
+        setIsLoading(true);
+        onCompleteHold();
       }
     }, intervalTime);
   };
@@ -75,32 +87,10 @@ const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
     setCountdown(null);
   };
 
-  const handlePost = async () => {
-    setIsLoading(true);
-    if (isPosting) return;
-    setIsPosting(true);
-
-    try {
-      const success = await postData();
-      if (success) {
-        closeModal();
-        showAlert(t("mainLayout.offer_sent_successfully"), "success");
-      } else {
-        showAlert(t("mainLayout.error_sending_offer"), "error");
-      }
-    } catch (error) {
-      console.error(error);
-      showAlert(t("mainLayout.connection_error"), "error");
-    } finally {
-      setIsLoading(false);
-      setIsPosting(false);
-    }
-  };
-
   const displayText = () => {
     if (isLoading) return "";
     if (countdown !== null) return `${t("mainLayout.press")} ${countdown}...`;
-    return `${t("mainLayout.press_to_send_offer")}`;
+    return t(`mainLayout.${buttonText}`);
   };
 
   return (
@@ -110,34 +100,36 @@ const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
       onMouseLeave={cancelHold}
       onTouchStart={startHold}
       onTouchEnd={cancelHold}
-      className="relative font-semibold rounded-full flex justify-center overflow-hidden cursor-pointer text-transparent select-none py-2"
+      className="w-full relative font-semibold rounded-full flex justify-center overflow-hidden cursor-pointer text-transparent select-none py-2"
       style={{
-        backgroundColor:
-          progress === 100
-            ? "rgba(13, 188, 115, 0.1)"
-            : themeMode === "light"
-            ? "#F5F5F5"
-            : "#323332",
+        backgroundColor: bgGeneralColor.length
+          ? `${bgGeneralColor}`
+          : themeMode === `light`
+          ? `${bgLightMode}`
+          : `${bgDarkMode}`,
       }}
     >
       {isLoading ? (
-        <CircularProgress size={25} sx={{ color: "#0DBC73" }} />
+        <CircularProgress size={20} sx={{ color: textColor }} />
       ) : (
         <>
           <span>
             {displayText()}
             <div
-              className="absolute top-0 w-full flex justify-center left-0 h-full bg-[#0DBC73]/10 overflow-hidden whitespace-nowrap transition-all ease-linear"
-              style={{ width: `${progress}%` }}
+              className={`absolute top-0 w-full flex justify-center left-0 h-full overflow-hidden whitespace-nowrap transition-all ease-linear`}
+              style={{
+                width: `${progress}%`,
+                backgroundColor: progressBgColor,
+              }}
             ></div>
           </span>
 
           <span
             className="absolute w-full text-center bg-gradient-to-r bg-clip-text text-transparent transition-all"
             style={{
-              backgroundImage: `linear-gradient(to right, #0DBC73 ${
+              backgroundImage: `linear-gradient(to right, ${textColorOnHold} ${
                 progress - 6
-              }%, ${themeMode === "light" ? "black" : "white"} 0%)`,
+              }%, ${textColor} 0%)`,
             }}
           >
             {displayText()}
@@ -148,4 +140,4 @@ const OfferSubmitButton = ({ postData }: OfferSubmitButtonProps) => {
   );
 };
 
-export default OfferSubmitButton;
+export default PressAndHoldButton;

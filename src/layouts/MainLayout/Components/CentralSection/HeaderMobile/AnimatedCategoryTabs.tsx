@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CategoryTabs } from "@/components/Common/CategoryTabs";
 import { useTheme } from "@/context/ThemeContext";
@@ -6,20 +6,21 @@ import { useTheme } from "@/context/ThemeContext";
 export const AnimatedCategoryTabs = () => {
   const { themeMode } = useTheme();
   const [showFloatingTabs, setShowFloatingTabs] = useState(false);
-  const [atTop, setAtTop] = useState(true);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const scrollingUp = currentScrollY < lastScrollY;
 
-      if (currentScrollY === 0) {
-        setAtTop(true);
-        setShowFloatingTabs(false);
-      } else {
-        setAtTop(false);
-        setShowFloatingTabs(currentScrollY < lastScrollY);
+      if (tabsRef.current) {
+        const rect = tabsRef.current.getBoundingClientRect();
+        const isOutOfView = rect.bottom <= 0;
+
+        // Mostrar el floating tab solo si está fuera de la vista y estás scrolleando hacia arriba
+        setShowFloatingTabs(scrollingUp && isOutOfView);
       }
 
       lastScrollY = currentScrollY;
@@ -31,8 +32,13 @@ export const AnimatedCategoryTabs = () => {
 
   return (
     <div className="left-0 col-span-12 md:hidden relative w-full">
+      {/* Referencia para detectar visibilidad */}
+      <div ref={tabsRef}>
+        <CategoryTabs />
+      </div>
+
       <AnimatePresence>
-        {!atTop && showFloatingTabs && (
+        {showFloatingTabs && (
           <motion.div
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -46,8 +52,6 @@ export const AnimatedCategoryTabs = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {atTop && <CategoryTabs />}
     </div>
   );
 };
