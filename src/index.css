@@ -3,7 +3,7 @@
 
 /* Tamaño de fuente base */
 html {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 @media (min-width: 768px) {
@@ -28,6 +28,9 @@ body {
   display: flex;
   place-items: center;
   max-width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255, 255, 255) transparent;
+
 }
 
 body.bodyNightMode {
@@ -40,7 +43,6 @@ body.bodyDayMode {
   color: black;
 }
 
-/* Ocultar scrollbars */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
@@ -91,3 +93,17 @@ button {
     color: white;
   }
 }
+
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,1);
+  border-radius: 9999px;
+}
+

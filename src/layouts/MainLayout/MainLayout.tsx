@@ -6,35 +6,50 @@ import { NavBarMobile } from "./Components";
 import { Outlet } from "react-router-dom";
 import { CategoryTabs } from "@/components/Common/CategoryTabs";
 import { useTheme } from "@/context/ThemeContext";
+import { useCategoryTabs } from "@/context/CategoryTabsContext";
+import "./MainLayout.css";
 
 export const MainLayout = () => {
   const { themeMode } = useTheme();
+  const { showTabs } = useCategoryTabs();
 
   return (
-    <div className="grid grid-cols-12 text-black">
+    <div className="min-h-screen md:h-screen w-full flex flex-col md:overflow-hidden">
+      {/* Header Mobile */}
       <HeaderMobile />
-      {/** LEFT SECTION */}
-      <LeftSectionComponent />
-      {/** CENTRAL SECTION */}
-      <main className="col-span-12 md:col-span-8 xl:col-span-6 px-2 md:pl-5 md:pr-10 lg:pl-5 lg:pr-10 xl:pl-10 xl:pr-10">
-        <div
-          className={`${
-            themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
-          } hidden md:flex flex-col gap-4 py-5 xl:pt-10 sticky top-20 xl:top-0 z-10 w-full`}
-        >
-          <SearchBar />
-          <CategoryTabs />
+
+      {/* Principal Content */}
+      <div className="flex flex-grow overflow-hidden w-full">
+        {/* Lateral Navbar Desktop */}
+        <div className="md:w-[30%] lg:w-[25%] xl:w-[25%] h-full hidden md:block">
+          <LeftSectionComponent />
         </div>
 
-        {/** MAIN CONTENT AREA */}
-        <div>
-          <Outlet />
+        {/* Central Content */}
+        <div className="flex-grow flex flex-col w-[100%] md:w-[70%] lg:w-[75%] xl:w-[50%] px-2 md:px-10">
+          {/* Search & Category Tabs */}
+          <div
+            className={`${
+              themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
+            } hidden md:flex flex-col gap-4 py-5 xl:pt-10 z-10 w-full`}
+          >
+            <SearchBar />
+            {showTabs && <CategoryTabs />}
+          </div>
+
+          {/* Scroll Content */}
+          <div className="w-full flex-grow overflow-y-auto">
+            <Outlet />
+          </div>
         </div>
-      </main>
-      {/** RIGHT SECTION */}
-      <div className="z-10 col-span-3">
-        <RightPanel />
+
+        {/* Account Section */}
+        <div className="w-[25%] h-full hidden xl:block">
+          <RightPanel />
+        </div>
       </div>
+
+      {/* Navbar Mobile */}
       <NavBarMobile />
     </div>
   );

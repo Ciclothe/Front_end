@@ -1,3 +1,3 @@
 export * from "./PrivateRouter";
 export * from "./UploadGarment/UploadGarment";
-export * from "./HomePage/HomePage";
+export * from "./Pages/HomePage/HomePage";

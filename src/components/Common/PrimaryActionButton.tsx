@@ -20,7 +20,7 @@ const PrimaryActionButton: React.FC<PrimaryActionButtonProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className={` py-2 pt-2`}>
+    <div>
       <div
         className={`px-5 py-2 w-full rounded-full flex items-center justify-center font-bold
            bg-[#0DBC73] transition-all duration-300

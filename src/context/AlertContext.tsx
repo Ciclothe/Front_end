@@ -18,10 +18,10 @@ const styles = {
     text: "text-green-700 dark:text-green-100",
     icon: <CheckCircleIcon className="text-green-700 dark:text-green-100" />,
   },
-  info: {
-    bg: "bg-blue-100 dark:bg-blue-800",
-    text: "text-blue-700 dark:text-blue-100",
-    icon: <WarningIcon className="text-blue-700 dark:text-blue-100" />,
+  warning: {
+    bg: "bg-yellow-100 dark:bg-yellow-800",
+    text: "text-yellow-700 dark:text-yellow-100",
+    icon: <WarningIcon className="text-yellow-700 dark:text-yellow-100" />,
   },
   error: {
     bg: "bg-red-100 dark:bg-red-800",

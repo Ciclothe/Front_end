@@ -22,8 +22,8 @@ export const OfferBtn = ({ offerSent, onClick }: OfferBtnProps) => {
   const getClasses = () => {
     if (offerSent) {
       return themeMode === "light"
-        ? "bg-[#0DBC73] text-white hover:bg-[rgba(188,13,13,0.1)] hover:text-[#bc0d0d] hover:border-[#bc0d0d]"
-        : "bg-[#0DBC73] text-black hover:bg-[rgba(188,13,13,0.1)] hover:text-[#bc0d0d] hover:border-[#bc0d0d]";
+        ? "bg-[#0DBC73] text-white hover:bg-[rgba(188,13,13,0.1)] hover:text-[#bc0d0d]"
+        : "bg-[#0DBC73] text-black hover:bg-[rgba(188,13,13,0.1)] hover:text-[#bc0d0d]";
     } else {
       return `bg-[rgba(13,188,115,0.1)] text-[#0DBC73] border-[#0DBC73] 
               hover:bg-[#0DBC73] 

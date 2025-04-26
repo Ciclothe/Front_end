@@ -41,7 +41,7 @@ export const StepTwo = () => {
         <p>{t("mainLayout.swap_commitment")}</p>
       </div>
 
-      <div className="w-full h-[20em] flex-grow bg-[#F7F7F7] rounded-2xl">
+      <div className="w-full flex-grow h-0 md:min-h-60 rounded-2xl overflow-hidden">
         <MapLocation location={exchangeData.exchangePlace} zoom={11} />
       </div>
 

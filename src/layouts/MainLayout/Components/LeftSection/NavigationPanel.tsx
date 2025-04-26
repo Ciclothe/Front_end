@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IconType } from "react-icons";
 import { useState } from "react";
+import { useCategoryTabs } from "@/context/CategoryTabsContext";
 
 interface MenuItem {
   label: string;
@@ -23,6 +24,7 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   const location = useLocation();
   const navigate = useNavigate();
   const [hovered, setHovered] = useState<string | null>(null);
+  const { setShowTabs, setTabs } = useCategoryTabs();
 
   const handleMouseEnter = (label: string) => {
     setHovered(label);
@@ -33,6 +35,9 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   };
 
   const handleClick = (route: string) => {
+    setShowTabs(false);
+    setTabs([]);
+
     navigate(route);
   };
 
@@ -46,7 +51,7 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
         <div
           key={item.label}
           className={`text-[1.8em] font-bold py-[0.4em] cursor-pointer flex items-center gap-6 transition-colors duration-300 ${
-            location.pathname === item.route || hovered === item.label
+            location.pathname.startsWith(item.route) || hovered === item.label
               ? "text-[#0DBC73]"
               : "hover:text-[#0DBC73]"
           }`}
@@ -54,7 +59,8 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
           onMouseLeave={handleMouseLeave}
           onClick={() => handleClick(item.route)}
         >
-          {location.pathname === item.route || hovered === item.label ? (
+          {location.pathname.startsWith(item.route) ||
+          hovered === item.label ? (
             <item.iconFill size={30} />
           ) : (
             <item.iconOutline size={30} />

@@ -24,15 +24,12 @@ import {
 } from "@/components/Utils/format";
 import { useTranslation } from "react-i18next";
 
-interface EventDetailsProps {
-  postId: number;
-}
-
 //TODO: change this to a real API call
 const eventTestData = [
   {
     id: 2,
     postType: "event",
+    token: "c3dhcC0yMzQ=",
     userData: {
       id: 1,
       profilePicture:
@@ -64,7 +61,7 @@ const eventTestData = [
         userId: 1,
         userName: "lielcita1230",
         profilePic:
-          "https://i.pinimg.com/736x/dd/43/e9/dd43e93f36e61a85d2a0c9ec5304dc66.jpg",
+          "https://i.pinimg.com/736x/3f/4f/e9/3f4fe92639ea9d5980ef1760212e7b86.jpg",
       },
       {
         userId: 2,
@@ -208,7 +205,7 @@ const THEME_STYLES = {
     border: "border-[rgba(0,0,0,0.1)]",
   },
   dark: {
-    bg: "bg-[#2A2B2A]",
+    bg: "bg-[#222423]",
     border: "border-[rgba(255,255,255,0.1)]",
   },
 };
@@ -275,13 +272,14 @@ const getDateStatus = (dateString: string) => {
   }
 };
 
-export const EventDetails = ({ postId }: EventDetailsProps) => {
+export const EventDetails = ({ token }: { token: string }) => {
   const { i18n, t } = useTranslation();
   const { themeMode } = useTheme();
   const { closeModal } = useModal();
   const [cityAndCountry, setCityAndCountry] = useState("Cargando...");
   const [address, setAddress] = useState("Cargando...");
-  const data = eventTestData.find((e) => e.id === postId);
+
+  const data = eventTestData.find((e) => e.token === token);
   const styles = THEME_STYLES[themeMode];
 
   useEffect(() => {
@@ -314,7 +312,7 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
     <div className="md:max-h-[80vh] flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4 truncate">
+        <div className="flex items-center gap-4 truncate w-full">
           <div
             className={`${styles.bg} p-1 rounded-full cursor-pointer`}
             onClick={closeModal}
@@ -328,7 +326,9 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
             isAbsolute={false}
           />
         </div>
-        <Icon path={mdiDotsHorizontal} size={1} className="cursor-pointer" />
+        <div className="flex items-center justify-center">
+          <Icon path={mdiDotsHorizontal} size={1} className="cursor-pointer" />
+        </div>
       </div>
 
       {/* Content */}
@@ -466,7 +466,10 @@ export const EventDetails = ({ postId }: EventDetailsProps) => {
           />
           <Masonry columns={{ xs: 1, sm: 2, lg: 3 }} spacing={2} sequential>
             {eventPosts.map((post) => (
-              <div key={post.id} className="relative">
+              <div
+                key={post.id}
+                className="relative min-w-[100%] md:min-w-auto"
+              >
                 <img
                   src={post.mainImages.url}
                   alt={post.title}
