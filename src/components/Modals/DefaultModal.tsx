@@ -24,8 +24,8 @@ export const DefaultModal = ({ onClose, children }: Props) => {
     >
       <div
         className={`${
-          themeMode === "light" ? "bg-white" : "bg-[#121212]"
-        } text-start overflow-x-hidden md:rounded-2xl p-2 md:p-4 w-full md:w-[70vw] lg:w-[60vw] xl:w-[50vw] 2xl:w-[50vw] flex flex-col gap-4 overflow-y-auto h-full md:h-fit`}
+          themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
+        } text-start overflow-x-hidden md:rounded-3xl p-2 md:p-4 w-full md:w-[70vw] lg:w-[60vw] xl:w-[50vw] 2xl:w-[50vw] flex flex-col gap-4 overflow-y-auto h-full md:h-fit`}
         onClick={(e) => {
           e.stopPropagation();
         }}

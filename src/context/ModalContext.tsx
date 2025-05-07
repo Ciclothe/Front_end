@@ -9,18 +9,43 @@ import { DefaultModal } from "@/components/Modals/DefaultModal";
 import { useNavigate, useLocation } from "react-router-dom";
 
 type ModalContextType = {
-  openModal: (token: string, typePost: string, step?: string) => void;
+  openModal: (token: string, step?: string, options?: { state?: any }) => void;
   closeModal: () => void;
   goBack: () => void;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const useModal = () => {
-  const context = useContext(ModalContext);
-  if (!context) throw new Error("useModal must be used within ModalProvider");
-  return context;
+const postsToken = [
+  {
+    token: "X9WL32TVKMZPR8A6UFQYC7NJE",
+    type: "swap" as "swap", // Aseguramos que 'type' sea uno de los valores válidos
+  },
+  {
+    token: "cf62aa0fMjM=",
+    type: "swap" as "swap",
+  },
+  {
+    token: "cGe2aa0fMjM=",
+    type: "swap" as "swap",
+  },
+  {
+    token: "4158249710d=",
+    type: "swap" as "swap",
+  },
+  {
+    token: "sa4gY49710d=",
+    type: "swap" as "swap",
+  },
+  {
+    token: "a9X3vB1cD4pE5sQ7mN8wZ6yT2kR0uLf",
+    type: "event" as "event",
+  },
+] as const;
+
+const getTypeByToken = (token: string): "event" | "garment" | "swap" | null => {
+  const post = postsToken.find((post) => post.token === token);
+  return post ? post.type : null;
 };
 
 const componentMap: Record<
@@ -49,77 +74,59 @@ const componentMap: Record<
   },
 };
 
+export const useModal = () => {
+  const context = useContext(ModalContext);
+  if (!context) throw new Error("useModal must be used within ModalProvider");
+  return context;
+};
+
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const openModal = (
+  const openModal = async (
     token: string,
-    typePost: string,
-    step: string = "details"
+    step: string = "details",
+    options?: { state?: any }
   ) => {
-    const currentPath = location.pathname;
-    const parts = currentPath.split("/");
+    const typePost = getTypeByToken(token);
+    console.log("Tipo de post:", token);
+    if (!typePost) return;
 
-    if (parts.includes("offerReceived") || parts.includes("summary")) {
-      const newPath = `${currentPath}/${token}/${step}`;
-      navigate(newPath);
-    } else {
-      const basePath = `/${parts[1]}`;
-      const newPath = `${basePath}/${typePost}/${token}/${step}`;
-      navigate(newPath);
-    }
+    const route = `${location.pathname}/${token}/${step}`;
+    navigate(route, options);
   };
 
   const closeModal = () => {
-    // setModalContent(null);
     const parts = location.pathname.split("/");
-
-    if (parts.includes("summary")) {
-      const newPath = parts.slice(0, -2).join("/");
-      navigate(newPath);
-    } else if (parts.length >= 5) {
-      const basePath = `/${parts[1]}`;
-      navigate(basePath);
-    }
+    const newPath = parts.slice(0, -2).join("/");
+    navigate(newPath);
   };
 
   const goBack = () => {
     const parts = location.pathname.split("/");
-
-    if (parts.length >= 6) {
-      const newPath = parts.slice(0, -2).join("/");
-      navigate(newPath);
-    } else {
-      const basePath = `/${parts[1]}`;
-      navigate(basePath);
-    }
+    const newPath = parts.slice(0, -2).join("/");
+    navigate(newPath);
   };
 
   useEffect(() => {
     const parts = location.pathname.split("/");
+    const token = parts[parts.length - 2];
+    const step = parts[parts.length - 1] ?? "details";
 
-    const token = parts.at(-2);
-    const step = parts.at(-1);
+    if (!token || !step) return setModalContent(null);
 
-    const validTypes = ["swap", "event"];
-    const typePost = parts.find((p) => validTypes.includes(p)) ?? "swap";
+    const typePost = getTypeByToken(token);
+    if (!typePost) return setModalContent(null);
 
-    const isModalRoute = parts.length >= 5;
-
-    if (isModalRoute && step) {
-      const loader = componentMap[typePost]?.[step];
-      if (loader) {
-        loader().then((Component) => {
-          const modal = <Component token={token || ""} />;
-          setModalContent(modal);
-        });
-      } else {
-        console.error("No component found for the given route.");
-        setModalContent(null);
-      }
+    const loader = componentMap[typePost]?.[step];
+    if (loader) {
+      loader().then((Component) => {
+        setModalContent(<Component token={token} />);
+      });
     } else {
+      console.error("No modal component found for the type/step combination");
       setModalContent(null);
     }
   }, [location.pathname]);

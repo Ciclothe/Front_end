@@ -96,7 +96,7 @@ export const LanguageSwitch: React.FC<LanguageSwitchProps> = ({ onlyFlag }) => {
         <img
           src={selectedLanguage.icon}
           alt={selectedLanguage.name}
-          className="w-[1em] aspect-aquare"
+          className="w-[1em] aspect-square"
         />
         {!onlyFlag && <p className="ml-2">{selectedLanguage.ISO6392}</p>}
       </button>

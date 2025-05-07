@@ -1,15 +1,10 @@
 import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
-
-interface Assistant {
-  id: number;
-  name?: string;
-  avatar: string;
-}
+import { Participant } from "@/types/index";
 
 interface AssistantsAvatarsProps {
-  firstAssistants: Assistant[];
+  firstAssistants: Participant[];
   total: number;
   peopleLabel?: string;
   actionText?: string;
@@ -18,18 +13,18 @@ interface AssistantsAvatarsProps {
 export const AssistantsAvatars: React.FC<AssistantsAvatarsProps> = ({
   firstAssistants,
   total,
-  peopleLabel = "people",
   actionText = "",
 }) => {
   const { themeMode } = useTheme();
   const { t } = useTranslation();
+  const peopleText = total === 1 ? "mainLayout.person" : "mainLayout.people";
 
   return (
     <div className="w-full flex items-center">
       <div className="flex justify-center">
         {firstAssistants.map((assistent, index) => (
           <div
-            key={assistent.id}
+            key={assistent.userId}
             className="overflow-hidden"
             style={{
               marginLeft: index === 0 ? 0 : -14,
@@ -38,8 +33,8 @@ export const AssistantsAvatars: React.FC<AssistantsAvatarsProps> = ({
             }}
           >
             <Avatar
-              alt={assistent.name}
-              src={assistent.avatar}
+              alt={assistent.userName}
+              src={assistent.profilePic}
               variant="rounded"
               sx={{
                 border: `${
@@ -55,7 +50,7 @@ export const AssistantsAvatars: React.FC<AssistantsAvatarsProps> = ({
 
       <p className="ml-2 truncate">
         <span className="font-bold">
-          {total} {t(peopleLabel)}
+          {total} {t(peopleText)}
         </span>{" "}
         <span className="opacity-50">{t(actionText)}</span>
       </p>

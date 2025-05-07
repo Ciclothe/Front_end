@@ -8,62 +8,69 @@ import {
   MdOutlineExplore,
   MdExplore,
 } from "react-icons/md";
-import { GoHomeFill, GoHome } from "react-icons/go";
+import { RiHomeSmile2Fill, RiHomeSmile2Line } from "react-icons/ri";
 import { BiCarousel, BiSolidCarousel } from "react-icons/bi";
-import {
-  IoChatbubbleEllipsesSharp,
-  IoChatbubbleEllipsesOutline,
-} from "react-icons/io5";
+import { MdNotificationsNone, MdNotifications } from "react-icons/md";
+import { HiOutlineChat, HiChat } from "react-icons/hi";
+
+const MENU_ITEMS = [
+  {
+    label: "feed",
+    route: "/feed",
+    iconFill: RiHomeSmile2Fill,
+    iconOutline: RiHomeSmile2Line,
+  },
+  {
+    label: "swipes",
+    route: "/swipes",
+    iconFill: BiSolidCarousel,
+    iconOutline: BiCarousel,
+  },
+  {
+    label: "explore",
+    route: "/explore",
+    iconFill: MdExplore,
+    iconOutline: MdOutlineExplore,
+  },
+  {
+    label: "events",
+    route: "/events",
+    iconFill: MdHandshake,
+    iconOutline: MdOutlineHandshake,
+  },
+  {
+    label: "notifications",
+    route: "/notifications",
+    iconFill: MdNotifications,
+    iconOutline: MdNotificationsNone,
+  },
+  {
+    label: "chats",
+    route: "/chats",
+    iconFill: HiChat,
+    iconOutline: HiOutlineChat,
+  },
+];
 
 export const LeftSectionComponent = () => {
   const { themeMode } = useTheme();
-
-  const menuItems = [
-    {
-      label: "feed",
-      route: "/feed",
-      iconFill: GoHomeFill,
-      iconOutline: GoHome,
-    },
-    {
-      label: "swipes",
-      route: "/swipes",
-      iconFill: BiSolidCarousel,
-      iconOutline: BiCarousel,
-    },
-    {
-      label: "explore",
-      route: "/explore",
-      iconFill: MdExplore,
-      iconOutline: MdOutlineExplore,
-    },
-    {
-      label: "events",
-      route: "/events",
-      iconFill: MdHandshake,
-      iconOutline: MdOutlineHandshake,
-    },
-    {
-      label: "chats",
-      route: "/chats",
-      iconFill: IoChatbubbleEllipsesSharp,
-      iconOutline: IoChatbubbleEllipsesOutline,
-    },
-  ];
+  const borderColor =
+    themeMode === "light" ? "border-black/5" : "border-white/10";
 
   return (
-    <div
-      className={`${
-        themeMode === "light" ? "border-black/5" : "border-white/5"
-      } p-4 flex flex-col justify-between h-full pl-10 xl:pl-20 xl:py-10`}
+    <aside
+      className={`relative border-r ${borderColor} p-8 h-full flex flex-col justify-between items-center w-fit`}
     >
-      <div className="flex flex-col flex-grow justify-between items-start">
+      <div className="flex flex-col flex-grow items-center justify-between">
         <div>
           <LogoHeader />
-          <NavigationPanel menuItems={menuItems} />
+          <NavigationPanel menuItems={MENU_ITEMS} />
         </div>
         <PostCreationModule />
       </div>
-    </div>
+
+      {/* Botón o panel flotante a un lado */}
+      {/* <NotificationBanner /> */}
+    </aside>
   );
 };

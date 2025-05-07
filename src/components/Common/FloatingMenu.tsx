@@ -133,7 +133,7 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
 
         {/* Desktop menu */}
         <div
-          className={`hidden md:block absolute z-10 min-w-70 w-full transition-all duration-100 overflow-hidden rounded-2xl ${backgroundClass}
+          className={`hidden md:block absolute z-[1000] min-w-70 w-full transition-all duration-100 overflow-hidden rounded-2xl ${backgroundClass}
             ${align === "right" ? "right-0" : "left-0"}
             ${position === "top" ? "bottom-full mb-3" : "top-full mt-3"}`}
           style={shadowStyle}

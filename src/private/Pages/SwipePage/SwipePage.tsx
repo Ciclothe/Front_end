@@ -56,7 +56,7 @@ const cardData: Card[] = [
   {
     userId: 3,
     id: 3,
-    condition: "used",
+    condition: "as_new",
     url: "https://images1.vinted.net/t/02_00091_o8pEN7jMbZZ99HYrNVyqXaHP/f800/1733508064.jpeg?s=f0421751d49b19bc786edadd2d470ea75f24d5a7",
     userName: "l_jh7",
     size: "M",
@@ -70,7 +70,7 @@ const cardData: Card[] = [
   {
     userId: 4,
     id: 4,
-    condition: "used",
+    condition: "very_used",
     url: "https://images1.vinted.net/t/04_011f2_FvVKEfaUaRFmaGJF5G32Bodm/f800/1744981825.jpeg?s=84315e19ee4c9fbc2efad34854e37a84b704c6be",
     userName: "janeiroc",
     size: "L",
@@ -119,7 +119,7 @@ export const SwipePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 md:px-0 h-full overflow-hidden pb-4 md:pb-10">
+    <div className="flex flex-col items-center justify-center gap-4 md:px-0 h-full overflow-hidden pb-4">
       <div className="flex-1 grid place-items-center h-full relative">
         <TutorialOverlat onTutorialChange={handleTutorialChange} />
         {cards.map((card) => (

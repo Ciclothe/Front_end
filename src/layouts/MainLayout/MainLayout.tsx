@@ -3,53 +3,66 @@ import { LeftSectionComponent } from "./Components";
 import { RightPanel } from "./Components";
 import { HeaderMobile } from "./Components";
 import { NavBarMobile } from "./Components";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { CategoryTabs } from "@/components/Common/CategoryTabs";
-import { useTheme } from "@/context/ThemeContext";
 import { useCategoryTabs } from "@/context/CategoryTabsContext";
+import { AccountSection } from "./Components/RightPanel/AccountSection/AccountSection";
+import { RouteChangeHandler } from "@/components/RouteChangeHandler";
+
 import "./MainLayout.css";
+import { useState } from "react";
 
 export const MainLayout = () => {
-  const { themeMode } = useTheme();
   const { showTabs } = useCategoryTabs();
+  const location = useLocation();
+  const isEventView = location.pathname.startsWith("/explore/events");
+
+  const [routeReady, setRouteReady] = useState(false);
 
   return (
-    <div className="min-h-screen md:h-screen w-full flex flex-col md:overflow-hidden">
-      {/* Header Mobile */}
-      <HeaderMobile />
+    <div className="flex flex-col h-screen w-full md:flex-row md:overflow-hidden">
+      {/* Header solo en mobile */}
+      <div className="md:hidden">
+        <HeaderMobile />
+      </div>
 
-      {/* Principal Content */}
-      <div className="flex flex-grow overflow-hidden w-full">
-        {/* Lateral Navbar Desktop */}
-        <div className="md:w-[30%] lg:w-[25%] xl:w-[25%] h-full hidden md:block">
-          <LeftSectionComponent />
+      {/* Izquierda en desktop */}
+      <div className="hidden md:block h-screen z-10">
+        <LeftSectionComponent />
+      </div>
+
+      {/* Contenido principal */}
+      <div className="flex flex-col flex-1 md:overflow-hidden">
+        {/* Parte superior solo visible en desktop */}
+        <div className="hidden pt-8 pb-4 px-10 shrink-0 md:flex flex-col gap-4">
+          <div className="flex items-center gap-10">
+            <SearchBar ShowLocation={true} />
+            <AccountSection />
+          </div>
+          {showTabs && <CategoryTabs />}
         </div>
 
-        {/* Central Content */}
-        <div className="flex-grow flex flex-col w-[100%] md:w-[70%] lg:w-[75%] xl:w-[50%] px-2 md:px-10">
-          {/* Search & Category Tabs */}
+        {/* Contenido dinámico */}
+        <div className="flex-1 flex overflow-hidden">
           <div
             className={`${
-              themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
-            } hidden md:flex flex-col gap-4 py-5 xl:pt-10 z-10 w-full`}
+              isEventView ? "" : "px-2"
+            } flex flex-col flex-1 md:overflow-y-auto md:px-10 scrollbar-hidden w-full`}
           >
-            <SearchBar />
-            {showTabs && <CategoryTabs />}
+            <div className="flex-1 w-full">
+              <RouteChangeHandler onLoad={() => setRouteReady(true)} />
+              {routeReady && <Outlet />}
+            </div>
           </div>
 
-          {/* Scroll Content */}
-          <div className="w-full flex-grow overflow-y-auto">
-            <Outlet />
+          {/* Panel derecho solo en desktop */}
+          <div className="shrink-0 hidden xl:block xl:w-[25%]">
+            <RightPanel />
           </div>
-        </div>
-
-        {/* Account Section */}
-        <div className="w-[25%] h-full hidden xl:block">
-          <RightPanel />
         </div>
       </div>
 
-      {/* Navbar Mobile */}
+      {/* Navbar fijo en la parte inferior solo en mobile */}
       <NavBarMobile />
     </div>
   );

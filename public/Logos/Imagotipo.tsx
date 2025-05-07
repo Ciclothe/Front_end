@@ -1,3 +1,5 @@
+import React from "react";
+
 export const Imagotipo = ({ color = "#221f1f", height = "100px" }) => {
   return (
     <svg

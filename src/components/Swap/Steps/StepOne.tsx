@@ -4,6 +4,7 @@ import { mdiCheckBold, mdiSwapHorizontalHidden } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { conditionColors } from "@/components/Utils/format";
 
 type Garment = {
   id: number;
@@ -26,7 +27,7 @@ const originalData = {
   offerReceiverCloset: [
     {
       id: 1,
-      token: "cG9zdC0xMjM=",
+      token: "X9WL32TVKMZPR8A6UFQYC7NJE",
       name: "Hoodie Laine",
       condition: "as_new",
       color: "black",
@@ -52,7 +53,7 @@ const originalData = {
   offerSenderCloset: [
     {
       id: 1,
-      token: "cG9zdC0xMjM=",
+      token: "X9WL32TVKMZPR8A6UFQYC7NJE",
       name: "Essentials fear of God",
       condition: "new",
       color: "Caqui",
@@ -191,7 +192,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
       <div
         className={`${
           themeMode === "light"
-            ? "bg-[#F7F7F7] border-black/5"
+            ? "bg-white border-black/5"
             : "bg-[#222423] border-white/5"
         } rounded-2xl p-4 border overflow-y-auto max-h-[50%]`}
       >
@@ -199,7 +200,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
           <p className="font-semibold text-[1.1em]">
             {t("mainLayout.you_will_receive")}
           </p>
-          <p className="opacity-50 text-sm">
+          <p className="opacity-50 text-md">
             {selectedCountReceiver}{" "}
             {selectedCountReceiver === 1
               ? t("mainLayout.garment")
@@ -214,7 +215,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                 garment.selected
                   ? "bg-[rgba(13,188,115,0.1)] text-[#0DBC73] border-[#0DBC73]"
                   : themeMode === "light"
-                  ? "bg-white border-transparent"
+                  ? "bg-[#F7F7F7] border-transparent"
                   : "bg-[#121212] border-transparent"
               } flex justify-between border-2 w-full items-center p-4 rounded-lg gap-4 truncate cursor-pointer`}
               onClick={(e) => {
@@ -229,7 +230,10 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                   className="w-20 aspect-square object-cover rounded-md"
                 />
                 <div className="flex flex-col justify-center">
-                  <p className="font-bold text-[#E5D04B]">
+                  <p
+                    className="font-bold"
+                    style={{ color: conditionColors[garment.condition] }}
+                  >
                     {t(`mainLayout.${garment.condition}`)}
                   </p>
                   <div className="mt-2">
@@ -245,7 +249,9 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                   className="p-4 font-semibold text-[#0DBC73] cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    openModal(garment.token, "details");
+                    openModal(garment.token, "details", {
+                      state: { navigatedInternally: true },
+                    });
                   }}
                 >
                   {t("mainLayout.details")}
@@ -272,7 +278,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
       <div className="w-full justify-center flex items-center -mt-2 -mb-2 z-20">
         <div
           className={`${
-            themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
+            themeMode === "light" ? "bg-white" : "bg-[#222423]"
           } p-2 aspect-square flex items-center justify-center rounded-full`}
           style={{ boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}
         >
@@ -283,7 +289,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
       <div
         className={`${
           themeMode === "light"
-            ? "bg-[#F7F7F7] border-black/5"
+            ? "bg-white border-black/5"
             : "bg-[#222423] border-white/5"
         } border rounded-2xl p-4 overflow-y-auto h-full`}
       >
@@ -291,7 +297,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
           <p className="font-semibold text-[1.1em] truncate">
             {t("mainLayout.select_garments_from_your_closet")}
           </p>
-          <p className="opacity-50 text-sm whitespace-nowrap">
+          <p className="opacity-50 text-md whitespace-nowrap">
             {selectedCountSender}{" "}
             {selectedCountSender === 1
               ? t("mainLayout.garment")
@@ -306,7 +312,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                 garment.selected
                   ? "bg-[rgba(13,188,115,0.1)] text-[#0DBC73] border-[#0DBC73]"
                   : themeMode === "light"
-                  ? "bg-white border-transparent"
+                  ? "bg-[#F7F7F7] border-transparent"
                   : "bg-[#121212] border-transparent"
               } flex justify-between border-2 w-full items-center p-4 rounded-lg gap-4 truncate cursor-pointer`}
               onClick={(e) => {
@@ -321,7 +327,10 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                   className="w-20 aspect-square object-cover rounded-md"
                 />
                 <div className="flex flex-col justify-center w-full">
-                  <p className="font-bold text-[#E5D04B]">
+                  <p
+                    className="font-bold"
+                    style={{ color: conditionColors[garment.condition] }}
+                  >
                     {t(`mainLayout.${garment.condition}`)}
                   </p>
                   <div className="mt-2">
@@ -337,7 +346,9 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                   className="p-4 font-semibold text-[#0DBC73] cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    openModal(garment.token, "details");
+                    openModal(garment.token, "details", {
+                      state: { navigatedInternally: true },
+                    });
                   }}
                 >
                   {t("mainLayout.details")}
@@ -349,7 +360,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                         ? "bg-[#0DBC73] text-white"
                         : "bg-[#0DBC73] text-black"
                       : themeMode === "light"
-                      ? "bg-[#F7F7F7]"
+                      ? "bg-white"
                       : "bg-[#222423]"
                   } h-5 aspect-square rounded-md flex items-center justify-center flex-shrink-0`}
                 >

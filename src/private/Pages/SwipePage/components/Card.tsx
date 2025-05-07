@@ -127,7 +127,7 @@ const Card = ({
 
   return (
     <motion.div
-      className={`z-10 h-full max-w-full aspect-[4/5] grid origin-bottom rounded-2xl overflow-hidden relative hover:cursor-grab active:cursor-grabbing`}
+      className={`z-1 h-full max-w-full aspect-[4/5] grid origin-bottom rounded-2xl overflow-hidden relative hover:cursor-grab active:cursor-grabbing`}
       style={{
         gridRow: 1,
         gridColumn: 1,
@@ -136,7 +136,7 @@ const Card = ({
         rotate,
         transition: "0.125s transform",
         boxShadow: isFront
-          ? "0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)"
+          ? "0 0px 10px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)"
           : undefined,
         backgroundImage: `url(${url})`,
         backgroundSize: "cover",

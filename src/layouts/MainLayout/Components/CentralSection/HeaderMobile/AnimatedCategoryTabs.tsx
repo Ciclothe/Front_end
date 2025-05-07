@@ -19,7 +19,6 @@ export const AnimatedCategoryTabs = () => {
         const rect = tabsRef.current.getBoundingClientRect();
         const isOutOfView = rect.bottom <= 0;
 
-        // Mostrar el floating tab solo si está fuera de la vista y estás scrolleando hacia arriba
         setShowFloatingTabs(scrollingUp && isOutOfView);
       }
 
@@ -32,7 +31,6 @@ export const AnimatedCategoryTabs = () => {
 
   return (
     <div className="left-0 col-span-12 md:hidden relative w-full">
-      {/* Referencia para detectar visibilidad */}
       <div ref={tabsRef}>
         <CategoryTabs />
       </div>

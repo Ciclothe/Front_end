@@ -5,13 +5,11 @@ import { getRelativeTime } from "@/components/Utils/format";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { PiSwapFill } from "react-icons/pi";
+import { Participant } from "@/types/index";
 
 interface UserHeaderProps {
   postType: string;
-  userData: {
-    username: string;
-    profilePicture: string;
-  };
+  userData: Participant;
   postData: {
     createdAt?: string | Date;
     distance?: string;
@@ -46,21 +44,21 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
     <div
       className={`${
         postType === "swap" && isAbsolute
-          ? "md:absolute md:top-2 md:left-2 md:bg-black/80 md:text-white md:p-3 md:rounded-xl md:pr-10"
+          ? "absolute top-2 left-2 bg-black/40 backdrop-blur-md text-white p-3 rounded-xl pr-10 max-w-[95%]"
           : ""
       }
-       flex items-center gap-2 z-5 max-w-full`}
+       flex items-center gap-2 z-5`}
     >
       <Avatar
         variant="rounded"
-        src={userData?.profilePicture}
+        src={userData?.profilePic}
         className="h-full aspect-square"
       />
       <div className="w-full truncate">
         <div className="flex items-center gap-2 max-w-full">
           <p className="font-bold truncate">
             {postType === "swap"
-              ? `@${userData?.username}`
+              ? `@${userData?.userName}`
               : `${postData?.eventTitle}`}
           </p>
           <div
@@ -74,7 +72,7 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
           </div>
         </div>
 
-        <div className="flex gap-2 font-semibold text-sm">
+        <div className="flex gap-2 font-semibold text-md">
           <p className="truncate">
             {postType === "swap" ? (
               <span className="opacity-50">
@@ -86,7 +84,7 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
                   {t("mainLayout.created_by")}{" "}
                 </span>
                 <span className="font-bold opacity-100">
-                  @{userData?.username}
+                  @{userData?.userName}
                 </span>
               </>
             )}{" "}

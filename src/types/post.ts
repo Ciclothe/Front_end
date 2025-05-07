@@ -1,12 +1,9 @@
+import { Participant } from "@/types/index";
 export interface Post {
   id: number;
   postType: string;
   eventTitle?: string;
-  userData: {
-    id: number;
-    profilePicture: string;
-    username: string;
-  };
+  userData: Participant;
   postData: {
     id: number;
     distance?: string;
@@ -29,8 +26,8 @@ export interface Post {
   offers?: {
     id: number;
     userData: {
-      id: number;
-      avatar: string;
+      userId: number;
+      profilePic: string;
     };
   }[];
   newPostsData?: {

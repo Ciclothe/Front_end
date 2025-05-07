@@ -16,7 +16,11 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { formatDate, getCityAndCountry } from "@/components/Utils/format";
+import {
+  formatDate,
+  getCityAndCountry,
+  conditionColors,
+} from "@/components/Utils/format";
 
 const summaryData = [
   {
@@ -60,7 +64,7 @@ const summaryData = [
       {
         id: 1,
         title: "Essentials fear of God",
-        token: "cG9zdC0xMjM=",
+        token: "X9WL32TVKMZPR8A6UFQYC7NJE",
         condition: "new",
         color: "Caqui",
         size: "L",
@@ -165,7 +169,7 @@ export const SwapSummaryPage: React.FC = () => {
                 {t("mainLayout.you_will_receive")}
               </p>
 
-              <p className="opacity-50 text-sm">
+              <p className="opacity-50 text-md">
                 {data?.receiverCloset.length}{" "}
                 {data?.receiverCloset.length
                   ? t("mainLayout.garment")
@@ -188,7 +192,10 @@ export const SwapSummaryPage: React.FC = () => {
                       className="w-20 aspect-square object-cover rounded-md"
                     />
                     <div className="flex flex-col justify-center">
-                      <p className="font-bold text-[#E5D04B]">
+                      <p
+                        className="font-bold"
+                        style={{ color: conditionColors[garment.condition] }}
+                      >
                         {t(`mainLayout.${garment.condition}`)}
                       </p>
                       <div className="mt-2">
@@ -238,7 +245,7 @@ export const SwapSummaryPage: React.FC = () => {
               <p className="font-semibold text-[1.1em] truncate">
                 {t("mainLayout.you_will_give")}
               </p>
-              <p className="opacity-50 text-sm">
+              <p className="opacity-50 text-md">
                 {data?.senderCloset.length}{" "}
                 {data?.senderCloset.length
                   ? t("mainLayout.garment")
@@ -260,7 +267,10 @@ export const SwapSummaryPage: React.FC = () => {
                       className="w-20 aspect-square object-cover rounded-md"
                     />
                     <div className="flex flex-col justify-center">
-                      <p className="font-bold text-[#E5D04B]">
+                      <p
+                        className="font-bold"
+                        style={{ color: conditionColors[garment.condition] }}
+                      >
                         {t(`mainLayout.${garment.condition}`)}
                       </p>
                       <div className="mt-2">

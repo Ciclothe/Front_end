@@ -1,9 +1,7 @@
-import { useTheme } from "@/context/ThemeContext";
-import { Imagotipo } from "../../../../../public/Logos/Imagotipo";
+import { Isotipo } from "../../../../../public/Logos/Isotipo";
 import { useNavigate } from "react-router-dom";
 
 export const LogoHeader = () => {
-  const { themeMode } = useTheme();
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -11,11 +9,8 @@ export const LogoHeader = () => {
   };
 
   return (
-    <div className="hidden xl:flex cursor-pointer" onClick={handleClick}>
-      <Imagotipo
-        color={themeMode === "light" ? "black" : "white"}
-        height="3em"
-      />
+    <div className="flex cursor-pointer justify-center" onClick={handleClick}>
+      <Isotipo color={"#0DBC73"} height="3em" />
     </div>
   );
 };

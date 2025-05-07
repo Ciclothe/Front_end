@@ -15,12 +15,12 @@ const postsFeedData = [
   {
     id: 1,
     postType: "swap",
-    token: "cG9zdC0xMjM=",
+    token: "X9WL32TVKMZPR8A6UFQYC7NJE",
     userData: {
-      id: 1,
-      profilePicture:
+      userId: 1,
+      profilePic:
         "https://i.pinimg.com/736x/15/4c/c1/154cc1b2916a59a0a2e2f2c7983329b8.jpg",
-      username: "grifoMmm",
+      userName: "grifoMmm",
     },
     postData: {
       id: 1,
@@ -50,16 +50,16 @@ const postsFeedData = [
       {
         id: 1,
         userData: {
-          id: 2,
-          avatar:
+          userId: 2,
+          profilePic:
             "https://i.pinimg.com/736x/08/2b/3b/082b3bb51cbf0722329080827f8e4a48.jpg",
         },
       },
       {
         id: 2,
         userData: {
-          id: 45,
-          avatar:
+          userId: 45,
+          profilePic:
             "https://i.pinimg.com/736x/55/fa/1f/55fa1f9583becaa51044fa7e0d768fe4.jpg",
         },
       },
@@ -68,13 +68,13 @@ const postsFeedData = [
   {
     id: 2,
     postType: "event",
-    token: "c3dhcC0yMzQ=",
+    token: "a9X3vB1cD4pE5sQ7mN8wZ6yT2kR0uLf",
     eventTitle: "Retro Revival Night: Fashion & Music",
     userData: {
-      id: 1,
-      profilePicture:
+      userId: 1,
+      profilePic:
         "https://i.pinimg.com/736x/a3/c0/40/a3c040ee9e0cb3a06684a603c1a06a9c.jpg",
-      username: "grifoMmm",
+      userName: "grifoMmm",
     },
     postData: {
       id: 1,
@@ -153,10 +153,10 @@ const postsFeedData = [
     postType: "swap",
     token: "ZXZlbnQtNDU2",
     userData: {
-      id: 1,
-      profilePicture:
+      userId: 1,
+      profilePic:
         "https://i.pinimg.com/736x/15/4c/c1/154cc1b2916a59a0a2e2f2c7983329b8.jpg",
-      username: "grifoMmm",
+      userName: "grifoMmm",
     },
     postData: {
       id: 2,
@@ -270,21 +270,17 @@ export const HomePage = () => {
     postId: number;
     token: string;
   }) => {
-    if (post.postType === "swap") {
-      openModal(post.token, post.postType, "details");
-    } else {
-      openModal(post.token, post.postType, "details");
-    }
+    openModal(post.token, "details");
   };
 
   return (
-    <div className="md:px-4 lg:px-10">
+    <div className="md:px-4 lg:px-10 overflow-y-auto flex flex-col items-center">
       {filteredPosts.map((post) => {
         const cardClassName = `${
           themeMode === "light"
             ? "md:bg-white md:hover:bg-[#EDEDED] text-black"
             : "md:bg-[#222423] text-white md:hover:bg-[#323332]"
-        } py-5 border-b border-black/5 md:border-none sm:p-5 md:mb-5 md:rounded-2xl cursor-pointer`;
+        } py-5 border-b border-black/5 md:border-none sm:p-5 md:mb-5 md:rounded-2xl cursor-pointer w-full md:w-[90%] lg:w-[65%]`;
 
         return (
           <div
@@ -331,7 +327,6 @@ export const HomePage = () => {
                 </div>
                 <PostActions
                   liked={post.liked}
-                  postType={post.postType}
                   token={post.token}
                   offerSent={post.offerSent}
                 />

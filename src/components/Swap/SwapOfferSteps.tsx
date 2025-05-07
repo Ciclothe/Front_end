@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "@/context/ThemeContext";
-import { mdiArrowLeft, mdiDrawPen, mdiHanger } from "@mdi/js";
+import { mdiArrowLeft, mdiClose, mdiDrawPen, mdiHanger } from "@mdi/js";
 import Icon from "@mdi/react";
 import { StepOne } from "./Steps/StepOne";
 import { StepTwo } from "./Steps/StepTwo";
@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "@/context/ModalContext";
 import { useAlert } from "@/context/AlertContext";
+import { useLocation } from "react-router-dom";
 
 type Garment = {
   id: number;
@@ -31,6 +32,8 @@ export const SwapOfferSteps = ({ token }: { token: string }) => {
   const { t } = useTranslation();
   const { closeModal } = useModal();
   const { showAlert } = useAlert();
+  const location = useLocation();
+  const navigatedInternally = location.state?.navigatedInternally === true;
 
   const navigate = useNavigate();
 
@@ -72,7 +75,7 @@ export const SwapOfferSteps = ({ token }: { token: string }) => {
       {/* HEADER DE PASOS */}
       <div
         className={`${
-          themeMode === "light" ? "bg-white" : "bg-[#121212]"
+          themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
         } flex w-full items-center py-2 z-10 relative`}
       >
         {/* Flecha a la izquierda */}
@@ -88,7 +91,12 @@ export const SwapOfferSteps = ({ token }: { token: string }) => {
             }
           }}
         >
-          <Icon path={mdiArrowLeft} size={1} />
+          <Icon
+            path={
+              currentStep > 0 || navigatedInternally ? mdiArrowLeft : mdiClose
+            }
+            size={1}
+          />
         </div>
 
         {/* Pasos centrados */}
@@ -113,7 +121,7 @@ export const SwapOfferSteps = ({ token }: { token: string }) => {
                     ? "bg-[#0DBC73] text-white"
                     : "bg-[#0DBC73] text-black"
                   : themeMode === "light"
-                  ? "bg-[#F9F9F9] text-black"
+                  ? "bg-white text-black"
                   : "bg-[#323332] text-white"
               } transition-all duration-300`}
                 >
@@ -125,7 +133,7 @@ export const SwapOfferSteps = ({ token }: { token: string }) => {
                       index < currentStep
                         ? "bg-[#0DBC73]"
                         : themeMode === "light"
-                        ? "bg-[#F9F9F9]"
+                        ? "bg-white"
                         : "bg-[#323332]"
                     }`}
                   />

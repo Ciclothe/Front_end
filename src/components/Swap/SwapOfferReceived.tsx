@@ -14,6 +14,7 @@ import Avatar from "@mui/material/Avatar";
 import { useAlert } from "@/context/AlertContext";
 import PressAndHoldButton from "./Components/PressAndHoldButton";
 import { useNavigate } from "react-router-dom";
+import { conditionColors } from "@/components/Utils/format";
 
 const offerSwapData = {
   token: "cGe2aa0fMjM=",
@@ -42,7 +43,7 @@ const offerSwapData = {
     {
       id: 1,
       title: "Essentials fear of God",
-      token: "cG9zdC0xMjM=",
+      token: "X9WL32TVKMZPR8A6UFQYC7NJE",
       condition: "new",
       color: "Caqui",
       size: "L",
@@ -103,7 +104,7 @@ export const SwapOfferReceived = () => {
         <div
           className={`rounded-2xl p-4 overflow-y-auto border md:flex-1 min-h-0 ${
             themeMode === "light"
-              ? "bg-[#F7F7F7] border-black/5"
+              ? "bg-white border-black/5"
               : "bg-[#222423] border-white/5"
           }`}
         >
@@ -111,7 +112,7 @@ export const SwapOfferReceived = () => {
             <p className="font-semibold text-[1.1em]">
               {t("mainLayout.you_will_receive")}
             </p>
-            <p className="opacity-50 text-sm">
+            <p className="opacity-50 text-md">
               {offerSwapData?.offerReceiverCloset.length}{" "}
               {offerSwapData?.offerReceiverCloset.length
                 ? t("mainLayout.garment")
@@ -133,7 +134,10 @@ export const SwapOfferReceived = () => {
                     className="w-20 aspect-square object-cover rounded-md"
                   />
                   <div className="flex flex-col justify-center">
-                    <p className="font-bold text-[#E5D04B]">
+                    <p
+                      className="font-bold"
+                      style={{ color: conditionColors[garment.condition] }}
+                    >
                       {t(`mainLayout.${garment.condition}`)}
                     </p>
                     <div className="mt-2">
@@ -161,7 +165,7 @@ export const SwapOfferReceived = () => {
         <div className="flex justify-center items-center -mt-2 -mb-2 z-20">
           <div
             className={`p-2 aspect-square flex items-center justify-center rounded-full ${
-              themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
+              themeMode === "light" ? "bg-white" : "bg-[#222423]"
             }`}
             style={{ boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}
           >
@@ -177,7 +181,7 @@ export const SwapOfferReceived = () => {
         <div
           className={`rounded-2xl p-4 overflow-y-auto border md:flex-1 min-h-0 ${
             themeMode === "light"
-              ? "bg-[#F7F7F7] border-black/5"
+              ? "bg-white border-black/5"
               : "bg-[#222423] border-white/5"
           }`}
         >
@@ -185,7 +189,7 @@ export const SwapOfferReceived = () => {
             <p className="font-semibold text-[1.1em] truncate">
               {t("mainLayout.you_will_give")}
             </p>
-            <p className="opacity-50 text-sm">
+            <p className="opacity-50 text-md">
               {offerSwapData?.offerSenderCloset.length}{" "}
               {offerSwapData?.offerSenderCloset.length
                 ? t("mainLayout.garment")
@@ -207,7 +211,10 @@ export const SwapOfferReceived = () => {
                     className="w-20 aspect-square object-cover rounded-md"
                   />
                   <div className="flex flex-col justify-center">
-                    <p className="font-bold text-[#E5D04B]">
+                    <p
+                      className="font-bold"
+                      style={{ color: conditionColors[garment.condition] }}
+                    >
                       {t(`mainLayout.${garment.condition}`)}
                     </p>
                     <div className="mt-2">
@@ -237,7 +244,7 @@ export const SwapOfferReceived = () => {
         <div
           className={`${
             themeMode === "light"
-              ? "bg-[#F7F7F7] text-black"
+              ? "bg-white text-black"
               : "bg-[#222423] text-white"
           } rounded-2xl flex flex-col gap-4 w-full overflow-hidden`}
         >
@@ -305,7 +312,7 @@ export const SwapOfferReceived = () => {
                   : "bg-[#2A2B2A] hover:bg-white hover:text-black"
               } px-5 py-2 w-full rounded-full flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
               onClick={() => {
-                openModal(offerSwapData?.token, "swap", "counterOffer");
+                openModal(offerSwapData?.token, "counterOffer");
               }}
             >
               <p>{t("mainLayout.counteroffers")}</p>

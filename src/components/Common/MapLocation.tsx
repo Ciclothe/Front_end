@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from "react";
+import Map, { Marker } from "react-map-gl/mapbox";
 import { useTheme } from "@/context/ThemeContext.js";
-import React, { useEffect } from "react";
-import Map, { Marker, useMap } from "react-map-gl/mapbox";
 
 const MapLocation = ({
   location,
@@ -10,69 +10,84 @@ const MapLocation = ({
   zoom: number;
 }) => {
   const { themeMode } = useTheme();
-  const [viewState] = React.useState({
-    longitude: location.lng,
-    latitude: location.lat,
-    zoom: zoom,
-  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const MapEventHandler = () => {
-    const { current: map } = useMap();
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect(); // Solo necesitamos cargarlo una vez
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-    useEffect(() => {
-      if (map) {
-        map.resize();
-      }
-    }, [map]);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
-    return null;
-  };
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
-    <div className="flex flex-col gap-6 h-full overflow-hidden">
-      <Map
-        {...viewState}
-        style={{ width: "100%", height: "100%" }}
-        zoom={zoom}
-        mapStyle={`mapbox://styles/alejospinar/${
-          themeMode === "dark"
-            ? "cm67f0g7500ha01r891ot5w96"
-            : "cm67er22x002f01qzf9q3apfd"
-        }`}
-        mapboxAccessToken="pk.eyJ1IjoiYWxlam9zcGluYXIiLCJhIjoiY20wa2lreDMxMTk5eDJrb2F0N3NtNHBkMyJ9.LV8h87QAtrtHZ2U2FP4V1g"
-      >
-        <MapEventHandler />
-        <Marker
-          longitude={location.lng}
-          latitude={location.lat}
-          anchor="bottom"
+    <div
+      ref={containerRef}
+      className="flex flex-col gap-6 h-full overflow-hidden"
+    >
+      {isVisible && (
+        <Map
+          initialViewState={{
+            longitude: location.lng,
+            latitude: location.lat,
+            zoom: zoom,
+          }}
+          style={{ width: "100%", height: "100%" }}
+          mapStyle={`mapbox://styles/mapbox/${
+            themeMode === "dark" ? "dark-v11" : "light-v11"
+          }`}
+          mapboxAccessToken="pk.eyJ1IjoiYWxlam9zcGluYXIiLCJhIjoiY20wa2lreDMxMTk5eDJrb2F0N3NtNHBkMyJ9.LV8h87QAtrtHZ2U2FP4V1g"
+          dragPan={false}
+          scrollZoom={false}
+          doubleClickZoom={false}
+          touchZoomRotate={false}
+          keyboard={false}
         >
-          <div
-            style={{
-              width: "35px",
-              height: "35px",
-              backdropFilter: "brightness(1)",
-              backgroundColor: "rgba(13, 188, 115, 0.4)",
-              borderRadius: "50%",
-              position: "relative",
-            }}
+          <Marker
+            longitude={location.lng}
+            latitude={location.lat}
+            anchor="bottom"
           >
             <div
               style={{
-                width: "15px",
-                height: "15px",
-                backgroundColor: "white",
+                width: "35px",
+                height: "35px",
+                backdropFilter: "brightness(1)",
+                backgroundColor: "rgba(13, 188, 115, 0.4)",
                 borderRadius: "50%",
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                border: "3px solid #0DBC73",
+                position: "relative",
               }}
-            />
-          </div>
-        </Marker>
-      </Map>
+            >
+              <div
+                style={{
+                  width: "15px",
+                  height: "15px",
+                  backgroundColor: "white",
+                  borderRadius: "50%",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  border: "3px solid #0DBC73",
+                }}
+              />
+            </div>
+          </Marker>
+        </Map>
+      )}
     </div>
   );
 };

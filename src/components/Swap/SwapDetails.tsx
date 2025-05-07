@@ -10,7 +10,7 @@ import { PostImageCarousel } from "@/components/Common/Post/PostImageCarousel";
 import Avatar from "@mui/material/Avatar";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useModal } from "@/context/ModalContext";
 import { OfferBtn } from "@/components/Common/OfferBtn";
 import { LikeBtn } from "@/components/Common/LikeBtn";
@@ -24,12 +24,12 @@ const swapPostTestData = [
   {
     id: 1,
     postType: "swap",
-    token: "cG9zdC0xMjM=",
+    token: "X9WL32TVKMZPR8A6UFQYC7NJE",
     userData: {
-      id: 1,
-      profilePicture:
+      userId: 1,
+      profilePic:
         "https://i.pinimg.com/736x/15/4c/c1/154cc1b2916a59a0a2e2f2c7983329b8.jpg",
-      username: "grifoMmm",
+      userName: "grifoMmm",
       ranting: 4.5,
       totalRantings: 25,
     },
@@ -84,10 +84,10 @@ const swapPostTestData = [
     postType: "swap",
     token: "cf62aa0fMjM=",
     userData: {
-      id: 2,
-      profilePicture:
+      userId: 2,
+      profilePic:
         "https://i.pinimg.com/736x/3f/4f/e9/3f4fe92639ea9d5980ef1760212e7b86.jpg",
-      username: "lielcita1230",
+      userName: "lielcita1230",
       ranting: 4.5,
       totalRantings: 20,
     },
@@ -139,10 +139,10 @@ const swapPostTestData = [
     postType: "swap",
     token: "4158249710d=",
     userData: {
-      id: 2,
-      profilePicture:
+      userId: 2,
+      profilePic:
         "https://i.pinimg.com/736x/3f/4f/e9/3f4fe92639ea9d5980ef1760212e7b86.jpg",
-      username: "lielcita1230",
+      userName: "lielcita1230",
       ranting: 4.5,
       totalRantings: 20,
     },
@@ -190,10 +190,10 @@ const swapPostTestData = [
     postType: "swap",
     token: "sa4gY49710d=",
     userData: {
-      id: 2,
-      profilePicture:
+      userId: 2,
+      profilePic:
         "https://i.pinimg.com/736x/3f/4f/e9/3f4fe92639ea9d5980ef1760212e7b86.jpg",
-      username: "lielcita1230",
+      userName: "lielcita1230",
       ranting: 4.5,
       totalRantings: 20,
     },
@@ -242,16 +242,18 @@ const swapPostTestData = [
 ];
 
 export const SwapDetails = ({ token }: { token: string }) => {
-  const { closeModal, openModal, goBack } = useModal();
+  const { closeModal, goBack } = useModal();
   const { themeMode } = useTheme();
   const { i18n, t } = useTranslation();
+  const navigate = useNavigate();
+  const locationUrl = useLocation();
 
   const data = swapPostTestData.find((e) => e.token === token);
   const [location, setLocation] = useState<string | null>(null);
   const url = useLocation();
 
   const isOfferReceived = url.pathname.includes("/offerReceived/");
-  const isSummary = url.pathname.includes("/summary/");
+  const navigatedInternally = locationUrl.state?.navigatedInternally === true;
 
   useEffect(() => {
     if (data) {
@@ -272,6 +274,13 @@ export const SwapDetails = ({ token }: { token: string }) => {
     return <Navigate to="/404" />;
   }
 
+  const updateRouteToOffer = () => {
+    const parts = locationUrl.pathname.split("/");
+    parts[parts.length - 1] = "offer";
+
+    navigate(parts.join("/"), { state: { navigatedInternally: true } });
+  };
+
   return (
     <>
       {/* //! HEADER */}
@@ -282,12 +291,12 @@ export const SwapDetails = ({ token }: { token: string }) => {
               themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
             } p-1 rounded-full cursor-pointer`}
             onClick={() => {
-              const action = isOfferReceived ? goBack : closeModal;
+              const action = navigatedInternally ? goBack : closeModal;
               action();
             }}
           >
             <Icon
-              path={isOfferReceived || isSummary ? mdiArrowLeft : mdiClose}
+              path={navigatedInternally ? mdiArrowLeft : mdiClose}
               size={1}
             />
           </div>
@@ -330,10 +339,10 @@ export const SwapDetails = ({ token }: { token: string }) => {
               {data?.postData?.images?.length > 2 && (
                 <div
                   className={`${
-                    themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
-                  } w-[20%] aspect-[1/1] flex items-center justify-center rounded-lg text-center`}
+                    themeMode === "light" ? "bg-white" : "bg-[#222423]"
+                  } w-[20%] aspect-[1/1] flex items-center justify-center rounded-xl text-center`}
                 >
-                  <p className="text-sm font-bold">
+                  <p className="text-md font-bold">
                     +{data?.postData?.images.length - 2} <br />{" "}
                     {t("mainLayout.more")}
                   </p>
@@ -355,12 +364,12 @@ export const SwapDetails = ({ token }: { token: string }) => {
             {/** Post Info */}
             <div
               className={`${
-                themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
+                themeMode === "light" ? "bg-white" : "bg-[#222423]"
               } ${
                 data?.postType === "event"
                   ? "col-span-12 md:col-span-6 justify-center"
                   : "col-span-12"
-              } w-full rounded-lg p-4 text-start flex flex-col gap-2 overflow-y-auto md:max-h-[30vh]`}
+              } w-full rounded-xl p-4 text-start flex flex-col gap-2 overflow-y-auto md:max-h-[30vh]`}
             >
               <p className="text-[1.8em] font-bold leading-[1.2]">
                 {data?.postData?.title}
@@ -402,12 +411,12 @@ export const SwapDetails = ({ token }: { token: string }) => {
             {/* User Info */}
             <div
               className={`${
-                themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
+                themeMode === "light" ? "bg-white" : "bg-[#222423]"
               } ${
                 data?.postType === "event"
                   ? "col-span-12 md:col-span-6 p-4"
                   : "col-span-12"
-              } rounded-lg text-start overflow-y-auto max-h-[30vh]`}
+              } rounded-xl text-start overflow-y-auto max-h-[30vh]`}
             >
               {/* User Rating */}
               <div
@@ -420,11 +429,11 @@ export const SwapDetails = ({ token }: { token: string }) => {
                 <div className="flex items-center gap-2">
                   <Avatar
                     variant="rounded"
-                    src={data?.userData?.profilePicture}
+                    src={data?.userData?.profilePic}
                     className="h-full aspect-square"
                   />
                   <div>
-                    <p className="font-bold">@{data?.userData?.username}</p>
+                    <p className="font-bold">@{data?.userData?.userName}</p>
                     <div className="flex gap-1 items-center">
                       <Stack spacing={1}>
                         <Rating
@@ -477,7 +486,7 @@ export const SwapDetails = ({ token }: { token: string }) => {
                     if (data?.offerSent) {
                       console.log("Hola Chica");
                     } else {
-                      openModal(token, "swap", "offer");
+                      updateRouteToOffer();
                     }
                   }}
                 />

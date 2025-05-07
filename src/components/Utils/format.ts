@@ -100,3 +100,10 @@ export const getFullAddress = async (
     return "Dirección desconocida";
   }
 };
+
+export const conditionColors: Record<string, string> = {
+  as_new: "#FFA809",
+  used: "#C665F2",
+  new: "#0CA867",
+  very_used: "#FD436A",
+};

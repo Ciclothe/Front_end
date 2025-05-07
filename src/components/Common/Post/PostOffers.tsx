@@ -3,8 +3,8 @@ import { AssistantsAvatars } from "@/components/Common/AssistantsAvatars";
 interface Offer {
   id: number;
   userData: {
-    id: number;
-    avatar: string;
+    userId: number;
+    profilePic: string;
   };
 }
 
@@ -26,8 +26,8 @@ export const PostOffers = ({
     <AssistantsAvatars
       firstAssistants={
         offers?.map((offer) => ({
-          id: offer.userData.id,
-          avatar: offer.userData.avatar,
+          userId: offer.userData.userId,
+          profilePic: offer.userData.profilePic,
         })) ?? []
       }
       total={totalOffers ?? 0}

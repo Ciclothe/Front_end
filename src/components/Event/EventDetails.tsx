@@ -1,6 +1,6 @@
 import { Icon } from "@mdi/react";
 import {
-  mdiArrowLeft,
+  mdiClose,
   mdiDotsHorizontal,
   mdiStar,
   mdiCalendarBlank,
@@ -29,12 +29,12 @@ const eventTestData = [
   {
     id: 2,
     postType: "event",
-    token: "c3dhcC0yMzQ=",
+    token: "a9X3vB1cD4pE5sQ7mN8wZ6yT2kR0uLf",
     userData: {
-      id: 1,
-      profilePicture:
+      userId: 1,
+      profilePic:
         "https://i.pinimg.com/736x/a3/c0/40/a3c040ee9e0cb3a06684a603c1a06a9c.jpg",
-      username: "grifoMmm",
+      userName: "grifoMmm",
     },
     postData: {
       id: 1,
@@ -226,7 +226,7 @@ const InfoItem = ({
       <Icon path={icon} size={1} />
     </div>
     <div>
-      <p className="text-sm opacity-50">{label}</p>
+      <p className="text-md opacity-50">{label}</p>
       <p className="font-bold">{value}</p>
     </div>
   </div>
@@ -235,7 +235,7 @@ const InfoItem = ({
 const SectionHeader = ({ title, count }: { title: string; count: number }) => (
   <div className="flex justify-between items-center">
     <p className="font-bold">{title}</p>
-    <p className="opacity-50 text-sm">{count}</p>
+    <p className="opacity-50 text-md">{count}</p>
   </div>
 );
 
@@ -317,7 +317,7 @@ export const EventDetails = ({ token }: { token: string }) => {
             className={`${styles.bg} p-1 rounded-full cursor-pointer`}
             onClick={closeModal}
           >
-            <Icon path={mdiArrowLeft} size={1} />
+            <Icon path={mdiClose} size={1} />
           </div>
           <UserHeader
             postData={postData}
@@ -395,7 +395,7 @@ export const EventDetails = ({ token }: { token: string }) => {
                 <Icon path={mdiCalendarBlank} size={1} />
               </div>
               <div>
-                <p className="text-sm opacity-50">
+                <p className="text-md opacity-50">
                   {t("mainLayout.event_date")}
                 </p>
                 <p className="font-bold">

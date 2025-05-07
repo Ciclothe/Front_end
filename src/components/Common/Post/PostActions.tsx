@@ -4,12 +4,10 @@ import { LikeBtn } from "../LikeBtn";
 
 export const PostActions = ({
   liked = false,
-  postType,
   token,
   offerSent = false,
 }: {
   liked?: boolean;
-  postType: string;
   token: string;
   offerSent?: boolean;
 }) => {
@@ -23,7 +21,7 @@ export const PostActions = ({
           if (offerSent) {
             console.log("Oferta ya enviada");
           } else {
-            openModal(token, postType, "offer");
+            openModal(token, "offer");
           }
         }}
       />

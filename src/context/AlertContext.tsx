@@ -59,7 +59,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
             className={`rounded-md px-4 py-3 shadow-lg flex items-center gap-3 transition-all duration-300 ${alertStyle.bg} ${alertStyle.text}`}
           >
             {alertStyle.icon}
-            <span className="text-sm font-medium">{message}</span>
+            <span className="text-md font-medium">{message}</span>
             <button onClick={handleClose} className="ml-auto">
               <CloseRoundedIcon className={`w-4 h-4 ${alertStyle.text}`} />
             </button>
