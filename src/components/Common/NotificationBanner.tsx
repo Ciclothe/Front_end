@@ -8,6 +8,7 @@ import { mdiClose } from "@mdi/js";
 import { useModal } from "@/context/ModalContext";
 import { getRelativeTime } from "@/components/Utils/format";
 import { useTranslation } from "react-i18next";
+import { SwapOfferReceived } from "@/components/Swap/SwapOfferReceived";
 
 //TODO: Fetch notifications from the server
 const Notifications = [
@@ -20,7 +21,7 @@ const Notifications = [
       "https://i.pinimg.com/736x/8c/f7/35/8cf735ceabc9ec5671b0ade7845aa478.jpg",
     created_by: "alejospinaro",
     user_id: 1,
-    title: "created a new post!",
+    title: "created_post",
     createdAt: "2025-04-20T15:00:00Z",
   },
   {
@@ -28,11 +29,11 @@ const Notifications = [
     type: "swap",
     token: "cGe2aa0fMjM=",
     readed: false,
-    created_by: "lielcita1230",
+    created_by: "poseidon",
     profilePicture:
-      "https://i.pinimg.com/736x/3f/4f/e9/3f4fe92639ea9d5980ef1760212e7b86.jpg",
+      "https://i.pinimg.com/736x/6a/3b/01/6a3b01b467a751122986da4cb9764033.jpg",
     user_id: 2,
-    title: "sent you a swap offer!",
+    title: "sent_swap_offer",
     createdAt: "2025-04-20T15:30:00Z",
   },
   {
@@ -44,7 +45,7 @@ const Notifications = [
       "https://i.pinimg.com/736x/be/e6/2e/bee62e121c4fdb1c841e97e459fa7f11.jpg",
     created_by: "marcAnthony",
     user_id: 3,
-    title: "sent you a request to your event!",
+    title: "sent_event_request",
     createdAt: "2025-04-20T16:00:00Z",
   },
   {
@@ -56,7 +57,7 @@ const Notifications = [
       "https://i.pinimg.com/736x/5b/1c/df/5b1cdfeaa4d9367e9913836cae7ba94b.jpg",
     created_by: "elayuwoki",
     user_id: 4,
-    title: "sent you a request to your event!",
+    title: "sent_event_request",
     createdAt: "2025-04-20T16:00:00Z",
   },
 ];
@@ -69,7 +70,7 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
   isOpen,
 }) => {
   const { openModal } = useModal();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const { themeMode } = useTheme();
   const backgroundClass =
@@ -99,6 +100,7 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -106,7 +108,7 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
         document.body.style.overflow = "";
       }}
     >
-      <div className="absolute z-100 h-screen w-full md:w-fit md:py-8 md:pl-4 md:left-full top-0">
+      <div className="fixed md:absolute z-150 h-screen w-full md:w-fit md:py-8 md:pl-4 md:left-full top-0">
         <div
           className={clsx(
             "h-full w-full md:w-[35vw] xl:w-[25vw] overflow-y-auto border",
@@ -115,16 +117,17 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
           )}
           style={shadowStyle}
         >
+          {/* HEADER DE NOTIFICACIONES */}
           <div
             className={clsx(
               themeMode === "light" ? "border-black/5" : "border-white/5",
-              "border-b flex items-center p-2 md:p-4 gap-4 bg-inherit sticky top-0 z-10"
+              "border-b flex items-center py-2 px-4 md:p-4 gap-4 bg-inherit sticky top-0 z-10"
             )}
           >
             <div
               className={`${
                 themeMode === "light" ? "bg-[#EDEDED]" : "bg-[#222423]"
-              } p-1 rounded-full cursor-pointer h-full w-fit z-20 md:hidden`}
+              } p-2 rounded-full cursor-pointer h-full w-fit z-20 md:hidden`}
               onClick={() => {
                 isOpen(false);
                 document.body.style.overflow = "";
@@ -138,7 +141,7 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
             />
           </div>
           {Notifications.length > 0 && (
-            <div className="flex-1 overflow-y-auto custom-scrollbar">
+            <div className="flex-1 overflow-y-auto">
               {Notifications.map((notification, index) => (
                 <div
                   key={index}
@@ -158,30 +161,37 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
                         <span className="font-semibold">
                           @{notification.created_by}{" "}
                         </span>
-                        <span className="opacity-50">{notification.title}</span>
+                        <span className="opacity-50">
+                          {t(`mainLayout.${notification.title}`)}
+                        </span>
                       </p>
                       {notification.type === "swap" && (
-                        <div className="flex gap-2 mt-2">
+                        <div className="flex gap-2 mt-2 flex-wrap">
                           <div
                             className={`${
                               themeMode === "light"
                                 ? "hover:text-white"
                                 : "hover:text-black"
-                            } bg-[rgba(13,188,115,0.1)] text-[#0DBC73] hover:bg-[#0DBC73] cursor-pointer flex whitespace-nowrap items-center justify-center w-fit px-6 font-semibold py-2 rounded-lg text-sm`}
+                            } bg-[rgba(13,188,115,0.1)] text-[#0DBC73] hover:bg-[#0DBC73] cursor-pointer flex whitespace-nowrap items-center justify-center w-fit font-semibold text-sm px-5 py-3 rounded-xl`}
                             onClick={() => {
-                              openModal(notification?.token, "offerReceived");
+                              openModal(<SwapOfferReceived />);
+                              isOpen(false);
                             }}
                           >
-                            View Offer
+                            {t(`mainLayout.view_offer`)}
                           </div>
                           <div
                             className={`${
                               themeMode === "light"
                                 ? "hover:text-white"
                                 : "hover:text-black"
-                            } cursor-pointer hover:bg-[#bc0d0d] text-[#bc0d0d] flex items-center justify-center w-fit px-6 font-semibold py-2 rounded-lg text-sm`}
+                            } cursor-pointer hover:bg-[#bc0d0d] text-[#bc0d0d] flex items-center justify-center w-fit font-semibold text-sm px-5 py-3 rounded-xl`}
+                            //  TODO: Add decline offer function
+                            onClick={() => {
+                              isOpen(false);
+                            }}
                           >
-                            Decline
+                            {t(`mainLayout.decline`)}
                           </div>
                         </div>
                       )}
@@ -191,7 +201,7 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
                     {!notification?.readed && (
                       <div className="w-2 h-2 bg-[#0dbc73] rounded-full"></div>
                     )}
-                    <div className="text-xs opacity-50 text-nowrap text-end overflow-hidden">
+                    <div className="text-xs opacity-50 text-nowrap text-end">
                       {getRelativeTime(notification.createdAt, i18n.language)}
                     </div>
                   </div>

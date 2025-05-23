@@ -10,7 +10,7 @@ import {
 } from "@/components/Utils/format";
 import { EventType } from "@/types/index";
 import { AssistantsAvatars } from "@/components/Common/AssistantsAvatars";
-import { useModal } from "@/context/ModalContext";
+import { useNavigate } from "react-router-dom";
 
 interface CardEventProps {
   event: EventType;
@@ -24,9 +24,9 @@ export const CardEvent: React.FC<CardEventProps> = ({
   onClickEvent,
 }) => {
   const { themeMode } = useTheme();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [address, setAddress] = useState<string>("");
-  const { openModal } = useModal();
+  const navigate = useNavigate();
 
   const willGoText =
     event.participants.length === 1
@@ -55,11 +55,10 @@ export const CardEvent: React.FC<CardEventProps> = ({
       } flex flex-col gap-2 rounded-2xl p-4 cursor-pointer min-w-full sm:min-w-1/2 lg:min-w-1/3`}
       onClick={(e) => {
         e.stopPropagation();
-        console.log(showActionButton);
         if (showActionButton) {
           onClickEvent?.(e);
         } else {
-          openModal(event.token);
+          navigate(`/eventDetails/${event.token}`);
         }
       }}
     >
@@ -100,13 +99,13 @@ export const CardEvent: React.FC<CardEventProps> = ({
               themeMode === "dark"
                 ? "bg-[#F7F7F7] text-black"
                 : "bg-[#171717] text-white"
-            }  px-4 py-2 font-bold rounded-md gap-2 w-full`}
+            }  px-5 py-3 w-full rounded-xl font-bold gap-2`}
             onClick={(e) => {
               e.stopPropagation();
-              openModal(event.token);
+              navigate(`/eventDetails/${event.token}`);
             }}
           >
-            <p>View Event</p>
+            <p>{t(`mainLayout.view_event`)}</p>
           </button>
         </div>
       )}

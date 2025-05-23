@@ -1,3 +1,4 @@
+// App.tsx
 import { ReactNode } from "react";
 import "@/App.css";
 
@@ -6,7 +7,7 @@ interface Props {
 }
 
 function App({ children }: Props) {
-  return <>{children}</>;
+  return <main className="w-full min-h-screen">{children}</main>;
 }
 
 export default App;

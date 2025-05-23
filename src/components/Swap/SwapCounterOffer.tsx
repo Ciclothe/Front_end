@@ -86,15 +86,17 @@ const offerSwapData = [
   },
 ];
 
-export const SwapCounterOffer = ({ token }: { token: string }) => {
-  const { closeModal, openModal, goBack } = useModal();
+export const SwapCounterOffer = () => {
+  const { closeModal, params, popContent } = useModal();
   const { themeMode } = useTheme();
   const { t } = useTranslation();
   const [receiverGarments, setReceiverGarments] = useState<Garment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { showAlert } = useAlert();
-  const data = offerSwapData.find((e) => e.token === token);
   const navigate = useNavigate();
+
+  const token = params?.token;
+  const data = offerSwapData.find((e) => e.token === token);
 
   useEffect(() => {
     const data = offerSwapData.find((e) => e.token === token);
@@ -141,22 +143,26 @@ export const SwapCounterOffer = ({ token }: { token: string }) => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full md:max-h-[80vh] gap-4">
-      <div className="relative flex justify-center items-center h-10">
-        {/* Botón cerrar a la izquierda */}
+    <div className="flex flex-col h-full w-full md:max-h-[80vh] md:pb-4">
+      {/* HEADER */}
+      <div className="flex items-center justify-between py-4">
         <div
-          className={`absolute left-0 ${
-            themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
-          } p-1 rounded-full cursor-pointer w-fit`}
-          onClick={() => goBack()}
+          className={`${
+            themeMode === "light" ? "bg-[#EDEDED]" : "bg-[#222423]"
+          } p-2 rounded-full cursor-pointer`}
+          onClick={popContent}
         >
           <Icon path={mdiArrowLeft} size={1} />
         </div>
 
-        {/* Texto centrado */}
-        <p className="text-center text-[1.2em] font-bold">
+        <p className="flex-1 text-center text-[1.2em] font-bold">
           {t("mainLayout.counteroffers")}
         </p>
+
+        {/* Espacio invisible del mismo tamaño que el botón para balancear */}
+        <div className="p-2 invisible">
+          <Icon path={mdiArrowLeft} size={1} />
+        </div>
       </div>
 
       <div className="flex flex-col flex-grow overflow-hidden">
@@ -217,7 +223,7 @@ export const SwapCounterOffer = ({ token }: { token: string }) => {
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <p
+                  {/* <p
                     className="p-4 font-semibold text-[#0DBC73]"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -227,7 +233,7 @@ export const SwapCounterOffer = ({ token }: { token: string }) => {
                     }}
                   >
                     {t("mainLayout.details")}
-                  </p>
+                  </p> */}
 
                   <div
                     className={`${
@@ -314,7 +320,7 @@ export const SwapCounterOffer = ({ token }: { token: string }) => {
                     </div>
                   </div>
                 </div>
-                <p
+                {/* <p
                   className="font-semibold text-[#0DBC73] cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -324,17 +330,17 @@ export const SwapCounterOffer = ({ token }: { token: string }) => {
                   }}
                 >
                   {t("mainLayout.details")}
-                </p>
+                </p> */}
               </div>
             ))}
           </div>
         </div>
       </div>
       {/* Footer fijo */}
-      <div className="flex-shrink-0 space-y-4">
+      <div className="flex-shrink-0 space-y-4 mt-4">
         {/* Acciones */}
         <div
-          className={`px-5 py-2 w-full rounded-full flex items-center justify-center font-bold
+          className={`px-5 py-3 w-full rounded-xl flex items-center justify-center font-bold
            bg-[#0DBC73] transition-all duration-300
           ${
             !receiverGarments.filter((g) => g.selected).length

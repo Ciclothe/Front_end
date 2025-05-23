@@ -51,7 +51,7 @@ export const UserHeader: React.FC<UserHeaderProps> = ({
     >
       <Avatar
         variant="rounded"
-        src={userData?.profilePic}
+        src={userData?.profilePicture}
         className="h-full aspect-square"
       />
       <div className="w-full truncate">

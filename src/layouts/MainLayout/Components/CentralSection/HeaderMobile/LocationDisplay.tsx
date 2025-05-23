@@ -1,4 +1,5 @@
 import { useTheme } from "@/context/ThemeContext";
+import { t } from "i18next";
 import { useLocation } from "react-router-dom";
 
 export const LocationDisplay = () => {
@@ -17,7 +18,7 @@ export const LocationDisplay = () => {
             : ""
         } ${isExplorePage ? "px-10 py-1 rounded-full backdrop-blur-xs" : ""}`}
       >
-        <p className="text-xs opacity-50">Location</p>
+        <p className="text-xs opacity-50">{t("mainLayout.location")}</p>
         <p className="font-bold">Valencia, Spain</p>
       </div>
     </div>

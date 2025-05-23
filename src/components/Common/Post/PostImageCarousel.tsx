@@ -124,7 +124,7 @@ export const PostImageCarousel: React.FC<UserHeaderProps> = ({
                 alt={`Post Image ${index + 1}`}
                 className={`${
                   widthPercentage ? widthPercentage : "w-[90%] md:w-[70%]"
-                } shrink-0 object-cover rounded-xl ${getAspectRatio(
+                } shrink-0 object-cover rounded-2xl ${getAspectRatio(
                   post?.postData?.imagesOrientation ?? ""
                 )}`}
               />

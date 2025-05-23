@@ -16,7 +16,7 @@ type Card = {
   brand: string;
   color: string;
   title: string;
-  profilePic: string;
+  profilePicture: string;
   location: {
     lat: number;
     lng: number;
@@ -35,7 +35,7 @@ const cardData: Card[] = [
     color: "Blue",
     brand: "Supreme",
     title: "Supreme Gore Tex Jacket Royal L",
-    profilePic:
+    profilePicture:
       "https://i.pinimg.com/280x280_RS/59/f0/77/59f07721cc9792292d159244cdc6b9e6.jpg",
     location: { lat: -0.4039672, lng: 39.4676153 },
   },
@@ -49,7 +49,7 @@ const cardData: Card[] = [
     color: "Black",
     brand: "Nike",
     title: "Nike Infinityrn 4 FP - talla 41",
-    profilePic:
+    profilePicture:
       "https://i.pinimg.com/280x280_RS/91/ba/80/91ba809095988caccd09ab290e5ee196.jpg",
     location: { lat: 39.4676153, lng: -0.4039672 },
   },
@@ -63,7 +63,7 @@ const cardData: Card[] = [
     color: "Black",
     brand: "Represent",
     title: "Pantalón corto Represent",
-    profilePic:
+    profilePicture:
       "https://images1.vinted.net/t/02_014e5_CtEDSisrSLqGFoavFdHszsbE/f800/1733506895.jpeg?s=6a2ed55ae31f25b09a4ebc83a105ee56e33c285d",
     location: { lat: 39.4676153, lng: -0.4039672 },
   },
@@ -77,7 +77,7 @@ const cardData: Card[] = [
     color: "Grey",
     brand: "Represent",
     title: "Sudadera Represent",
-    profilePic:
+    profilePicture:
       "https://i.pinimg.com/280x280_RS/c5/0b/25/c50b259274901b27316e6537150c786a.jpg",
     location: { lat: 39.4676153, lng: -0.4039672 },
   },
@@ -91,7 +91,7 @@ const cardData: Card[] = [
     color: "Black",
     brand: "Balenciaga",
     title: "Balenciaga hat",
-    profilePic:
+    profilePicture:
       "https://i.pinimg.com/280x280_RS/c9/82/40/c9824002f425c9a41bfc0caa5c51f81e.jpg",
     location: { lat: 39.4676153, lng: -0.4039672 },
   },
@@ -120,7 +120,7 @@ export const SwipePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 md:px-0 h-full overflow-hidden pb-4">
-      <div className="flex-1 grid place-items-center h-full relative">
+      <div className="flex-1 grid place-items-center h-full relative w-full">
         <TutorialOverlat onTutorialChange={handleTutorialChange} />
         {cards.map((card) => (
           <CardComponent
@@ -131,7 +131,7 @@ export const SwipePage = () => {
           />
         ))}
       </div>
-      <div className="flex items-center gap-3">
+      <div className="items-center gap-3 hidden md:flex">
         <button
           className={`${
             themeMode ? "hover:text-white" : "hover:text-black"

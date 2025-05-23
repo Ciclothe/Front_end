@@ -34,7 +34,7 @@ export const AssistantsAvatars: React.FC<AssistantsAvatarsProps> = ({
           >
             <Avatar
               alt={assistent.userName}
-              src={assistent.profilePic}
+              src={assistent.profilePicture}
               variant="rounded"
               sx={{
                 border: `${

@@ -1,6 +1,7 @@
 import { useModal } from "@/context/ModalContext";
 import { OfferBtn } from "../OfferBtn";
 import { LikeBtn } from "../LikeBtn";
+import { SwapOfferSteps } from "@/components/Swap/SwapOfferSteps";
 
 export const PostActions = ({
   liked = false,
@@ -21,7 +22,7 @@ export const PostActions = ({
           if (offerSent) {
             console.log("Oferta ya enviada");
           } else {
-            openModal(token, "offer");
+            openModal(<SwapOfferSteps />, { token });
           }
         }}
       />
@@ -29,7 +30,7 @@ export const PostActions = ({
       <LikeBtn
         liked={liked}
         onClick={() => {
-          console.log("Hola");
+          console.log("Like button clicked");
         }}
       />
     </div>

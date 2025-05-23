@@ -46,6 +46,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   }, [themeMode]);
 
   const toggleMode = () => {
+    // Si no hay usuario, no permitir toggle
     setThemeMode((prevMode) => (prevMode === "dark" ? "light" : "dark"));
   };
 
@@ -56,6 +57,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = (): ThemeContextProps => {
   const context = useContext(ThemeContext);
   if (!context) {

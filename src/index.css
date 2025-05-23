@@ -97,6 +97,62 @@ button {
   transition: border-color 0.25s;
 }
 
+.animated-gradient-button {
+  position: relative;
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  background: var(--button-bg);
+  color: var(--button-color);
+  overflow: hidden;
+  z-index: 0;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.animated-gradient-button::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 13px;
+  background: linear-gradient(270deg, #0dbc73, #02995d, #035839, #0dbc73, #02995d);
+  background-size: 600% 600%;
+  animation: borderFlow 4s linear infinite;
+  z-index: -1;
+}
+
+.animated-gradient-button > span {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes borderFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bodyDayMode {
+  --button-bg: white;
+  --button-color: white;
+}
+
+.bodyNightMode {
+  --button-bg: #222423;
+  --button-color: black;
+}
+
 /* Modo claro/oscuro automático */
 @media (prefers-color-scheme: light) {
   body {

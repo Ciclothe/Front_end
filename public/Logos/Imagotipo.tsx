@@ -1,6 +1,9 @@
-import React from "react";
+type ImagotipoProps = {
+  color?: string;
+  height?: string | number;
+};
 
-export const Imagotipo = ({ color = "#221f1f", height = "100px" }) => {
+export const Imagotipo = ({ color, height }: ImagotipoProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

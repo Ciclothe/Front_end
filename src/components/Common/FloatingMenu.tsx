@@ -16,7 +16,7 @@ interface FloatingMenuProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   options: FloatingMenuOption[];
   header?: React.ReactNode;
-  actions?: React.ReactNode;
+  actions?: React.ReactNode | React.ReactNode[];
   footer?: React.ReactNode;
   position?: "top" | "bottom";
   align?: "left" | "right";
@@ -75,7 +75,23 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
         <hr className="border-2 w-15 rounded" />
       </div>
       {header && <div>{header}</div>}
-      {actions && <div>{actions}</div>}
+      {actions && (
+        <div
+          className={`flex w-full items-between ${
+            Array.isArray(actions) ? "flex-col w-full" : ""
+          }`}
+        >
+          {Array.isArray(actions) ? (
+            actions.map((action, i) => (
+              <div key={i} className="w-full">
+                {action}
+              </div>
+            ))
+          ) : (
+            <div className="w-full">{actions}</div>
+          )}
+        </div>
+      )}
       {options.map((option, index) => (
         <OptionItem
           key={index}
@@ -113,7 +129,7 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
               (val) => `blur(${8 - Math.min(val / 10, 8)}px)`
             ),
           }}
-          className="md:hidden fixed top-0 left-0 w-full h-full pb-5 px-2 z-[100] items-end flex"
+          className="md:hidden fixed top-0 left-0 w-full h-full pb-5 px-4 z-[100] items-end flex"
           onClick={() => {
             body.style.overflow = "";
             setIsOpen(false);

@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useModal } from "@/context/ModalContext";
 import { useTheme } from "@/context/ThemeContext";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@mdi/react";
-import {
-  mdiArrowLeft,
-  mdiChevronRight,
-  mdiSwapHorizontalHidden,
-} from "@mdi/js";
+import { mdiChevronRight, mdiSwapHorizontalHidden } from "@mdi/js";
 
 import { useTranslation } from "react-i18next";
 import { FaCopy } from "react-icons/fa6";
@@ -36,9 +31,9 @@ const summaryData = [
       sender: {
         id: 1,
         name: "John Doe",
-        username: "johndoe",
-        avatar:
-          "https://images1.vinted.net/t/02_00314_eGXMszKxuYWKCdVtu1AS4H4w/f800/1743443816.jpeg?s=c8f670a12fb13ef62847dc60113e3fb61546e874",
+        userName: "poseidon",
+        profilePicture:
+          "https://i.pinimg.com/736x/6a/3b/01/6a3b01b467a751122986da4cb9764033.jpg",
         rating: 4.5,
         rating_count: 10,
         location: { lat: 36.51543, lng: -4.88583 },
@@ -79,7 +74,6 @@ const summaryData = [
 export const SwapSummaryPage: React.FC = () => {
   const { token } = useParams<{ token: string }>();
   const data = summaryData.find((e) => e.swapData.token === token);
-  const { openModal } = useModal();
   const { themeMode } = useTheme();
   const { t, i18n } = useTranslation();
   const [location, setLocation] = useState<string | null>(null);
@@ -132,341 +126,334 @@ export const SwapSummaryPage: React.FC = () => {
   };
 
   return (
-    <div
-      className={`${
-        themeMode === "light" ? "bg-white" : "bg-[#121212]"
-      } min-h-[100vh] md:h-[100vh] flex flex-col relative md:overflow-hidden`}
-    >
-      {/* HEADER */}
-      <div className="w-full p-2 md:px-10 md:py-5 xl:px-20 flex items-center gap-4">
-        {/* Flecha a la izquierda */}
-        <div
-          className={`${
-            themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
-          } p-1 rounded-full cursor-pointer w-fit z-20`}
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          <Icon path={mdiArrowLeft} size={1} />
-        </div>
-        <p className="text-[1.2em] font-semibold">{t("mainLayout.summary")}</p>
-      </div>
-      {/* MAIN CONTENT */}
-      <div className="px-2 md:px-10 xl:px-40 grid grid-cols-12 gap-4 my-4 md:flex-grow overflow-y-auto md:overflow-hidden">
-        {/* Closet Swap */}
-        <div className="col-span-12 md:col-span-7 xl:col-span-8 text-start flex flex-col overflow-hidden h-fit md:h-auto">
-          {/* Receive */}
-          <div
-            className={`rounded-2xl p-4 border max-h-[50%] min-h-0 overflow-y-auto ${
-              themeMode === "light"
-                ? "bg-[#F7F7F7] border-black/5"
-                : "bg-[#222423] border-white/5"
-            }`}
-          >
-            <div className="flex justify-between items-center">
-              <p className="font-semibold text-[1.1em]">
-                {t("mainLayout.you_will_receive")}
-              </p>
+    // <div
+    //   className={`${
+    //     themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
+    //   } min-h-[100vh] md:h-[100vh] flex flex-col relative md:overflow-hidden p-2 md:p-4 text-start`}
+    // >
+    //   {/* MAIN CONTENT */}
 
-              <p className="opacity-50 text-md">
-                {data?.receiverCloset.length}{" "}
-                {data?.receiverCloset.length
-                  ? t("mainLayout.garment")
-                  : t("mainLayout.garment_plural")}
-              </p>
-            </div>
-            {/* Garments */}
-            <div className="flex flex-col gap-2 mt-4">
-              {data?.receiverCloset.map((garment) => (
-                <div
-                  key={garment.id}
-                  className={`${
-                    themeMode === "light" ? "bg-white" : "bg-[#121212]"
-                  } flex justify-between w-full items-center p-4 rounded-lg gap-4 truncate`}
-                >
-                  <div className="flex gap-4 h-full max-w-full truncate">
-                    <img
-                      src={garment.mainImage}
-                      alt="garment"
-                      className="w-20 aspect-square object-cover rounded-md"
-                    />
-                    <div className="flex flex-col justify-center">
-                      <p
-                        className="font-bold"
-                        style={{ color: conditionColors[garment.condition] }}
-                      >
-                        {t(`mainLayout.${garment.condition}`)}
-                      </p>
-                      <div className="mt-2">
-                        <p className="font-bold truncate">{garment.title}</p>
-                        <p className="opacity-50 truncate">
-                          {garment.color} | {garment.size} | {garment.brand}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <p
-                    className="text-[#0DBC73] flex-shrink-0 font-semibold cursor-pointer"
-                    onClick={() => {
-                      openModal(garment.token, "details");
-                    }}
-                  >
-                    {t("mainLayout.details")}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Divider */}
-          <div className="flex justify-center items-center -mt-2 -mb-2 z-20">
+    <div className="h-full flex flex-col">
+      {/* Header */}
+      <div className="p-4 sticky top-0 left-0 right-0 h-16 flex items-center justify-start z-50">
+        <p className="text-[1.2em] font-semibold truncate">
+          {t("mainLayout.summary")}
+        </p>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-auto scrollbar-none px-4">
+        <div className="grid grid-cols-12 gap-4 md:flex-grow overflow-y-auto md:overflow-hidden">
+          {/* Closet Swap */}
+          <div className="col-span-12 md:col-span-7 xl:col-span-8 text-start flex flex-col overflow-hidden h-fit md:h-auto">
+            {/* Receive */}
             <div
-              className={`p-2 aspect-square flex items-center justify-center rounded-full ${
-                themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
+              className={`rounded-2xl p-4 border max-h-[50%] min-h-0 overflow-y-auto ${
+                themeMode === "light"
+                  ? "bg-white border-black/5"
+                  : "bg-[#222423] border-white/5"
               }`}
-              style={{ boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}
             >
-              <Icon
-                path={mdiSwapHorizontalHidden}
-                size={1}
-                className="rotate-90"
-              />
-            </div>
-          </div>
-          {/* Send */}
-          <div
-            className={`rounded-2xl p-4 border max-h-[50%] overflow-y-auto ${
-              themeMode === "light"
-                ? "bg-[#F7F7F7] border-black/5"
-                : "bg-[#222423] border-white/5"
-            }`}
-          >
-            <div className="flex justify-between items-center gap-4">
-              <p className="font-semibold text-[1.1em] truncate">
-                {t("mainLayout.you_will_give")}
-              </p>
-              <p className="opacity-50 text-md">
-                {data?.senderCloset.length}{" "}
-                {data?.senderCloset.length
-                  ? t("mainLayout.garment")
-                  : t("mainLayout.garment_plural")}
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 mt-4">
-              {data?.senderCloset.map((garment) => (
-                <div
-                  key={garment.id}
-                  className={`${
-                    themeMode === "light" ? "bg-white" : "bg-[#121212]"
-                  } flex justify-between w-full items-center p-4 rounded-lg gap-4 truncate`}
-                >
-                  <div className="flex gap-4 h-full max-w-full truncate">
-                    <img
-                      src={garment.mainImage}
-                      alt="garment"
-                      className="w-20 aspect-square object-cover rounded-md"
-                    />
-                    <div className="flex flex-col justify-center">
-                      <p
-                        className="font-bold"
-                        style={{ color: conditionColors[garment.condition] }}
-                      >
-                        {t(`mainLayout.${garment.condition}`)}
-                      </p>
-                      <div className="mt-2">
-                        <p className="font-bold truncate">{garment.title}</p>
-                        <p className="opacity-50 truncate">
-                          {garment.color} | {garment.size} | {garment.brand}
+              <div className="flex justify-between items-center">
+                <p className="font-semibold text-[1.1em]">
+                  {t("mainLayout.you_will_receive")}
+                </p>
+
+                <p className="opacity-50 text-md">
+                  {data?.receiverCloset.length}{" "}
+                  {data?.receiverCloset.length
+                    ? t("mainLayout.garment")
+                    : t("mainLayout.garment_plural")}
+                </p>
+              </div>
+              {/* Garments */}
+              <div className="flex flex-col gap-2 mt-4">
+                {data?.receiverCloset.map((garment) => (
+                  <div
+                    key={garment.id}
+                    className={`${
+                      themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
+                    } flex justify-between w-full items-center p-4 rounded-lg gap-4 truncate`}
+                  >
+                    <div className="flex gap-4 h-full max-w-full truncate">
+                      <img
+                        src={garment.mainImage}
+                        alt="garment"
+                        className="w-20 aspect-square object-cover rounded-md"
+                      />
+                      <div className="flex flex-col justify-center">
+                        <p
+                          className="font-bold"
+                          style={{ color: conditionColors[garment.condition] }}
+                        >
+                          {t(`mainLayout.${garment.condition}`)}
                         </p>
+                        <div className="mt-2">
+                          <p className="font-bold truncate">{garment.title}</p>
+                          <p className="opacity-50 truncate">
+                            {garment.color} | {garment.size} | {garment.brand}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <p
-                    className="text-[#0DBC73] flex-shrink-0 font-semibold cursor-pointer"
-                    onClick={() => {
-                      openModal(garment.token, "details");
-                    }}
+                ))}
+              </div>
+            </div>
+            {/* Divider */}
+            <div className="flex justify-center items-center -mt-2 -mb-2 z-20">
+              <div
+                className={`p-2 aspect-square flex items-center justify-center rounded-full ${
+                  themeMode === "light" ? "bg-white" : "bg-[#222423]"
+                }`}
+                style={{ boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}
+              >
+                <Icon
+                  path={mdiSwapHorizontalHidden}
+                  size={1}
+                  className="rotate-90"
+                />
+              </div>
+            </div>
+            {/* Send */}
+            <div
+              className={`rounded-2xl p-4 border max-h-[50%] overflow-y-auto ${
+                themeMode === "light"
+                  ? "bg-white border-black/5"
+                  : "bg-[#222423] border-white/5"
+              }`}
+            >
+              <div className="flex justify-between items-center gap-4">
+                <p className="font-semibold text-[1.1em] truncate">
+                  {t("mainLayout.you_will_give")}
+                </p>
+                <p className="opacity-50 text-md">
+                  {data?.senderCloset.length}{" "}
+                  {data?.senderCloset.length
+                    ? t("mainLayout.garment")
+                    : t("mainLayout.garment_plural")}
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 mt-4">
+                {data?.senderCloset.map((garment) => (
+                  <div
+                    key={garment.id}
+                    className={`${
+                      themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
+                    } flex justify-between w-full items-center p-4 rounded-lg gap-4 truncate`}
                   >
-                    {t("mainLayout.details")}
-                  </p>
-                </div>
-              ))}
+                    <div className="flex gap-4 h-full max-w-full truncate">
+                      <img
+                        src={garment.mainImage}
+                        alt="garment"
+                        className="w-20 aspect-square object-cover rounded-md"
+                      />
+                      <div className="flex flex-col justify-center">
+                        <p
+                          className="font-bold"
+                          style={{ color: conditionColors[garment.condition] }}
+                        >
+                          {t(`mainLayout.${garment.condition}`)}
+                        </p>
+                        <div className="mt-2">
+                          <p className="font-bold truncate">{garment.title}</p>
+                          <p className="opacity-50 truncate">
+                            {garment.color} | {garment.size} | {garment.brand}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        {/* Swap Info */}
-        <div
-          className={`${
-            themeMode === "light"
-              ? "bg-[#F7F7F7] border-black/5"
-              : "bg-[#222423] border-white/5"
-          } rounded-2xl p-4 col-span-12 md:col-span-5 xl:col-span-4 flex flex-col gap-4 h-fit`}
-        >
-          <div className="w-full flex justify-between items-center text-start">
-            <div>
-              <p className="truncate opacity-50">
-                {" "}
-                {t("mainLayout.swap_code")} #
-              </p>
-              <p className="font-semibold">{data?.swapData?.code}</p>
-            </div>
-            <div onClick={copyToClipboard} className="cursor-pointer">
-              <FaCopy className="w-full h-full" />
-            </div>
-          </div>
-          {/* User Info */}
+          {/* Swap Info */}
           <div
             className={`${
-              themeMode === "light" ? "bg-white" : "bg-[#121212]"
-            } rounded-lg text-start overflow-y-auto max-h-[30vh]`}
+              themeMode === "light"
+                ? "bg-white border-black/5"
+                : "bg-[#222423] border-white/5"
+            } rounded-2xl p-4 col-span-12 md:col-span-5 xl:col-span-4 flex flex-col gap-4 h-fit`}
           >
-            {/* User Rating */}
+            {/* Swap Code */}
+            <div className="w-full flex justify-between items-center text-start">
+              <div>
+                <p className="truncate opacity-50">
+                  {" "}
+                  {t("mainLayout.swap_code")} #
+                </p>
+                <p className="font-semibold">{data?.swapData?.code}</p>
+              </div>
+              <div onClick={copyToClipboard} className="cursor-pointer">
+                <FaCopy className="w-full h-full" />
+              </div>
+            </div>
+            {/* User Info */}
             <div
               className={`${
-                themeMode === "light"
-                  ? "hover:bg-[#e2e2e2]"
-                  : "hover:bg-[#323332]"
-              } flex items-center justify-between cursor-pointer p-4`}
+                themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
+              } rounded-xl text-start overflow-y-auto md:max-h-[30vh]`}
             >
-              <div className="flex items-center gap-2">
-                <Avatar
-                  variant="rounded"
-                  src={data?.swapData?.sender?.avatar}
-                  className="h-full aspect-square"
-                />
-                <div>
-                  <p className="font-bold">
-                    @{data?.swapData?.sender?.username}
-                  </p>
-                  <div className="flex gap-1 items-center">
-                    <Stack spacing={1}>
-                      <Rating
-                        name="half-rating"
-                        defaultValue={data?.swapData?.sender?.rating}
-                        precision={0.5}
-                        readOnly
-                        style={{
-                          color: "#0DBC73",
-                          fontSize: "1.2em",
-                        }}
-                      />
-                    </Stack>
-                    <p className="opacity-50">
-                      {data?.swapData?.sender?.rating_count}
+              {/* User Rating */}
+              <div
+                className={`${
+                  themeMode === "light"
+                    ? "hover:bg-[#eaeaea]"
+                    : "hover:bg-[#323332]"
+                } flex items-center justify-between cursor-pointer p-4`}
+                onClick={() => {
+                  navigate(`/profile/${data?.swapData?.sender?.userName}`);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Avatar
+                    variant="rounded"
+                    src={data?.swapData?.sender?.profilePicture}
+                    className="h-full aspect-square"
+                  />
+                  <div>
+                    <p className="font-bold">
+                      @{data?.swapData?.sender?.userName}
                     </p>
+                    <div className="flex gap-1 items-center">
+                      <Stack spacing={1}>
+                        <Rating
+                          name="half-rating"
+                          defaultValue={data?.swapData?.sender?.rating}
+                          precision={0.5}
+                          readOnly
+                          style={{
+                            color: "#0DBC73",
+                            fontSize: "1.2em",
+                          }}
+                        />
+                      </Stack>
+                      <p className="opacity-50">
+                        {data?.swapData?.sender?.rating_count}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="opacity-50">
-                <Icon path={mdiChevronRight} size={1} />
-              </div>
-            </div>
-            <hr className="opacity-10" />
-            {/* User Location and Offers */}
-            <div className="p-4 flex flex-col gap-2">
-              <div className="flex w-full justify-between">
-                <div className="flex w-full justify-between">
-                  <p className="opacity-50">{t("mainLayout.location")}</p>
-                  <p className="font-semibold">{location || "Cargando..."}</p>
+                <div className="opacity-50">
+                  <Icon path={mdiChevronRight} size={1} />
                 </div>
               </div>
-              <div className="flex w-full justify-between">
-                <p className="opacity-50">{t("mainLayout.complete_swaps")}</p>
+              <hr className="opacity-10" />
+              {/* User Location and Offers */}
+              <div className="p-4 flex flex-col gap-2">
+                <div className="flex w-full justify-between">
+                  <div className="flex w-full justify-between">
+                    <p className="opacity-50">{t("mainLayout.location")}</p>
+                    <p className="font-semibold">{location || "Cargando..."}</p>
+                  </div>
+                </div>
+                <div className="flex w-full justify-between">
+                  <p className="opacity-50">{t("mainLayout.complete_swaps")}</p>
+                  <p className="font-semibold">
+                    {data?.swapData?.sender?.totalSwapsCompleted}
+                  </p>
+                </div>
+                <div className="flex w-full justify-between">
+                  <p className="opacity-50">{t("mainLayout.verified_user")}</p>
+                  <p
+                    className={`font-semibold ${
+                      data?.swapData?.sender?.is_verified
+                        ? "text-[#0DBC73]"
+                        : "text-[#bc0d0d]"
+                    }`}
+                  >
+                    {data?.swapData?.sender?.is_verified ? "Yes" : "No"}
+                  </p>
+                </div>
+                <div className="flex w-full justify-between">
+                  <p className="opacity-50">{t("mainLayout.online")}</p>
+                  <p className={`font-semibold`}>
+                    {getOnlineStatus(data?.swapData?.sender?.last_online) ||
+                      "Cargando..."}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Swap Information */}
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <p className="opacity-50">{t("mainLayout.items_to_receive")}</p>
+                <p className="font-semibold">{data?.receiverCloset?.length}</p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p className="opacity-50">{t("mainLayout.items_to_give")}</p>
+                <p className="font-semibold">{data?.senderCloset?.length}</p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p className="opacity-50">
+                  {t("mainLayout.date_of_completion")}
+                </p>
                 <p className="font-semibold">
-                  {data?.swapData?.sender?.totalSwapsCompleted}
+                  {" "}
+                  {formatDate(data?.swapData?.accepted_at, i18n.language)}
                 </p>
               </div>
-              <div className="flex w-full justify-between">
-                <p className="opacity-50">{t("mainLayout.verified_user")}</p>
-                <p
-                  className={`font-semibold ${
-                    data?.swapData?.sender?.is_verified
-                      ? "text-[#0DBC73]"
-                      : "text-[#bc0d0d]"
-                  }`}
-                >
-                  {data?.swapData?.sender?.is_verified ? "Yes" : "No"}
+              <div className="flex justify-between items-center">
+                <p className="opacity-50">{t("mainLayout.counteroffers")}</p>
+                <p className="font-semibold">
+                  {data?.swapData?.counter__offers}
                 </p>
               </div>
-              <div className="flex w-full justify-between">
-                <p className="opacity-50">{t("mainLayout.online")}</p>
-                <p className={`font-semibold`}>
-                  {getOnlineStatus(data?.swapData?.sender?.last_online) ||
-                    "Cargando..."}
-                </p>
+              <div className="flex justify-between items-center">
+                <p className="opacity-50">{t("mainLayout.swap_city")}</p>
+                <p className="font-semibold">{swapLocation}</p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p className="opacity-50">{t("mainLayout.swap_method")}</p>
+                <p className="font-semibold">{data?.swapData?.swap_method}</p>
               </div>
             </div>
-          </div>
-          {/* Swap Information */}
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <p className="opacity-50">{t("mainLayout.items_to_receive")}</p>
-              <p className="font-semibold">{data?.receiverCloset?.length}</p>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="opacity-50">{t("mainLayout.items_to_give")}</p>
-              <p className="font-semibold">{data?.senderCloset?.length}</p>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="opacity-50">{t("mainLayout.date_of_completion")}</p>
-              <p className="font-semibold">
-                {" "}
-                {formatDate(data?.swapData?.accepted_at, i18n.language)}
-              </p>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="opacity-50">{t("mainLayout.counteroffers")}</p>
-              <p className="font-semibold">{data?.swapData?.counter__offers}</p>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="opacity-50">{t("mainLayout.swap_city")}</p>
-              <p className="font-semibold">{swapLocation}</p>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="opacity-50">{t("mainLayout.swap_method")}</p>
-              <p className="font-semibold">{data?.swapData?.swap_method}</p>
-            </div>
-          </div>
-          {/* Actions */}
-          <div className="md:flex flex-col gap-2 hidden">
+            {/* Action Bottoms */}
             <div
-              className={`${
-                themeMode === "light"
-                  ? "bg-black text-white md:text-black md:bg-[#EBEBEB] md:hover:bg-black md:hover:text-white"
-                  : "bg-white text-black md:text-white md:bg-[#2A2B2A] md:hover:bg-white md:hover:text-black"
-              } px-5 py-2 w-full rounded-full flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
-              onClick={() => {
-                console.log("Open chat");
-              }}
+              className={`hidden text-white p-4 sticky bottom-0 left-0 right-0 md:flex flex-col items-center justify-center z-50`}
             >
-              <p>{t("mainLayout.confirm_meeting")}</p>
-            </div>
-            <div
-              className={`${
-                themeMode === "light" ? "text-black" : "text-white"
-              } px-5 py-2 w-full rounded-full flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
-              onClick={() => {
-                console.log("Open encuesta y review");
-              }}
-            >
-              <p>{t("mainLayout.already_swapped")}</p>
+              <div
+                className={`${
+                  themeMode === "light"
+                    ? "bg-black text-white md:text-black md:bg-[#EBEBEB] md:hover:bg-black md:hover:text-white"
+                    : "bg-white text-black md:text-white md:bg-[#2A2B2A] md:hover:bg-white md:hover:text-black"
+                } px-5 py-2 w-full rounded-full flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
+                onClick={() => {
+                  console.log("Open chat");
+                }}
+              >
+                <p>{t("mainLayout.confirm_meeting")}</p>
+              </div>
+              <div
+                className={`${
+                  themeMode === "light" ? "text-black" : "text-white"
+                } px-5 py-2 w-full rounded-full flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
+                onClick={() => {
+                  console.log("Open encuesta y review");
+                }}
+              >
+                <p>{t("mainLayout.already_swapped")}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* MOBILE ACTIONS */}
+      {/* Actions Bottom */}
       <div
         className={`${
-          themeMode === "light" ? "bg-white" : "bg-[#121212]"
-        } flex flex-col gap-2 w-full md:hidden sticky bottom-0 z-50 p-4 shadow-md`}
+          themeMode === "light"
+            ? "bg-[#F7F7F7] border-black/5"
+            : "bg-[#121212] border-white/10"
+        } text-white p-4 sticky border-t bottom-0 left-0 right-0 flex flex-col items-center justify-center z-50 md:hidden`}
       >
         <div
           className={`${
             themeMode === "light"
               ? "bg-black text-white md:text-black md:bg-[#EBEBEB] md:hover:bg-black md:hover:text-white"
               : "bg-white text-black md:text-white md:bg-[#2A2B2A] md:hover:bg-white md:hover:text-black"
-          } px-5 py-2 w-full rounded-full flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
+          } px-5 py-3 w-full rounded-xl flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
           onClick={() => {
             console.log("Open chat");
           }}
@@ -476,7 +463,7 @@ export const SwapSummaryPage: React.FC = () => {
         <div
           className={`${
             themeMode === "light" ? "text-black" : "text-white"
-          } px-5 py-2 w-full rounded-full flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
+          }px-5 py-3 w-full rounded-xl flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
           onClick={() => {
             console.log("Open encuesta y review");
           }}

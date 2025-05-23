@@ -4,7 +4,7 @@ interface Offer {
   id: number;
   userData: {
     userId: number;
-    profilePic: string;
+    profilePicture: string;
   };
 }
 
@@ -27,7 +27,7 @@ export const PostOffers = ({
       firstAssistants={
         offers?.map((offer) => ({
           userId: offer.userData.userId,
-          profilePic: offer.userData.profilePic,
+          profilePicture: offer.userData.profilePicture,
         })) ?? []
       }
       total={totalOffers ?? 0}

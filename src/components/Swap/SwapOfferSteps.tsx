@@ -7,10 +7,9 @@ import { StepTwo } from "./Steps/StepTwo";
 import PrimaryActionButton from "@/components/Common/PrimaryActionButton";
 import PressAndHoldButton from "./Components/PressAndHoldButton";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useModal } from "@/context/ModalContext";
 import { useAlert } from "@/context/AlertContext";
 import { useLocation } from "react-router-dom";
+import { useModal } from "@/context/ModalContext";
 
 type Garment = {
   id: number;
@@ -25,17 +24,17 @@ type Garment = {
 
 const steps = [{ icon: mdiHanger }, { icon: mdiDrawPen }];
 
-export const SwapOfferSteps = ({ token }: { token: string }) => {
+export const SwapOfferSteps = () => {
+  const { params, closeModal } = useModal();
+
   const { themeMode } = useTheme();
   const [currentStep, setCurrentStep] = useState(0);
   const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
   const { t } = useTranslation();
-  const { closeModal } = useModal();
   const { showAlert } = useAlert();
   const location = useLocation();
   const navigatedInternally = location.state?.navigatedInternally === true;
-
-  const navigate = useNavigate();
+  const token = params?.token;
 
   const [offer, setOffer] = useState<{
     receiver: Garment[];
@@ -56,9 +55,8 @@ export const SwapOfferSteps = ({ token }: { token: string }) => {
       const simulatedResponse = { success: true };
 
       if (simulatedResponse.success) {
-        closeModal();
         showAlert(t("mainLayout.offer_sent_successfully"), "success");
-        return true;
+        closeModal();
       } else {
         showAlert(t("mainLayout.error_sending_offer"), "error");
         return false;
@@ -71,21 +69,21 @@ export const SwapOfferSteps = ({ token }: { token: string }) => {
   };
 
   return (
-    <div className="w-full gap-4 flex flex-col h-full md:max-h-[80vh] overflow-hidden">
+    <div className="w-full flex flex-col h-full md:max-h-[80vh] overflow-hidden">
       {/* HEADER DE PASOS */}
       <div
         className={`${
           themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
-        } flex w-full items-center py-2 z-10 relative`}
+        } flex w-full items-center py-4 z-10 relative`}
       >
         {/* Flecha a la izquierda */}
         <div
           className={`${
-            themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
-          } p-1 rounded-full cursor-pointer w-fit z-20`}
+            themeMode === "light" ? "bg-[#EDEDED]" : "bg-[#222423]"
+          } p-2 rounded-full cursor-pointer w-fit z-20`}
           onClick={() => {
             if (currentStep === 0) {
-              navigate(-1);
+              closeModal();
             } else {
               setCurrentStep(currentStep - 1);
             }
@@ -153,7 +151,7 @@ export const SwapOfferSteps = ({ token }: { token: string }) => {
         )}
       </div>
 
-      <div className="pb-2">
+      <div className="pt-4 md:py-4">
         {/* BOTÓN DE AVANZAR A PASO 2 */}
         {currentStep === 0 ? (
           <PrimaryActionButton

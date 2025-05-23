@@ -27,7 +27,7 @@ export interface Post {
     id: number;
     userData: {
       userId: number;
-      profilePic: string;
+      profilePicture: string;
     };
   }[];
   newPostsData?: {

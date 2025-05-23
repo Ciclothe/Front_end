@@ -15,16 +15,17 @@ import { useAlert } from "@/context/AlertContext";
 import PressAndHoldButton from "./Components/PressAndHoldButton";
 import { useNavigate } from "react-router-dom";
 import { conditionColors } from "@/components/Utils/format";
+import { SwapCounterOffer } from "@/components/Swap/SwapCounterOffer";
 
 const offerSwapData = {
   token: "cGe2aa0fMjM=",
   offerMadeBy: {
     id: 1,
-    username: "lielcita1230",
+    userName: "poseidon",
     ranting: 4.5,
     totalRantings: 20,
     profilePicture:
-      "https://i.pinimg.com/736x/3f/4f/e9/3f4fe92639ea9d5980ef1760212e7b86.jpg",
+      "https://i.pinimg.com/736x/6a/3b/01/6a3b01b467a751122986da4cb9764033.jpg",
   },
   offerReceiverCloset: [
     {
@@ -55,7 +56,7 @@ const offerSwapData = {
 };
 
 export const SwapOfferReceived = () => {
-  const { goBack, openModal, closeModal } = useModal();
+  const { pushContent, closeModal } = useModal();
   const { themeMode } = useTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -81,22 +82,26 @@ export const SwapOfferReceived = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full md:max-h-[80vh] gap-4">
-      <div className="relative flex justify-center items-center h-10">
-        {/* Botón cerrar a la izquierda */}
+    <div className="flex flex-col h-full w-full md:max-h-[80vh] md:pb-4">
+      {/* HEADER */}
+      <div className="flex items-center justify-between py-4">
         <div
-          className={`absolute left-0 ${
-            themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#222423]"
-          } p-1 rounded-full cursor-pointer w-fit`}
-          onClick={goBack}
+          className={`${
+            themeMode === "light" ? "bg-[#EDEDED]" : "bg-[#222423]"
+          } p-2 rounded-full cursor-pointer`}
+          onClick={closeModal}
         >
           <Icon path={mdiClose} size={1} />
         </div>
 
-        {/* Texto centrado */}
-        <p className="text-center text-[1.2em] font-bold">
+        <p className="flex-1 text-center text-[1.2em] font-bold">
           {t("mainLayout.new_swap_offer")}
         </p>
+
+        {/* Espacio invisible del mismo tamaño que el botón para balancear */}
+        <div className="p-2 invisible">
+          <Icon path={mdiClose} size={1} />
+        </div>
       </div>
 
       <div className="flex flex-col flex-grow overflow-hidden">
@@ -124,7 +129,7 @@ export const SwapOfferReceived = () => {
               <div
                 key={garment.id}
                 className={`${
-                  themeMode === "light" ? "bg-white" : "bg-[#121212]"
+                  themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
                 } flex justify-between w-full items-center p-4 rounded-lg gap-4 truncate`}
               >
                 <div className="flex gap-4 h-full max-w-full truncate">
@@ -148,14 +153,14 @@ export const SwapOfferReceived = () => {
                     </div>
                   </div>
                 </div>
-                <p
+                {/* <p
                   className="text-[#0DBC73] flex-shrink-0 font-semibold cursor-pointer"
                   onClick={() => {
                     openModal(garment.token, "details");
                   }}
                 >
                   {t("mainLayout.details")}
-                </p>
+                </p> */}
               </div>
             ))}
           </div>
@@ -201,7 +206,7 @@ export const SwapOfferReceived = () => {
               <div
                 key={garment.id}
                 className={`${
-                  themeMode === "light" ? "bg-white" : "bg-[#121212]"
+                  themeMode === "light" ? "bg-[#F7F7F7]" : "bg-[#121212]"
                 } flex justify-between w-full items-center p-4 rounded-lg gap-4 truncate`}
               >
                 <div className="flex gap-4 h-full max-w-full truncate">
@@ -225,21 +230,21 @@ export const SwapOfferReceived = () => {
                     </div>
                   </div>
                 </div>
-                <p
+                {/* <p
                   className="text-[#0DBC73] flex-shrink-0 font-semibold cursor-pointer"
                   onClick={() => {
                     openModal(garment.token, "details");
                   }}
                 >
                   {t("mainLayout.details")}
-                </p>
+                </p> */}
               </div>
             ))}
           </div>
         </div>
       </div>
       {/* Footer fijo */}
-      <div className="flex-shrink-0 space-y-4">
+      <div className="flex-shrink-0 space-y-4 mt-4">
         {/* Notificación de counteroffer */}
         <div
           className={`${
@@ -256,6 +261,10 @@ export const SwapOfferReceived = () => {
                   ? "hover:bg-[#e2e2e2]"
                   : "hover:bg-[#323332]"
               } flex items-center justify-between cursor-pointer p-4`}
+              onClick={() => {
+                navigate(`/profile/${offerSwapData?.offerMadeBy?.userName}`);
+                closeModal();
+              }}
             >
               <div className="flex items-center gap-2">
                 <Avatar
@@ -265,7 +274,7 @@ export const SwapOfferReceived = () => {
                 />
                 <div>
                   <p className="font-bold">
-                    @{offerSwapData?.offerMadeBy?.username}
+                    @{offerSwapData?.offerMadeBy?.userName}
                   </p>
                   <div className="flex gap-1 items-center">
                     <Stack spacing={1}>
@@ -300,7 +309,7 @@ export const SwapOfferReceived = () => {
               <p>
                 {t("mainLayout.counteroffer_reminder")}{" "}
                 <span className="font-semibold">
-                  @{offerSwapData?.offerMadeBy?.username}
+                  @{offerSwapData?.offerMadeBy?.userName}
                 </span>{" "}
                 {t("mainLayout.his_closet")}
               </p>
@@ -308,11 +317,13 @@ export const SwapOfferReceived = () => {
             <div
               className={`${
                 themeMode === "light"
-                  ? "bg-[#EBEBEB] hover:bg-black hover:text-white"
+                  ? "bg-[#EDEDED] hover:bg-black hover:text-white"
                   : "bg-[#2A2B2A] hover:bg-white hover:text-black"
-              } px-5 py-2 w-full rounded-full flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
+              } px-5 py-3 w-full rounded-xl flex items-center justify-center font-bold transition-all duration-300 cursor-pointer`}
               onClick={() => {
-                openModal(offerSwapData?.token, "counterOffer");
+                pushContent(<SwapCounterOffer />, {
+                  token: offerSwapData?.token,
+                });
               }}
             >
               <p>{t("mainLayout.counteroffers")}</p>
@@ -339,6 +350,7 @@ export const SwapOfferReceived = () => {
                 navigate(
                   `/swaps/offer/accepted/${offerSwapData.token}/summary`
                 );
+                closeModal();
               } else {
                 console.warn("No token found in offerSwapData");
               }

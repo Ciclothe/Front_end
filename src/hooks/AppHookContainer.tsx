@@ -4,22 +4,25 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { ModalProvider } from "@/context/ModalContext";
 import { AlertProvider } from "@/context/AlertContext";
 import { CategoryTabsProvider } from "@/context/CategoryTabsContext";
+import { AuthProvider } from "@/context/AuthContext"; // <-- importa el AuthProvider
 import App from "@/App";
 
 function AppHookContainer() {
   return (
     <BrowserRouter>
-      <App>
+      <AuthProvider>
         <ThemeProvider>
           <AlertProvider>
             <ModalProvider>
               <CategoryTabsProvider>
-                <AppRouter />
+                <App>
+                  <AppRouter />
+                </App>
               </CategoryTabsProvider>
             </ModalProvider>
           </AlertProvider>
         </ThemeProvider>
-      </App>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

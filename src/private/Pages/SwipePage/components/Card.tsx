@@ -16,7 +16,7 @@ type Card = {
   brand: string;
   color: string;
   title: string;
-  profilePic: string;
+  profilePicture: string;
   location: {
     lat: number;
     lng: number;
@@ -42,7 +42,7 @@ const Card = ({
   brand: string;
   color: string;
   title: string;
-  profilePic: string;
+  profilePicture: string;
   location: {
     lat: number;
     lng: number;
@@ -83,7 +83,7 @@ const Card = ({
     const directionX = x.get();
     // const directionY = y.get();
 
-    if (Math.abs(directionX) > 50) {
+    if (Math.abs(directionX) > 30) {
       setCards((pv) => pv.filter((v) => v.id !== id));
 
       // TODO: #70 Create accept/reject/message functionality for cards based on swipe direction and make API call to update data
@@ -110,7 +110,7 @@ const Card = ({
   const backgroundColor = () => {
     const directionX = x.get();
     // const directionY = y.get();
-    if (Math.abs(directionX) > 10) {
+    if (Math.abs(directionX) > 30) {
       if (directionX > 0) {
         setBgColor("#0DBC73");
       } else {

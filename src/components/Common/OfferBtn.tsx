@@ -7,7 +7,7 @@ import { PiSwapFill } from "react-icons/pi";
 
 type OfferBtnProps = {
   offerSent: boolean;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 export const OfferBtn = ({ offerSent, onClick }: OfferBtnProps) => {
@@ -15,8 +15,8 @@ export const OfferBtn = ({ offerSent, onClick }: OfferBtnProps) => {
   const { themeMode } = useTheme();
   const { t } = useTranslation();
 
-  const handleClick = () => {
-    onClick();
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    onClick(e);
   };
 
   const getClasses = () => {
@@ -45,16 +45,16 @@ export const OfferBtn = ({ offerSent, onClick }: OfferBtnProps) => {
 
   return (
     <div
-      className={`px-5 w-full rounded-full flex items-center justify-center gap-2 font-bold cursor-pointer ${getClasses()}`}
+      className={`px-5 py-3 rounded-xl w-full rounded-lg flex items-center justify-center gap-2 font-bold cursor-pointer ${getClasses()}`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       onClick={(e) => {
         e.stopPropagation();
-        handleClick();
+        handleClick(e);
       }}
     >
       {renderIcon()}
-      <p className="py-2 cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">
+      <p className="cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">
         {offerSent
           ? isHovering
             ? t("mainLayout.cancel_offer")

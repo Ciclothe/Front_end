@@ -22,7 +22,7 @@ const PrimaryActionButton: React.FC<PrimaryActionButtonProps> = ({
   return (
     <div>
       <div
-        className={`px-5 py-2 w-full rounded-full flex items-center justify-center font-bold
+        className={`px-5 py-3 w-full rounded-xl flex items-center justify-center font-bold
            bg-[#0DBC73] transition-all duration-300
           ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
           ${

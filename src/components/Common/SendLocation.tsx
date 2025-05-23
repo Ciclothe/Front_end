@@ -5,9 +5,7 @@ import { SearchBar } from "./SearchBar";
 import Map, { Marker } from "react-map-gl/mapbox";
 import Icon from "@mdi/react";
 import { mdiClose } from "@mdi/js";
-
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoiYWxlam9zcGluYXIiLCJhIjoiY20wa2lreDMxMTk5eDJrb2F0N3NtNHBkMyJ9.LV8h87QAtrtHZ2U2FP4V1g";
+import { useTranslation } from "react-i18next";
 
 type ChatConversationProps = {
   closeChat: () => void;
@@ -21,7 +19,11 @@ export const SendLocation = ({
   closeChat,
   onLocationSelected,
 }: ChatConversationProps) => {
+  const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
+
   const { themeMode } = useTheme();
+  const { t } = useTranslation();
+
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<
     google.maps.places.AutocompletePrediction[]
@@ -139,17 +141,26 @@ export const SendLocation = ({
 
   return (
     <DefaultModal onClose={closeChat}>
-      <div className="flex flex-col gap-4 h-full md:h-auto pb-2 md:pb-0">
-        <div className="relative flex justify-center items-center h-10">
+      <div className="flex flex-col h-full md:h-auto pb-2 md:pb-4">
+        {/* Header */}
+        <div className="flex items-center justify-between py-4">
           <div
-            className={`absolute left-0 ${
+            className={`${
               themeMode === "light" ? "bg-[#EDEDED]" : "bg-[#222423]"
-            } p-1 rounded-full cursor-pointer`}
+            } p-2 rounded-full cursor-pointer`}
             onClick={closeChat}
           >
             <Icon path={mdiClose} size={1} />
           </div>
-          <p className="text-center text-[1.2em] font-bold">Buscar ubicación</p>
+
+          <p className="flex-1 text-center text-[1.2em] font-bold">
+            {t("mainLayout.search_location")}
+          </p>
+
+          {/* Espacio invisible del mismo tamaño que el botón para balancear */}
+          <div className="p-2 invisible">
+            <Icon path={mdiClose} size={1} />
+          </div>
         </div>
 
         <div className="relative">
@@ -181,7 +192,7 @@ export const SendLocation = ({
           )}
         </div>
 
-        <div className="w-full h-full md:aspect-[21/9] rounded-xl overflow-hidden">
+        <div className="w-full h-full md:aspect-[21/9] rounded-xl overflow-hidden my-4">
           {viewState && (
             <Map
               {...viewState}
@@ -235,10 +246,10 @@ export const SendLocation = ({
               onLocationSelected(selectedLocation);
             }
           }}
-          className="px-5 w-full rounded-full flex items-center justify-center gap-2 font-bold cursor-pointer bg-[rgba(13,188,115,0.1)] text-[#0DBC73]"
+          className="px-5 py-3 w-full rounded-xl flex items-center justify-center gap-2 font-bold cursor-pointer bg-[rgba(13,188,115,0.1)] text-[#0DBC73]"
         >
-          <p className="py-2 cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">
-            Send location
+          <p className="cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">
+            {t("mainLayout.send_location")}
           </p>
         </div>
       </div>

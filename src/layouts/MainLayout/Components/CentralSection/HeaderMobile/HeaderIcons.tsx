@@ -1,8 +1,15 @@
 import Icon from "@mdi/react";
 import { mdiMagnify } from "@mdi/js";
 import { useTheme } from "@/context/ThemeContext";
-export const HeaderIcons = () => {
+import { useLocation } from "react-router-dom";
+
+export const HeaderIcons = ({
+  onSearchClick,
+}: {
+  onSearchClick: () => void;
+}) => {
   const { themeMode } = useTheme();
+  const location = useLocation();
   const isExplorePage = location.pathname.startsWith("/explore/events");
 
   const getIconContainerClass = () => {
@@ -14,6 +21,7 @@ export const HeaderIcons = () => {
     <div className="col-span-2 flex justify-end gap-4">
       {/* Search Icon (Mobile only) */}
       <div
+        onClick={onSearchClick}
         className={`${getIconContainerClass()} p-2 md:p-0 rounded-full cursor-pointer backdrop-blur-xs`}
       >
         <Icon path={mdiMagnify} size={1} className="md:hidden" />

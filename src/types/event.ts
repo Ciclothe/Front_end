@@ -1,7 +1,7 @@
 export type Participant = {
-  userId: number;
+  userId?: number;
   userName?: string;
-  profilePic: string;
+  profilePicture: string;
 };
 
 export type EventRules = {

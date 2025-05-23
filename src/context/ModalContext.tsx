@@ -1,141 +1,72 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
+import React, { createContext, useContext, useState } from "react";
 import { DefaultModal } from "@/components/Modals/DefaultModal";
-import { useNavigate, useLocation } from "react-router-dom";
+
+type ModalContent = {
+  content: React.ReactNode;
+  params?: Record<string, unknown>;
+};
 
 type ModalContextType = {
-  openModal: (token: string, step?: string, options?: { state?: any }) => void;
+  openModal: (
+    content: React.ReactNode,
+    params?: Record<string, unknown>
+  ) => void;
+  pushContent: (
+    content: React.ReactNode,
+    params?: Record<string, unknown>
+  ) => void;
+  popContent: () => void;
   closeModal: () => void;
-  goBack: () => void;
+  params?: Record<string, unknown>;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
-const postsToken = [
-  {
-    token: "X9WL32TVKMZPR8A6UFQYC7NJE",
-    type: "swap" as "swap", // Aseguramos que 'type' sea uno de los valores válidos
-  },
-  {
-    token: "cf62aa0fMjM=",
-    type: "swap" as "swap",
-  },
-  {
-    token: "cGe2aa0fMjM=",
-    type: "swap" as "swap",
-  },
-  {
-    token: "4158249710d=",
-    type: "swap" as "swap",
-  },
-  {
-    token: "sa4gY49710d=",
-    type: "swap" as "swap",
-  },
-  {
-    token: "a9X3vB1cD4pE5sQ7mN8wZ6yT2kR0uLf",
-    type: "event" as "event",
-  },
-] as const;
-
-const getTypeByToken = (token: string): "event" | "garment" | "swap" | null => {
-  const post = postsToken.find((post) => post.token === token);
-  return post ? post.type : null;
-};
-
-const componentMap: Record<
-  string,
-  Record<string, () => Promise<React.ComponentType<{ token: string }>>>
-> = {
-  swap: {
-    details: () =>
-      import("@/components/Swap/SwapDetails").then((mod) => mod.SwapDetails),
-    offer: () =>
-      import("@/components/Swap/SwapOfferSteps").then(
-        (mod) => mod.SwapOfferSteps
-      ),
-    offerReceived: () =>
-      import("@/components/Swap/SwapOfferReceived").then(
-        (mod) => mod.SwapOfferReceived
-      ),
-    counterOffer: () =>
-      import("@/components/Swap/SwapCounterOffer").then(
-        (mod) => mod.SwapCounterOffer
-      ),
-  },
-  event: {
-    details: () =>
-      import("@/components/Event/EventDetails").then((mod) => mod.EventDetails),
-  },
-};
-
+// eslint-disable-next-line react-refresh/only-export-components
 export const useModal = () => {
   const context = useContext(ModalContext);
   if (!context) throw new Error("useModal must be used within ModalProvider");
   return context;
 };
 
-export const ModalProvider = ({ children }: { children: ReactNode }) => {
-  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
-  const navigate = useNavigate();
-  const location = useLocation();
+export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+  const [stack, setStack] = useState<ModalContent[]>([]);
 
-  const openModal = async (
-    token: string,
-    step: string = "details",
-    options?: { state?: any }
+  const openModal = (
+    content: React.ReactNode,
+    params?: Record<string, unknown>
   ) => {
-    const typePost = getTypeByToken(token);
-    console.log("Tipo de post:", token);
-    if (!typePost) return;
-
-    const route = `${location.pathname}/${token}/${step}`;
-    navigate(route, options);
+    setStack([{ content, params }]);
   };
 
-  const closeModal = () => {
-    const parts = location.pathname.split("/");
-    const newPath = parts.slice(0, -2).join("/");
-    navigate(newPath);
+  const pushContent = (
+    content: React.ReactNode,
+    params?: Record<string, unknown>
+  ) => {
+    setStack((prev) => [...prev, { content, params }]);
   };
 
-  const goBack = () => {
-    const parts = location.pathname.split("/");
-    const newPath = parts.slice(0, -2).join("/");
-    navigate(newPath);
+  const popContent = () => {
+    setStack((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev));
   };
 
-  useEffect(() => {
-    const parts = location.pathname.split("/");
-    const token = parts[parts.length - 2];
-    const step = parts[parts.length - 1] ?? "details";
+  const closeModal = () => setStack([]);
 
-    if (!token || !step) return setModalContent(null);
-
-    const typePost = getTypeByToken(token);
-    if (!typePost) return setModalContent(null);
-
-    const loader = componentMap[typePost]?.[step];
-    if (loader) {
-      loader().then((Component) => {
-        setModalContent(<Component token={token} />);
-      });
-    } else {
-      console.error("No modal component found for the type/step combination");
-      setModalContent(null);
-    }
-  }, [location.pathname]);
+  const current = stack[stack.length - 1];
 
   return (
-    <ModalContext.Provider value={{ openModal, closeModal, goBack }}>
+    <ModalContext.Provider
+      value={{
+        openModal,
+        pushContent,
+        popContent,
+        closeModal,
+        params: current?.params,
+      }}
+    >
       {children}
-      {modalContent && (
-        <DefaultModal onClose={closeModal}>{modalContent}</DefaultModal>
+      {current && (
+        <DefaultModal onClose={closeModal}>{current.content}</DefaultModal>
       )}
     </ModalContext.Provider>
   );

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/context/ThemeContext";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Icon from "@mdi/react";
+import { mdiEarth } from "@mdi/js";
 
 interface Language {
   code: string;
@@ -44,104 +46,145 @@ const languages = [
 ];
 
 interface LanguageSwitchProps {
-  onlyFlag?: boolean;
+  showPlanetIcon?: boolean;
+  showLanguageName?: boolean;
+  showFlag?: boolean;
+  showTitle?: boolean;
+  backgroundColor?: string;
+  hoverColor?: string;
+  selectedColor?: string;
 }
 
-export const LanguageSwitch: React.FC<LanguageSwitchProps> = ({ onlyFlag }) => {
-  const { i18n } = useTranslation();
+export const LanguageSwitch: React.FC<LanguageSwitchProps> = ({
+  showPlanetIcon = true,
+  showLanguageName = true,
+  showFlag = true,
+  showTitle = true,
+  backgroundColor,
+  hoverColor,
+  selectedColor,
+}) => {
+  const { i18n, t } = useTranslation();
   const { themeMode } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const normalizeLangCode = (code: string) => code.split("-")[0];
+
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(
-    languages.find((lang) => lang.code === i18n.language) || languages[0]
+    languages.find((lang) => lang.code === normalizeLangCode(i18n.language)) ||
+      languages[0]
   );
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem("selectedLanguage");
+    const normalizeLangCode = (code: string) => code.split("-")[0];
+
     if (storedLanguage) {
-      const parsedLanguage = JSON.parse(storedLanguage);
-      setSelectedLanguage(parsedLanguage);
-      i18n.changeLanguage(parsedLanguage.code);
+      try {
+        const parsed = JSON.parse(storedLanguage);
+        const code = typeof parsed === "string" ? parsed : parsed.code;
+        const normalizedCode = normalizeLangCode(code);
+        const currentLang = normalizeLangCode(i18n.language);
+
+        if (normalizedCode !== currentLang) {
+          i18n.changeLanguage(code);
+        }
+
+        const matchedLang =
+          languages.find((l) => l.code === normalizedCode) || languages[0];
+        setSelectedLanguage(matchedLang);
+      } catch {
+        const normalizedStored = normalizeLangCode(storedLanguage);
+        if (normalizedStored !== normalizeLangCode(i18n.language)) {
+          i18n.changeLanguage(storedLanguage);
+        }
+
+        const matchedLang =
+          languages.find((l) => l.code === normalizedStored) || languages[0];
+        setSelectedLanguage(matchedLang);
+      }
+    } else {
+      const defaultLang = "en";
+      if (normalizeLangCode(i18n.language) !== defaultLang) {
+        i18n.changeLanguage(defaultLang);
+      }
+      setSelectedLanguage(
+        languages.find((l) => l.code === defaultLang) || languages[0]
+      );
     }
-  }, [i18n]);
+  }, [i18n, i18n.language]);
 
   const updateLanguage = (language: Language) => {
     setIsOpen(false);
     setSelectedLanguage(language);
     localStorage.setItem("selectedLanguage", JSON.stringify(language));
-
-    i18n
-      .changeLanguage(language.code)
-      .then(() => {
-        console.log("Idioma cambiado a:", language.code);
-      })
-      .catch((error) => {
-        console.error("Error al cambiar el idioma:", error);
-      });
+    i18n.changeLanguage(language.code).catch(console.error);
   };
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const bgColor =
+    backgroundColor || (themeMode === "light" ? "#F7F7F7" : "#121212");
+  const defaultHover = themeMode === "light" ? "#E2E2E2" : "#323332";
+  const defaultSelected = defaultHover;
+  const hoverBg = hoverColor || defaultHover;
+  const selectedBg = selectedColor || defaultSelected;
+
   return (
     <div
-      className={`dropdown relative flex flex-col items-end ${
-        themeMode === "dark" ? "night-mode" : "day-mode"
-      }`}
+      className="flex flex-col items-center justify-between px-4 py-3 cursor-pointer"
+      onClick={toggleMenu}
     >
-      <button
-        onClick={toggleMenu}
-        className="dropdown-toggle flex items-center py-1 px-2 font-bold w-fit rounded-full"
-        aria-label="Select language"
-        aria-haspopup="true"
-      >
-        <img
-          src={selectedLanguage.icon}
-          alt={selectedLanguage.name}
-          className="w-[1em] aspect-square"
-        />
-        {!onlyFlag && <p className="ml-2">{selectedLanguage.ISO6392}</p>}
-      </button>
+      <div className="flex items-center gap-4 w-full justify-between">
+        <div className="flex items-center gap-4">
+          {showPlanetIcon && <Icon path={mdiEarth} size={1} />}
+          {showTitle && (
+            <p className="font-semibold">{t("mainLayout.language")}</p>
+          )}
+        </div>
+        {showFlag && (
+          <img
+            src={selectedLanguage.icon}
+            alt={selectedLanguage.name}
+            className="w-[1.2em] aspect-square"
+          />
+        )}
+      </div>
 
       {isOpen && (
         <ClickAwayListener onClickAway={() => setIsOpen(false)}>
           <div
-            className={`dropdown-menu min-w-auto mt-2 rounded-xl ${
-              themeMode === "dark"
-                ? "bg-[#121212] text-white"
-                : "bg-[#FFFFFF] text-black"
-            }`}
-            style={{ zIndex: 100 }}
+            className="flex flex-col w-full mt-2 rounded-xl overflow-hidden"
+            style={{ backgroundColor: bgColor }}
           >
-            {languages.map((language, index) => {
+            {languages.map((language) => {
               const isSelected = language.code === selectedLanguage.code;
-              const isFirst = index === 0;
-              const isLast = index === languages.length - 1;
-
               return (
                 <div
                   key={language.code}
                   onClick={() => updateLanguage(language)}
-                  className={`flex items-center px-4 py-3 cursor-pointer 
-                    ${
-                      themeMode === "dark"
-                        ? "hover:bg-[#2C2C2C]"
-                        : "hover:bg-[#F1F2F4]"
-                    }
-                    ${
-                      isSelected
-                        ? themeMode === "dark"
-                          ? "bg-[#2C2C2C]"
-                          : "bg-[#F1F2F4]"
-                        : ""
-                    }
-                    ${isFirst ? "rounded-t-xl" : ""}
-                    ${isLast ? "rounded-b-xl" : ""}`}
+                  className="flex items-center px-4 py-3 cursor-pointer"
+                  style={{
+                    backgroundColor: isSelected ? selectedBg : undefined,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = hoverBg;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = isSelected
+                      ? selectedBg
+                      : "transparent";
+                  }}
                 >
-                  <img
-                    src={language.icon}
-                    alt={language.name}
-                    className="w-[1em] aspect-square mr-2"
-                  />
-                  <p className="ml-2 font-bold">{language.name}</p>
+                  {showFlag && (
+                    <img
+                      src={language.icon}
+                      alt={language.name}
+                      className="w-[1em] aspect-square mr-2"
+                    />
+                  )}
+                  {showLanguageName && (
+                    <p className="ml-2 font-bold">{language.name}</p>
+                  )}
                 </div>
               );
             })}

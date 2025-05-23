@@ -1,14 +1,10 @@
 import { useTheme } from "@/context/ThemeContext";
-import { useCategoryTabs } from "@/context/CategoryTabsContext";
 import { UserHeader } from "@/components/Common/Post/UserHeader";
 import { PostImageCarousel } from "@/components/Common/Post/PostImageCarousel";
 import { PostInfoOverlay } from "@/components/Common/Post/PostInfoOverlay";
 import { PostOffers } from "@/components/Common/Post/PostOffers";
 import { PostActions } from "@/components/Common/Post/PostActions";
-import { useModal } from "@/context/ModalContext";
-import { useEffect } from "react";
-import { mdiCards, mdiHandshake } from "@mdi/js";
-import { PiSwapFill } from "react-icons/pi";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // TODO: Remove this mock data and fetch it from the API
 const postsFeedData = [
@@ -18,9 +14,9 @@ const postsFeedData = [
     token: "X9WL32TVKMZPR8A6UFQYC7NJE",
     userData: {
       userId: 1,
-      profilePic:
-        "https://i.pinimg.com/736x/15/4c/c1/154cc1b2916a59a0a2e2f2c7983329b8.jpg",
-      userName: "grifoMmm",
+      profilePicture:
+        "https://i.pinimg.com/736x/6a/3b/01/6a3b01b467a751122986da4cb9764033.jpg",
+      userName: "poseidon",
     },
     postData: {
       id: 1,
@@ -35,11 +31,31 @@ const postsFeedData = [
       images: [
         {
           id: 1,
-          url: "https://images1.vinted.net/t/01_021d5_SkeTiZUZDMRpdKoVXgmBNx3x/f800/1743677672.jpeg?s=c95d1909f0b8ae0de4e724cb7b14ceb6c6bcf2f5",
+          url: "https://images1.vinted.net/t/04_00c90_MRBRdcAp1QUzDByCZ3oaaf2Q/f800/1734704789.jpeg?s=6a00536c82c882254c7ef7f780e7b7d93e83c744",
         },
         {
           id: 2,
-          url: "https://images1.vinted.net/t/03_00fd5_wsJvSkW8xY7oczocZjdycsbc/f800/1743677672.jpeg?s=dc198e138d51d9c09c5884a5d276869264debd1b",
+          url: "https://images1.vinted.net/t/04_002f7_kz6B2QjvhThw7D6hvkZ7WfpH/f800/1734704789.jpeg?s=fa37dc8372251a3d7b4552bb326aa78d43a5753b",
+        },
+        {
+          id: 3,
+          url: "https://images1.vinted.net/t/02_0025c_rbX3UTs4YZGw84ExJpKw4m9M/f800/1734704789.jpeg?s=2ace1c16e4c05234196941aa30305a941591dae4",
+        },
+        {
+          id: 4,
+          url: "https://images1.vinted.net/t/01_01e8c_BxDshmg9ve3zDKyLDUkJRfpo/f800/1734704789.jpeg?s=9262ae72c10ec2656c89e09de6eddbdfae2d8d77",
+        },
+        {
+          id: 5,
+          url: "https://images1.vinted.net/t/03_01d7e_UgoG5Uv9EiiWs79mPqorpXGJ/f800/1734704789.jpeg?s=8b9223fa1516069006dc424182c673aad2fba207",
+        },
+        {
+          id: 6,
+          url: "https://images1.vinted.net/t/03_01d7e_UgoG5Uv9EiiWs79mPqorpXGJ/f800/1734704789.jpeg?s=8b9223fa1516069006dc424182c673aad2fba207",
+        },
+        {
+          id: 7,
+          url: "https://images1.vinted.net/t/02_01f20_T9pNTYWN6Zk2cQhxJT8htV3i/f800/1734704789.jpeg?s=d57cae7f6d07ca876e4e9ada43221b5470600af5",
         },
       ],
     },
@@ -51,7 +67,7 @@ const postsFeedData = [
         id: 1,
         userData: {
           userId: 2,
-          profilePic:
+          profilePicture:
             "https://i.pinimg.com/736x/08/2b/3b/082b3bb51cbf0722329080827f8e4a48.jpg",
         },
       },
@@ -59,7 +75,7 @@ const postsFeedData = [
         id: 2,
         userData: {
           userId: 45,
-          profilePic:
+          profilePicture:
             "https://i.pinimg.com/736x/55/fa/1f/55fa1f9583becaa51044fa7e0d768fe4.jpg",
         },
       },
@@ -72,7 +88,7 @@ const postsFeedData = [
     eventTitle: "Retro Revival Night: Fashion & Music",
     userData: {
       userId: 1,
-      profilePic:
+      profilePicture:
         "https://i.pinimg.com/736x/a3/c0/40/a3c040ee9e0cb3a06684a603c1a06a9c.jpg",
       userName: "grifoMmm",
     },
@@ -154,7 +170,7 @@ const postsFeedData = [
     token: "ZXZlbnQtNDU2",
     userData: {
       userId: 1,
-      profilePic:
+      profilePicture:
         "https://i.pinimg.com/736x/15/4c/c1/154cc1b2916a59a0a2e2f2c7983329b8.jpg",
       userName: "grifoMmm",
     },
@@ -198,101 +214,45 @@ const postsFeedData = [
   },
 ];
 
-type TabType =
-  | {
-      icon: string;
-      name: string;
-      type: string;
-      href: string;
-      selected: boolean;
-      isComponent?: false;
-    }
-  | {
-      icon: JSX.Element;
-      name: string;
-      type: string;
-      href: string;
-      selected: boolean;
-      isComponent: true;
-    };
-
-const categoryTabs: TabType[] = [
-  {
-    icon: mdiCards,
-    name: "all",
-    type: "all",
-    href: "/",
-    selected: true,
-  },
-  {
-    icon: <PiSwapFill size={18} />,
-    name: "swaps",
-    type: "swap",
-    href: "/swaps",
-    selected: false,
-    isComponent: true,
-  },
-  {
-    icon: mdiHandshake,
-    name: "events",
-    type: "event",
-    href: "/events",
-    selected: false,
-  },
-  // {
-  //   icon: mdiAccountSupervisor,
-  //   name: "communities",
-  //   href: "/communities",
-  //   selected: false,
-  // },
-];
-
 export const HomePage = () => {
   const { themeMode } = useTheme();
-  const { openModal } = useModal();
-  const { setShowTabs, setTabs } = useCategoryTabs();
-  const { tabs } = useCategoryTabs();
-  const selectedTab = tabs.find((tab) => tab.selected);
-  const selectedType = selectedTab?.type;
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/").filter(Boolean);
+  const currentType = pathSegments[1];
+  const navigate = useNavigate();
+
+  const selectedTypeFromURL =
+    currentType === "events"
+      ? "event"
+      : currentType === "swaps"
+      ? "swap"
+      : "all";
 
   const filteredPosts =
-    selectedType === "all"
+    selectedTypeFromURL === "all"
       ? postsFeedData
-      : postsFeedData.filter((post) => post.postType === selectedType);
-
-  useEffect(() => {
-    setShowTabs(true);
-    setTabs(categoryTabs);
-  }, [setShowTabs, setTabs]);
-
-  const handleOpenDetails = (post: {
-    postType: string;
-    postId: number;
-    token: string;
-  }) => {
-    openModal(post.token, "details");
-  };
+      : postsFeedData.filter((post) => post.postType === selectedTypeFromURL);
 
   return (
-    <div className="md:px-4 lg:px-10 overflow-y-auto flex flex-col items-center">
+    <div className="md:px-4 lg:px-10 flex flex-col items-center overflow-y-auto">
       {filteredPosts.map((post) => {
         const cardClassName = `${
           themeMode === "light"
             ? "md:bg-white md:hover:bg-[#EDEDED] text-black"
             : "md:bg-[#222423] text-white md:hover:bg-[#323332]"
-        } py-5 border-b border-black/5 md:border-none sm:p-5 md:mb-5 md:rounded-2xl cursor-pointer w-full md:w-[90%] lg:w-[65%]`;
+        } py-5 border-b border-black/5 md:border-none sm:p-5 md:mb-5 md:rounded-3xl cursor-pointer w-full md:w-[90%] lg:w-[65%]`;
 
         return (
           <div
             key={post.id}
             className={cardClassName}
-            onClick={() =>
-              handleOpenDetails({
-                postId: post.id,
-                postType: post.postType,
-                token: post.token,
-              })
-            }
+            onClick={() => {
+              if (post.postType === "swap") {
+                navigate(`/swapDetails/${post.token}`);
+              } else if (post.postType === "event") {
+                navigate(`/eventDetails/${post.token}`);
+              }
+            }}
           >
             <div className="relative flex flex-col gap-2">
               {post?.postData && (

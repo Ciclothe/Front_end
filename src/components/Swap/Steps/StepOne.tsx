@@ -1,4 +1,3 @@
-import { useModal } from "@/context/ModalContext";
 import { useTheme } from "@/context/ThemeContext";
 import { mdiCheckBold, mdiSwapHorizontalHidden } from "@mdi/js";
 import { Icon } from "@mdi/react";
@@ -19,7 +18,7 @@ type Garment = {
 };
 
 type Props = {
-  token: string;
+  token: string | unknown;
   setOferArray: (garments: { receiver: Garment[]; sender: Garment[] }) => void;
 };
 
@@ -119,7 +118,6 @@ export const StepOne = ({ token, setOferArray }: Props) => {
   const [receiverGarments, setReceiverGarments] = useState<Garment[]>([]);
   const [senderGarments, setSenderGarments] = useState<Garment[]>([]);
   const { t } = useTranslation();
-  const { openModal } = useModal();
 
   useEffect(() => {
     setOferArray({ receiver: [], sender: [] });
@@ -128,7 +126,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
   useEffect(() => {
     console.log("Token:", token);
     if (!token) return;
-    const { receiver, sender } = getInitialData(token);
+    const { receiver, sender } = getInitialData(token as string);
     setReceiverGarments(receiver);
     setSenderGarments(sender);
   }, [token]);
@@ -245,7 +243,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                 </div>
               </div>
               <div className="flex items-center">
-                <p
+                {/* <p
                   className="p-4 font-semibold text-[#0DBC73] cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -255,7 +253,7 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                   }}
                 >
                   {t("mainLayout.details")}
-                </p>
+                </p> */}
                 <div
                   className={`${
                     garment.selected
@@ -342,17 +340,15 @@ export const StepOne = ({ token, setOferArray }: Props) => {
                 </div>
               </div>
               <div className="flex items-center">
-                <p
+                {/* <p
                   className="p-4 font-semibold text-[#0DBC73] cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    openModal(garment.token, "details", {
-                      state: { navigatedInternally: true },
-                    });
+                    navigate(`/swapDetails/${garment.token}`);
                   }}
                 >
                   {t("mainLayout.details")}
-                </p>
+                </p> */}
                 <div
                   className={`${
                     garment.selected

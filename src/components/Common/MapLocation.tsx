@@ -9,6 +9,8 @@ const MapLocation = ({
   location: { lat: number; lng: number };
   zoom: number;
 }) => {
+  const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
+
   const { themeMode } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -18,7 +20,7 @@ const MapLocation = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect(); // Solo necesitamos cargarlo una vez
+          observer.disconnect();
         }
       },
       { threshold: 0.1 }
@@ -49,7 +51,7 @@ const MapLocation = ({
           mapStyle={`mapbox://styles/mapbox/${
             themeMode === "dark" ? "dark-v11" : "light-v11"
           }`}
-          mapboxAccessToken="pk.eyJ1IjoiYWxlam9zcGluYXIiLCJhIjoiY20wa2lreDMxMTk5eDJrb2F0N3NtNHBkMyJ9.LV8h87QAtrtHZ2U2FP4V1g"
+          mapboxAccessToken={MAPBOX_TOKEN}
           dragPan={false}
           scrollZoom={false}
           doubleClickZoom={false}

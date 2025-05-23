@@ -13,7 +13,7 @@ export const LikeBtn = ({ liked, onClick }: LikeButtonProps) => {
   const { themeMode } = useTheme();
 
   const baseClasses =
-    "rounded-full p-2 h-full aspect-square flex items-center justify-center font-bold transition-colors duration-200 cursor-pointer";
+    "rounded-full p-3 h-full aspect-square flex items-center justify-center font-bold transition-colors duration-200 cursor-pointer";
 
   const activeClasses = "bg-[#0dbc732f] text-[#0DBC73]";
 

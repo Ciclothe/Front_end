@@ -12,7 +12,7 @@ export const NotificationHeader: React.FC<NotificationHeaderProps> = ({
 
   return (
     <div className={`text-start`}>
-      <p className="text-[1.4em] font-semibold truncate">
+      <p className="text-[1.2em] font-semibold truncate">
         {t("mainLayout.notifications")}
       </p>
       {unreadCount > 0 ? (

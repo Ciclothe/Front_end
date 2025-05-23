@@ -13,7 +13,17 @@ i18n
   .use(LanguageDetector)
   .init({
     fallbackLng: "en",
+
     debug: true,
+
+    detection: {
+      order: ["localStorage", "navigator", "htmlTag"],
+
+      caches: ["localStorage"],
+
+      lookupLocalStorage: "selectedLanguage",
+    },
+
     resources: {
       en: { translation: en },
       es: { translation: es },
@@ -21,9 +31,11 @@ i18n
       de: { translation: de },
       he: { translation: he },
     },
+
     interpolation: {
       escapeValue: false,
     },
+
     react: {
       useSuspense: false,
     },

@@ -100,7 +100,7 @@ const PressAndHoldButton = ({
       onMouseLeave={cancelHold}
       onTouchStart={startHold}
       onTouchEnd={cancelHold}
-      className="w-full relative font-semibold rounded-full flex justify-center overflow-hidden cursor-pointer text-transparent select-none py-2"
+      className="relative font-semibold flex justify-center truncate overflow-hidden cursor-pointer text-transparent select-none px-5 py-3 w-full rounded-xl"
       style={{
         backgroundColor: bgGeneralColor.length
           ? `${bgGeneralColor}`
