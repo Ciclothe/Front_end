@@ -91,7 +91,7 @@ export const SelectCity: React.FC<SelectCityProps> = ({
       setError(false);
       try {
         const response = await fetch(
-          `http://api.geonames.org/searchJSON?country=${encodeURIComponent(
+          `https://secure.geonames.org/searchJSON?country=${encodeURIComponent(
             country
           )}&featureClass=P&maxRows=1000&username=ciclothe`
         );
